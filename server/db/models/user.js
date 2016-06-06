@@ -23,6 +23,15 @@ module.exports = function (db) {
         },
         google_id: {
             type: Sequelize.STRING
+        },
+        geography: {
+            type: Sequelize.STRING
+        },
+        age: {
+            type: Sequelize.INTEGER
+        },
+        gender: {
+            type: Sequelize.ENUM('Male', 'Female')
         }
     }, {
         instanceMethods: {
