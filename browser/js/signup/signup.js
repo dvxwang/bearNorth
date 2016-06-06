@@ -16,7 +16,6 @@ app.controller('SignupCtrl', function ($scope, AuthService, $state) {
     $scope.error = null;
 
     $scope.sendSignup = function (signupInfo) {
-
         $scope.error = null;
 
         AuthService.signup(signupInfo).then(function () {
