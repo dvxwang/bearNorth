@@ -21,6 +21,8 @@ var chalk = require('chalk');
 var db = require('./server/db');
 var User = db.model('user');
 var Product = db.model('product');
+var Activity = db.model('activity');
+var Type = db.model('type');
 var Promise = require('sequelize').Promise;
 var chance = require('chance')(123);
 
@@ -45,12 +47,45 @@ var seedUsers = function () {
 
 };
 
+var seedActivities = function() {
+    var activity = ['Kayak', 'Climb', 'Camp'];
+    var creatingActivities = activity.map(function(activity) {
+        return Activity.create({name: activity});
+    });
+    return Promise.all(creatingActivities);
+}
+
+var seedTypes = function() {
+    var activities = {
+        Camp: ['Tent', 'Backpack', 'Kitchen', 'Sleeping Bag', 'Gear', 'Footwear', 'Clothing'],
+        Kayak: ['Kayak', 'Paddles', 'Wetsuit', 'Safety'],
+        Climb: ['Climbing Hardware', 'Harnesses', 'Rope', 'Climbing Shoes']
+    }
+
+    var creatingTypes = [];
+
+    for (var k in activities) {
+        
+        var createType = activities[k].map(function(type) {
+            return Type.create({name: type})
+                .then(function(createdType) {
+                    return Activity.findOne({where: {name: k} })
+                        .then(function(foundActivity) {
+                            return foundActivity.addType(createdType);
+                        })
+                });
+        });
+
+        creatingTypes.push(createType);
+    }
+
+    return Promise.all(creatingTypes);
+
+}
+
 var seedProducts = function() {
 
     var brands = ['The North Face', 'Burton', 'Marmot','Big Agnes', 'REI', 'ALPS'],
-        types = ['Tent', 'Backpack', 'Kitchen', 'Sleeping Bag', 'Gear', 'Footwear', 'Clothing'],
-        climbing = ['Climbing Hardware', 'Harnesses', 'Rope'],
-        kayak = ['Kayak', 'Paddles', 'Wetsuit', 'Safety'],
         images = {
             Tent: 'http://ecx.images-amazon.com/images/I/81LmkUY3lLL._SL1500_.jpg',
             Backpack: 'http://pacsit.com/wp-content/uploads/2016/04/camping-backpacks-06.jpg',
@@ -61,6 +96,8 @@ var seedProducts = function() {
             Clothing: 'http://images.evo.com/imgp/zoom/70229/373884/arc-teryx-sabre-jacket-golden-palm.jpg'
         };
         
+    var types = ['Tent', 'Backpack', 'Kitchen', 'Sleeping Bag', 'Gear', 'Footwear', 'Clothing'];
+    
 
     function createItem() {
         var price = chance.floating({min: 10, max: 1000, fixed: 2});
@@ -68,10 +105,9 @@ var seedProducts = function() {
         return {
             name: chance.word()+' '+chance.word(),
             brand: chance.pickone(brands),
-            type: type,
             purchase_price: price,
             rental_price: chance.floating({min: 2, max: price, fixed: 2}),
-            pictureUrl: images[type],
+            pictureUrl: images[type] || 'http://ecx.images-amazon.com/images/I/81LmkUY3lLL._SL1500_.jpg',
             description: chance.sentence({words: 15})
         }
     }
@@ -83,7 +119,10 @@ var seedProducts = function() {
     }
 
     var creatingProducts = products.map(function(product) {
-        return Product.create(product);
+        return Product.create(product)
+            .then(function(createdProduct) {
+                return createdProduct.setType(chance.integer({min: 1, max: 15}));
+            });
     });
 
     return Promise.all(creatingProducts);
@@ -92,6 +131,12 @@ var seedProducts = function() {
 db.sync({ force: true })
     .then(function () {
         return seedUsers();
+    })
+    .then(function() {
+        return seedActivities();
+    })
+    .then(function() {
+        return seedTypes();
     })
     .then(function() {
         return seedProducts();

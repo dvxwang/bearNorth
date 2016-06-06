@@ -12,10 +12,6 @@ module.exports = function (db) {
         brand: {
         	type: Sequelize.STRING
         },
-        type: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
         purchase_price: {
             type: Sequelize.DECIMAL(10, 2),
             allowNull: false
@@ -29,8 +25,20 @@ module.exports = function (db) {
         description: {
             type: Sequelize.TEXT
         }
-    }
-    );
+    });
+
+    db.define('activity', {
+    	name: {
+    		type: Sequelize.ENUM('Camp', 'Kayak', 'Climb')
+    	}
+    })
+
+    db.define('type', {
+    	name: {
+    		type: Sequelize.STRING,
+    		allowNull: false
+    	}
+    })
 
 };
 
