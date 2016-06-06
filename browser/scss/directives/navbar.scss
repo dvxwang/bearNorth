@@ -14,7 +14,7 @@ navbar {
   bearnorth-logo {
     margin-top: 5px;
     margin-right: 20px;
-    width: 200px;
+    width: 300px;
   }
 
   a {
@@ -35,6 +35,10 @@ navbar {
     &:focus {
       background: none;
     }
+  }
+
+  .navbar-header {
+    vertical-align: middle
   }
 
   .login-button {
