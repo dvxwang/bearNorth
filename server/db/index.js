@@ -6,6 +6,7 @@ require('./models/products')(db);
 require('./models/reviews')(db);
 require('./models/box')(db);
 
+<<<<<<< HEAD
 var User = db.model('user');
 var Product = db.model('product');
 var Box = db.model('box');
@@ -20,5 +21,7 @@ Product.hasMany(Review);
 Review.belongsTo(User);
 Box.belongsToMany(Product, {through: 'BoxProduct'});
 Product.belongsToMany(Box, {through: 'BoxProduct'});
+=======
+>>>>>>> master
 
 module.exports = db;
