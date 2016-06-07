@@ -70,4 +70,15 @@ module.exports = function (app, db) {
         });
     });
 
+    app.use('/auth/google', function(req, res) {
+        require('./google')(app, db);
+    });
+
+    app.use('/auth/twitter', function(req, res) {
+        require('./twitter')(app, db);
+    });
+
+    app.use('/auth/facebook', function(req, res) {
+        require('./facebook')(app, db);
+    });
 };
