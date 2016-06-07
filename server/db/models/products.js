@@ -9,6 +9,14 @@ module.exports = function (db) {
             type: Sequelize.STRING,
             allowNull: false
         },
+        category: {
+        	type: Sequelize.STRING,
+        	allowNull: false
+        },
+        quantity: {
+        	type: Sequelize.INTEGER,
+        	allowNull: false
+        },
         brand: {
         	type: Sequelize.STRING
         },
@@ -24,21 +32,11 @@ module.exports = function (db) {
         },
         description: {
             type: Sequelize.TEXT
+        },
+        tags: {
+        	type: Sequelize.ARRAY(Sequelize.STRING)
         }
     });
-
-    db.define('activity', {
-    	name: {
-    		type: Sequelize.ENUM('Camp', 'Kayak', 'Climb')
-    	}
-    })
-
-    db.define('type', {
-    	name: {
-    		type: Sequelize.STRING,
-    		allowNull: false
-    	}
-    })
 
 };
 
