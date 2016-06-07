@@ -13,7 +13,7 @@ module.exports = function (app, db) {
     require('./app-variables')(app);
     require('./static-middleware')(app);
     require('./parsing-middleware')(app);
-
+    require('./request-state-middleware')(app);
     // Logging middleware, set as application
     // variable inside of server/app/configure/app-variables.js
     app.use(app.getValue('log'));
