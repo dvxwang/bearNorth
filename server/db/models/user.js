@@ -32,6 +32,12 @@ module.exports = function (db) {
         },
         gender: {
             type: Sequelize.ENUM('Male', 'Female')
+        },
+        defaultShipping: {
+            type: Sequelize.STRING
+        },
+        isAdmin: {
+            type: Sequelize.BOOLEAN
         }
     }, {
         instanceMethods: {
