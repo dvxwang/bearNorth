@@ -1,6 +1,7 @@
 'use strict';
 
 var Sequelize = require('sequelize');
+var Review = require('./reviews');
 
 module.exports = function (db) {
 
@@ -25,6 +26,21 @@ module.exports = function (db) {
         description: {
             type: Sequelize.TEXT
         }
+    },
+    {
+      getterMethods: {
+        rating: function() {
+          return this.getReview()
+          .then( function(reviews) {
+            var total_ratings;
+            reviews.forEach( function(review) {
+              total_ratings += review.rating;
+            });
+
+            return total_ratings / reviews.length;
+          })
+        }
+      }
     });
 
     db.define('activity', {
@@ -41,4 +57,3 @@ module.exports = function (db) {
     })
 
 };
-
