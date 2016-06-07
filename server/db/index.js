@@ -18,5 +18,7 @@ Activity.hasMany(Type);
 Type.hasMany(Product);
 Product.hasMany(Review);
 Review.belongsTo(User);
+Box.belongsToMany(Product, {through: BoxProduct});
+Product.belongsToMany(Box, {through: BoxProduct});
 
 module.exports = db;

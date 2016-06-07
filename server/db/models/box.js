@@ -18,15 +18,9 @@ module.exports = function (db) {
       type: Sequelize.STRING,
       allowNull: false
     },
-    product_ids: {
-      type: Sequelize.ARRAY(Sequelize.INTEGER)
-    },
-  },
-  {
-    getterMethods: {
-      products: function() {
-        return Product.findAll({ where: { id: this.product_ids } });
-      }
+    climate: {
+      type: Sequelize.STRING,
+      allowNull: false
     }
   });
 
