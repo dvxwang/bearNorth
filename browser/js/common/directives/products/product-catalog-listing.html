@@ -1,6 +1,6 @@
-<div class="col-xs-3">
+<div class="col-md-3">
   <div class="prod-img">
-    <img ng-src="{{ product.pictureUrl }}">
+    <a ui-sref="product({ productId: product.id })"><img ng-src="{{ product.pictureUrl }}"></a>
   </div>
   <div class="prod-summary">
     <a ui-sref="product({ productId: product.id })">{{ product.brand }} {{ product.name }}</a>

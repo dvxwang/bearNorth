@@ -1,3 +1,12 @@
-<div ng-repeat="product in products">
-  <product-catalog-listing product="product"></product-catalog-listing>
+<div ng-repeat="(category, productList) in products" class="container">
+  <div class="row">
+    <div class="col-md-12 catelog-category-name">
+      <h2>{{ category }}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div ng-repeat="product in productList">
+      <product-catalog-listing product="product"></product-catalog-listing>
+    </div>
+  </div>
 </div>

@@ -9,7 +9,7 @@ app.config(function ($stateProvider) {
         controller: 'ProductsCtrl',
         resolve: {
           products: function(ProductFactory) {
-            return ProductFactory.fetchAll();
+            return ProductFactory.fetchAllByCategory();
           }
         }
     });
@@ -33,6 +33,7 @@ app.config(function ($stateProvider) {
 // -- all products
 app.controller('ProductsCtrl', function ($scope, products) {
   $scope.products = products;
+  console.log(products)
 });
 
 // -- specific product
