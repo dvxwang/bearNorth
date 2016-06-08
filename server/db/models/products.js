@@ -41,15 +41,15 @@ module.exports = function (db) {
     {
       getterMethods: {
         rating: function() {
-          return this.getReview()
-          .then( function(reviews) {
-            var total_ratings;
-            reviews.forEach( function(review) {
-              total_ratings += review.rating;
-            });
-
-            return total_ratings / reviews.length;
-          })
+          // return this.getReviews()
+          // .then( function(reviews) {
+          //   var total_ratings;
+          //   reviews.forEach( function(review) {
+          //     total_ratings += review.rating;
+          //   });
+          //
+          //   return total_ratings / reviews.length;
+          // })
         }
       }
     });
