@@ -38,6 +38,7 @@ var seedUsers = function () {
             gender: 'Female',
             isAdmin: false
         },
+        {
             first_name: 'Barack',
             last_name: 'Obama',
             email: 'obama@gmail.com',
