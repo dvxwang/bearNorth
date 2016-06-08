@@ -7,6 +7,13 @@ module.exports = function (db) {
 
     db.define('user', {
         email: {
+            type: Sequelize.STRING,
+            unique: true
+        },
+        first_name: {
+            type: Sequelize.STRING
+        },
+        last_name: {
             type: Sequelize.STRING
         },
         password: {
@@ -24,9 +31,6 @@ module.exports = function (db) {
         google_id: {
             type: Sequelize.STRING
         },
-        geography: {
-            type: Sequelize.STRING
-        },
         age: {
             type: Sequelize.INTEGER
         },
@@ -34,10 +38,11 @@ module.exports = function (db) {
             type: Sequelize.ENUM('Male', 'Female')
         },
         defaultShipping: {
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         },
         isAdmin: {
-            type: Sequelize.BOOLEAN
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     }, {
         instanceMethods: {

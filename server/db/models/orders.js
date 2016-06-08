@@ -37,11 +37,16 @@ module.exports = function (db) {
         rentalDays: {
             type: Sequelize.INTEGER,
             defaultValue: 1
+        },
+        isRental: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     }, {
         getterMethods: {
             subtotal: function() {
-                return this.quantity*this.unitPrice*this.rentalDays;
+                var multiplier = (this.isRental) ? this.rentalDays : 1;
+                return this.quantity*this.unitPrice*multiplier;
             }
         }
     })

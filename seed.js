@@ -127,15 +127,6 @@ db.sync({ force: true })
             .spread(function(detail, product) {
                 return detail.setProduct(product);
             })
-            // .then(function(detail) {
-            //     console.log('subtotal ======', detail.subtotal);
-            //     return detail.getOrder()
-            //     .then(function(order) {
-            //         return order.getTotal().then(function(total) {
-            //             console.log('total =======', total);
-            //         });
-            //     })
-            // })
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
