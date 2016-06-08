@@ -56,4 +56,29 @@ module.exports = function (app, db) {
 
     });
 
+    app.post('/signup', function (req, res, next) {
+
+        User.create(req.body)
+        .then(function(user){
+            req.logIn(user, function (loginErr) {
+                if (loginErr) return next(loginErr);
+                // We respond with a response object that has user with _id and email.
+                res.status(200).send({
+                    user: user.sanitize()
+                });
+            });
+        });
+    });
+
+    app.use('/auth/google', function(req, res) {
+        require('./google')(app, db);
+    });
+
+    app.use('/auth/twitter', function(req, res) {
+        require('./twitter')(app, db);
+    });
+
+    app.use('/auth/facebook', function(req, res) {
+        require('./facebook')(app, db);
+    });
 };

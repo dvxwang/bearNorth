@@ -21,6 +21,8 @@ var chalk = require('chalk');
 var db = require('./server/db');
 var User = db.model('user');
 var Product = db.model('product');
+var Order = db.model('order');
+var OrderDetail = db.model('orderDetail');
 var Promise = require('sequelize').Promise;
 var chance = require('chance')(123);
 
@@ -28,12 +30,22 @@ var seedUsers = function () {
 
     var users = [
         {
+            first_name: 'Jane',
+            last_name: 'FSA',
             email: 'testing@fsa.com',
-            password: 'password'
+            password: 'password',
+            age: 5,
+            gender: 'Female',
+            isAdmin: false
         },
         {
+            first_name: 'Barack',
+            last_name: 'Obama',
             email: 'obama@gmail.com',
-            password: 'potus'
+            password: 'potus',
+            age: 54,
+            gender: 'Male',
+            isAdmin: true
         }
     ];
 
@@ -89,18 +101,34 @@ var seedProducts = function() {
     return Promise.all(creatingProducts);
 };
 
+var testOrders = function() {
+    var order = {
+        address: '255 First Street, New York, New York',
+        status: 'pending',
+        shipDate: new Date() + 2*24*60*60*1000,
+    }
+
+    var detail = {
+        unitPrice: 15.00
+    }
+
+
+    return Promise.all([Order.create(order), OrderDetail.create(detail)])
+        .spread(function(order, orderDetail) {
+            return Promise.all([order.addOrderDetail(orderDetail), orderDetail.setOrder(order)])
+        })
+
+}
+
 db.sync({ force: true })
     .then(function () {
-        return seedUsers();
+        return Promise.all([seedUsers(), seedProducts(), testOrders()])
     })
-    // .then(function() {
-    //     return seedActivities();
-    // })
-    // .then(function() {
-    //     return seedTypes();
-    // })
     .then(function() {
-        return seedProducts();
+        return Promise.all([OrderDetail.findById(1), Product.findById(1)])
+            .spread(function(detail, product) {
+                return detail.setProduct(product);
+            })
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));
