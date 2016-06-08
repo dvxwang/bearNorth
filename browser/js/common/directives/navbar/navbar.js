@@ -5,12 +5,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         scope: {},
         templateUrl: 'js/common/directives/navbar/navbar.html',
         link: function (scope) {
-
-            scope.items = [
-                { label: 'home', state: 'home' },
-                { label: 'cart', state: 'home' }, // cart state not yet created
-            ];
-
+            
             scope.user = null;
 
             scope.isLoggedIn = function () {
