@@ -22,9 +22,10 @@ module.exports = function (app, db) {
     };
 
     var verifyCallback = function (token, tokenSecret, profile, done) {
-
-        UserModel.findOne({
+        User.findOne({
             where: {
+                first_name: profile.name.split(" ")[0],
+                last_name: profile.name.split(" ")[1],
                 twitter_id: profile.id
             }
         }).exec()
