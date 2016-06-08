@@ -1,24 +1,14 @@
 'use strict';
 var router = require('express').Router();
-module.exports = router;
 var db = require('../../db');
 var User = db.model('user');
+var orderRouter = require('./orders');
 
 router.get('/', function (req, res) {
-  User.all()
+    User.all()
     .then(users => {
         res.json(users);
     });
-});
-
-router.post('/', function (req, res, next) {
-  if (!req.body)
-    return;
-  User.create(req.body)
-  .then(function (user) {
-    res.status(201).json(user);
-  })
-  .catch(next);
 });
 
 router.param('userId', function(req, res, next, userId) {
@@ -38,5 +28,26 @@ router.param('userId', function(req, res, next, userId) {
 })
 
 router.get('/:userId', function (req, res) {
-    res.json(req.user);
+    res.send(req.user);
 });
+
+router.put('/:userId', function (req, res, next) {
+    req.user.update(req.body)
+    .then(function(user) {
+        res.send(user)
+    })
+    .catch(next);
+});
+
+router.delete('/:userId', function(req, res, next) {
+    req.user.destroy()
+    .then(function() {
+        res.sendStatus(204)
+    })
+    .catch(next);
+})
+
+router.use('/:userId/orders', orderRouter);
+
+
+module.exports = router;
