@@ -7,8 +7,8 @@ var OrderDetail = db.model('orderDetail');
 var Product = db.model('product');
 
 
-//route is api/users/:userId/orders OR api/orders
-
+//get ALL orders (need to ensure user is admin) if route is api/orders
+//get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {
     var user = (req.user) ? {userId: req.user.id} : null;
     Order.all({where: user})
@@ -17,7 +17,9 @@ router.get('/', function (req, res) {
     });
 });
 
-//route is api/users/:userId/orders OR api/orders
+//creates new order for unsigned-in user, route is POST to api/orders
+//creates new order for signed-in user, route is POST to api/users/:userId/orders 
+
 router.post('/', function(req, res, next) {
     Order.create(req.body)
     .then(function(order) {
@@ -29,7 +31,9 @@ router.post('/', function(req, res, next) {
     .catch(next);
 })
 
-//ORDER GETS/PUTS/DELETES
+//----------GET/DELETE/UPDATE EXISTING ORDERS--------------
+
+//Searches our Order table for specific order
 router.param('orderId', function(req, res, next, orderId) {
     Order.findById(orderId)
     .then(order => {
@@ -66,10 +70,11 @@ router.delete('/:orderId', function(req, res, next) {
     })
 })
 
-// ORDER DETAIL POSTS/UPDATES/DELETES
+//-------ADD/DELETE/UPDATE ORDER DETAILS TO EXISTING ORDERS-------
 
+//adds order detail to existing order
 router.post('/:orderId/addItem', function(req, res, next) {
-    //must send an orderdetail object with productId property
+    //must send an order detail object WITH productId property
     OrderDetail.create(req.body)
     .then(function(orderDetail) {
         return orderDetail.setProduct(req.body.productId)
@@ -83,16 +88,39 @@ router.post('/:orderId/addItem', function(req, res, next) {
     .catch(next);
 })
 
-router.delete('/:orderId/deleteItem', function(req, res, next) {
-    OrderDetail.findById(req.body.id)
-    .then(function(orderDetail) {
-        return orderDetail.destroy();
+//for all requests to api/orders/:detailId, searches OrderDetail table for that line item
+router.param('detailId', function(req, res, next, detailId) {
+    OrderDetail.findById(detailId)
+    .then(orderDetail => {
+        if (!orderDetail) {
+            res.status(404);
+            return next(new Error('Order detail not found'));
+        }
+        req.orderDetail = orderDetail;
+        next();
     })
+    .catch(function(err) {
+        res.status(500);
+        next(err);
+    });
+})
+
+//deletes order detail
+router.delete('/:detailId', function(req, res, next) {
+    req.orderDetail.destroy()
     .then(function() {
         res.sendStatus(204);
     })
     .catch(next);
 })
 
+//updates order detail (in the event of quantity or rentalDay changes)
+router.put('/:detailId', function(req, res, next) {
+    req.orderDetail.update(req.body);
+    .then(function(orderDetail) {
+        res.send(orderDetail);
+    })
+    .catch(next);
+})
 
 module.exports = router;

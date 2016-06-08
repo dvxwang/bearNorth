@@ -44,6 +44,7 @@ router.delete('/:userId', function(req, res, next) {
     .then(function() {
         res.sendStatus(204)
     })
+    .catch(next);
 })
 
 router.use('/:userId/orders', orderRouter);
