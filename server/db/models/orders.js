@@ -5,10 +5,12 @@ module.exports = function (db) {
 
     db.define('order', {
         address: {
-            type: Sequelize.TEXT
+            type: Sequelize.TEXT,
+            allowNull: false
         },
         status: {
-            type: Sequelize.ENUM('pending', 'active', 'fulfilled', 'returned')
+            type: Sequelize.ENUM('pending', 'active', 'fulfilled', 'returned'),
+            defaultValue: 'pending'
         },
         shipDate: {
             type: Sequelize.DATE
