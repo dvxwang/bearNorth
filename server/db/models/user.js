@@ -38,7 +38,7 @@ module.exports = function (db) {
             type: Sequelize.ENUM('Male', 'Female')
         },
         defaultShipping: {
-            type: Sequelize.STRING
+            type: Sequelize.TEXT
         },
         isAdmin: {
             type: Sequelize.BOOLEAN,

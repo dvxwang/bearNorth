@@ -47,7 +47,6 @@ module.exports = function (db) {
     }, {
         getterMethods: {
             subtotal: function() {
-                var multiplier = this.isRental ? this.rentalDays : 1;
                 return this.quantity*this.unitPrice*multiplier;
             }
         }
