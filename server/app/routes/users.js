@@ -5,10 +5,20 @@ var User = db.model('user');
 var orderRouter = require('./orders');
 
 router.get('/', function (req, res) {
-    User.all()
+  User.all()
     .then(users => {
         res.json(users);
     });
+});
+
+router.post('/', function (req, res, next) {
+  if (!req.body)
+    return;
+  User.create(req.body)
+  .then(function (user) {
+    res.status(201).json(user);
+  })
+  .catch(next);
 });
 
 router.param('userId', function(req, res, next, userId) {
@@ -28,7 +38,7 @@ router.param('userId', function(req, res, next, userId) {
 })
 
 router.get('/:userId', function (req, res) {
-    res.send(req.user);
+    res.json(req.user);
 });
 
 router.put('/:userId', function (req, res, next) {
