@@ -23,6 +23,21 @@ module.exports = function (db) {
         },
         google_id: {
             type: Sequelize.STRING
+        },
+        geography: {
+            type: Sequelize.STRING
+        },
+        age: {
+            type: Sequelize.INTEGER
+        },
+        gender: {
+            type: Sequelize.ENUM('Male', 'Female')
+        },
+        defaultShipping: {
+            type: Sequelize.STRING
+        },
+        isAdmin: {
+            type: Sequelize.BOOLEAN
         }
     }, {
         instanceMethods: {
