@@ -1,0 +1,29 @@
+product-catalog-listing {
+
+  img {
+    width: 100%;
+  }
+
+  .prod-img {
+    width: 25%;
+    display: inline-block;
+    padding-bottom: 50px;
+  }
+
+  .prod-summary {
+    width: 70%;
+    padding-left: 10px;
+    vertical-align: middle;
+    display:  inline-block;
+  }
+
+  ul {
+    -webkit-padding-start: 10px;
+  }
+
+  li {
+    list-style: none;
+    // display: block;
+  }
+
+}

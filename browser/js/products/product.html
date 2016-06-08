@@ -1,1 +1,16 @@
-{{ product }}
+<img src="{{ product.pictureUrl }}">
+<h2>{{ product.name }}</h2>
+<ul>
+  <li><b>Category:</b> {{ product.category }}</li>
+  <li><b>Brand:</b> {{ product.brand }}</li>
+  <li><b>Description:</b> {{ product.description }}</li>
+</ul>
+
+<ul>
+  <li><b>Prices:</b>
+    <ul>
+      <li><b>Buy:</b> {{ product.purchase_price }}</li>
+      <li><b>Rent:</b> {{ product.rental_price }}</li>
+    </ul>
+  <li><b>Quantity in stock:</b> {{ product.quantity }}</li>
+</ul>

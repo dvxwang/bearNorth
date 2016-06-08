@@ -23,7 +23,6 @@ app.config(function ($stateProvider) {
         controller: 'ProductCtrl',
         resolve: {
           product: function(ProductFactory, $stateParams) {
-            console.log($stateParams)
             return ProductFactory.fetchById($stateParams.productId);
           }
         }

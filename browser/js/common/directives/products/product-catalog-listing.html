@@ -1,1 +1,12 @@
-<li><a ui-sref="product({ productId: product.id })">{{ product.name }}</a></li>
+<div class="col-xs-3">
+  <div class="prod-img">
+    <img ng-src="{{ product.pictureUrl }}">
+  </div>
+  <div class="prod-summary">
+    <a ui-sref="product({ productId: product.id })">{{ product.brand }} {{ product.name }}</a>
+    <ul>
+      <li>Buy: {{ product.purchase_price }}</li>
+      <li>Rent: {{ product.rental_price }}</li>
+    </ul>
+  </div>
+</div>

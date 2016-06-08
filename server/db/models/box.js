@@ -22,6 +22,9 @@ module.exports = function (db) {
       type: Sequelize.STRING,
       allowNull: false
     }
+  },
+  {
+    defaultScope: Product
   });
 
 };
