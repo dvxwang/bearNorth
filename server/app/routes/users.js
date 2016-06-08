@@ -5,20 +5,10 @@ var User = db.model('user');
 var orderRouter = require('./orders');
 
 router.get('/', function (req, res) {
-  User.all()
+    User.all()
     .then(users => {
         res.json(users);
     });
-});
-
-router.post('/', function (req, res, next) {
-  if (!req.body)
-    return;
-  User.create(req.body)
-  .then(function (user) {
-    res.status(201).json(user);
-  })
-  .catch(next);
 });
 
 router.param('userId', function(req, res, next, userId) {
