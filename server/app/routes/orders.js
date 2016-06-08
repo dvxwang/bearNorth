@@ -106,7 +106,7 @@ router.param('detailId', function(req, res, next, detailId) {
 })
 
 //deletes order detail
-router.delete('/:detailId', function(req, res, next) {
+router.delete('/:orderId/:detailId', function(req, res, next) {
     req.orderDetail.destroy()
     .then(function() {
         res.sendStatus(204);
@@ -115,8 +115,8 @@ router.delete('/:detailId', function(req, res, next) {
 })
 
 //updates order detail (in the event of quantity or rentalDay changes)
-router.put('/:detailId', function(req, res, next) {
-    req.orderDetail.update(req.body);
+router.put('/:orderId/:detailId', function(req, res, next) {
+    req.orderDetail.update(req.body)
     .then(function(orderDetail) {
         res.send(orderDetail);
     })
