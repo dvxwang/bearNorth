@@ -16,6 +16,7 @@ app.controller('SignupCtrl', function ($scope, AuthService, $state) {
     $scope.error = null;
 
     $scope.sendSignup = function (signupInfo) {
+        
         $scope.error = null;
         if (signupInfo.password !== signupInfo.passwordagain) {
             $scope.error = 'Passwords do not match.';
