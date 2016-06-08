@@ -5,10 +5,12 @@ module.exports = function (db) {
 
     db.define('order', {
         address: {
-            type: Sequelize.TEXT
+            type: Sequelize.TEXT,
+            allowNull: false
         },
         status: {
-            type: Sequelize.ENUM('pending', 'active', 'fulfilled', 'returned')
+            type: Sequelize.ENUM('pending', 'active', 'fulfilled', 'returned'),
+            defaultValue: 'pending'
         },
         shipDate: {
             type: Sequelize.DATE
@@ -37,11 +39,16 @@ module.exports = function (db) {
         rentalDays: {
             type: Sequelize.INTEGER,
             defaultValue: 1
+        },
+        isRental: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     }, {
         getterMethods: {
             subtotal: function() {
-                return this.quantity*this.unitPrice*this.rentalDays;
+                var multiplier = this.isRental ? this.rentalDays : 1;
+                return this.quantity*this.unitPrice*multiplier;
             }
         }
     })
