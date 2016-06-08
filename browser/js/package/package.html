@@ -1,0 +1,47 @@
+<section id="home">
+  <!-- logo -->
+  <div class="row logo-row stripe-row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <bearnorth-logo></bearnorth-logo>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+
+  <!-- activities -->
+  <div class="row">
+    <div class="col-md-8 activity-name-col show">
+      Custom Package
+      <div class='customPackage'>
+        <div>{{criteria}}</div>
+        <div ng-repeat="item in mainPackage">
+          <input type="checkbox"> {{item.name}} <button class="seeMore(item)">see more</button>
+        </div> 
+        <button>Add More Items!</button>
+        <div>Buy: {{totalPrice}}</div>
+        <div>Rent: {{rentalPrice}}</div>
+      </div>
+    </div>
+    <div class="col-md-4 activity-name-col show options">
+      <div ng-repeat="item in alternatives">
+        <div>{{item.name}}</div>
+        <img src="{{item.imageUrl}}">
+        <div>{{item.description}}</div>
+        <div>{{item.price}}</div>
+        <div>{{item.rentalPrice}}</div>
+        <button>Swap In!</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .show{
+      border: thin black solid;
+      height: 500px;
+    }
+    .options{
+      overflow: auto;
+    }
+  </style>
+
+</section>
