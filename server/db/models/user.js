@@ -6,8 +6,15 @@ var Sequelize = require('sequelize');
 module.exports = function (db) {
 
     db.define('user', {
-        email: {
+        first_name: {
             type: Sequelize.STRING
+        },
+        last_name: {
+            type: Sequelize.STRING
+        },
+        email: {
+            type: Sequelize.STRING,
+            unique: true
         },
         password: {
             type: Sequelize.STRING
@@ -24,14 +31,18 @@ module.exports = function (db) {
         google_id: {
             type: Sequelize.STRING
         },
-        geography: {
-            type: Sequelize.STRING
-        },
         age: {
             type: Sequelize.INTEGER
         },
         gender: {
             type: Sequelize.ENUM('Male', 'Female')
+        },
+        defaultShipping: {
+            type: Sequelize.TEXT
+        },
+        isAdmin: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
         }
     }, {
         instanceMethods: {
