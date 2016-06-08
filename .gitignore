@@ -4,3 +4,5 @@ npm-debug.log
 .DS_Store
 coverage
 server/env/development.js
+public/*.js
+public/*.css

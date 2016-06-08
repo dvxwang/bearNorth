@@ -26,6 +26,9 @@ module.exports = function (db) {
       type: Sequelize.ARRAY(Sequelize.INTEGER), 
       allowNull: false
     }
+  },
+  {
+    defaultScope: Product
   });
 
 };
