@@ -88,7 +88,7 @@ router.post('/:orderId/addItem', function(req, res, next) {
     .catch(next);
 })
 
-//for all requests to api/orders/:detailId, searches OrderDetail table for that line item
+//for all requests to api/orders/:orderId/:detailId, searches OrderDetail table for that line item
 router.param('detailId', function(req, res, next, detailId) {
     OrderDetail.findById(detailId)
     .then(orderDetail => {
@@ -124,3 +124,5 @@ router.put('/:orderId/:detailId', function(req, res, next) {
 })
 
 module.exports = router;
+
+
