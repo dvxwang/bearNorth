@@ -1,8 +1,8 @@
 'use strict';
 var router = require('express').Router();
-module.exports = router;
 var db = require('../../db');
 var User = db.model('user');
+var orderRouter = require('./orders');
 
 router.get('/', function (req, res) {
     User.all()
@@ -12,15 +12,13 @@ router.get('/', function (req, res) {
 });
 
 router.param('userId', function(req, res, next, userId) {
-    console.log(req.session)
-    console.log(req.user)
     User.findById(userId)
     .then(user => {
         if (!user) {
             res.status(404);
             return next(new Error('User not found.'));
         }
-        // req.user = user;
+        req.user = user;
         next();
     })
     .catch(function(err) {
@@ -29,7 +27,26 @@ router.param('userId', function(req, res, next, userId) {
     });
 })
 
-router.get('/:id', function (req, res) {
-    // res.json(req.user);
+router.get('/:userId', function (req, res) {
+    res.send(req.user);
 });
 
+router.put('/:userId', function (req, res, next) {
+    req.user.update(req.body)
+    .then(function(user) {
+        res.send(user)
+    })
+    .catch(next);
+});
+
+router.delete('/:userId', function(req, res, next) {
+    req.user.destroy()
+    .then(function() {
+        res.sendStatus(204)
+    })
+})
+
+router.use('/:userId/orders', orderRouter);
+
+
+module.exports = router;

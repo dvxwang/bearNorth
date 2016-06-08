@@ -56,6 +56,7 @@ module.exports = function (db) {
     var Order = db.model('order');
     var OrderDetail = db.model('orderDetail');
 
+    Order.addScope('defaultScope', {include: [{model: OrderDetail}]}, {override: true})
     Order.beforeDestroy(function(order) {
       return OrderDetail.destroy({where: {orderId: order.id}});
     })
