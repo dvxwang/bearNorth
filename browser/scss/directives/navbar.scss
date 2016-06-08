@@ -11,10 +11,10 @@ navbar {
     padding-top: 20px;
   }
 
-  fullstack-logo {
+  bearnorth-logo {
     margin-top: 5px;
     margin-right: 20px;
-    width: 40px;
+    width: 300px;
   }
 
   a {
@@ -37,7 +37,11 @@ navbar {
     }
   }
 
-  .login-button {
+  .navbar-header {
+    vertical-align: middle
+  }
+
+  .user-button {
     float: right;
     border: 1px solid black;
     margin-top: 10px;

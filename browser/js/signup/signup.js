@@ -17,11 +17,14 @@ app.controller('SignupCtrl', function ($scope, AuthService, $state) {
 
     $scope.sendSignup = function (signupInfo) {
         $scope.error = null;
-
+        if (signupInfo.password !== signupInfo.passwordagain) {
+            $scope.error = 'Passwords do not match.';
+            return;
+        }
         AuthService.signup(signupInfo).then(function () {
             $state.go('home');
         }).catch(function () {
-            $scope.error = 'Invalid login credentials.';
+            $scope.error = 'Invalid credentials.';
         });
 
     };
