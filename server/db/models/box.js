@@ -7,21 +7,28 @@ module.exports = function (db) {
 
   db.define('box', {
     activity: {
-      type: Sequelize.ENUM('camp','kayak','climb'),
+      type: Sequelize.STRING, 
       allowNull: false
     },
     difficulty: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING, 
       allowNull: false
     },
     trip_length: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING, 
       allowNull: false
     },
     climate: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING, 
+      allowNull: false
+    },
+    productList: {
+      type: Sequelize.ARRAY(Sequelize.INTEGER), 
       allowNull: false
     }
+  },
+  {
+    defaultScope: Product
   });
 
 };

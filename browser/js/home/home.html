@@ -11,13 +11,13 @@
   <!-- activities -->
   <div class="row">
     <div class="col-md-4 activity-name-col">
-      camp
+      <button ng-click="goToSurvey($event)">Camp</button>
     </div>
     <div class="col-md-4 activity-name-col">
-      kayak
+      <button ng-click="goToSurvey($event)">Kayak</button>
     </div>
     <div class="col-md-4 activity-name-col">
-      climb
+      <button ng-click="goToSurvey($event)">Climb</button>
     </div>
   </div>
   <div class="row">
@@ -36,8 +36,10 @@
   <div class="row stripe-row bottom-row">
     <div class="col-md-4"></div>
     <div class="col-md-4 all-items-link">
-      all items
-      <div class="glyphicon glyphicon-play-circle"></div>
+      <a ui-sref="products">
+        all items
+        <div class="glyphicon glyphicon-play-circle"></div>
+      </a>
     </div>
     <div class="col-md-1"></div>
     <div class="col-md-2 cart-link">
