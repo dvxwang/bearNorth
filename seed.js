@@ -29,18 +29,20 @@ var chance = require('chance')(123);
 var seedUsers = function () {
 
     var users = [
-        {
+        {   
+            first_name: 'Jane',
+            last_name: 'FSA',
             email: 'testing@fsa.com',
             password: 'password',
-            geography: 'New York',
             age: 5,
             gender: 'Female',
             isAdmin: false
         },
-        {
+        {   
+            first_name: 'Barack',
+            last_name: 'Obama',
             email: 'obama@gmail.com',
             password: 'potus',
-            geography: 'Washington DC',
             age: 54,
             gender: 'Male',
             isAdmin: true
