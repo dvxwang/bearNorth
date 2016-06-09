@@ -22,6 +22,7 @@ var db = require('./server/db');
 var User = db.model('user');
 var Product = db.model('product');
 var Order = db.model('order');
+var Box = db.model('box');
 var OrderDetail = db.model('orderDetail');
 var Promise = require('sequelize').Promise;
 var chance = require('chance')(123);
@@ -46,7 +47,16 @@ var seedUsers = function () {
             age: 54,
             gender: 'Male',
             isAdmin: true
-        }
+        },
+        {
+            first_name: 'Mr.',
+            last_name: 'Admin',
+            email: 'm@m.m',
+            password: 'm',
+            age: 54,
+            gender: 'Male',
+            isAdmin: true
+        },
     ];
 
     var creatingUsers = users.map(function (userObj) {
@@ -54,6 +64,37 @@ var seedUsers = function () {
     });
 
     return Promise.all(creatingUsers);
+
+};
+
+var seedBox = function () {
+
+    var allArrays=[['Camp','Kayak','Climb','blank'],['Easy','Moderate','Hard','blank'],['Short','Medium','Long','blank'],['Warm','Cold','Wet','blank']];
+    
+    function allPossibleCases(arr) {
+      if (arr.length == 1) {
+        return arr[0];
+      } else {
+        var result = [];
+        var allCasesOfRest = allPossibleCases(arr.slice(1));  // recur with the rest of array
+        for (var i = 0; i < allCasesOfRest.length; i++) {
+          for (var j = 0; j < arr[0].length; j++) {
+            result.push(arr[0][j]+","+allCasesOfRest[i]);
+          }
+        }
+        return result;
+      }
+    }
+
+    var answer = allPossibleCases(allArrays);
+    answer = answer.map(function(a){
+        return a.split(",");
+    });
+    var creatingBoxes = answer.map(function (boxObj) {
+        return Box.create({activity:boxObj[0],difficulty:boxObj[1],trip_length:boxObj[2],climate:boxObj[3],productList:[1,2,3,4,5]});
+    });
+
+    return Promise.all(creatingBoxes);
 
 };
 
@@ -122,7 +163,8 @@ var testOrders = function() {
 
 db.sync({ force: true })
     .then(function () {
-        return Promise.all([seedUsers(), seedProducts(), testOrders()])
+        return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox()])
+        // return Promise.all([seedBox()])
     })
     .then(function() {
         return Promise.all([OrderDetail.findById(1), Product.findById(1)])

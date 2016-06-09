@@ -1,19 +1,25 @@
 <nav class="navbar navbar-static-top">
     <div class="container">
         <div class="navbar-header">
-            <bearnorth-logo></bearnorth-logo>
+            <a ui-sref-active="active" ui-sref="home">
+                <bearnorth-logo></bearnorth-logo>
+            </a>
         </div>
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav" ng-show="user.isAdmin">
             <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
+                <button ui-sref="{{ item.state }}" class="btn user-button">{{ item.label }}</button>
             </li>
         </ul>
         <button ng-show="!user" ui-sref="login" class="btn user-button">Login</button>
         <button ng-show="!user" ui-sref="signup" class="btn user-button">Signup</button>
         <button ng-show="user" ng-click="logout()" class="btn user-button">Logout</button>
         <button ng-show="user" ui-sref="profile" class="btn user-button">Profile</button>
+        <button ui-sref="cart" class="btn user-button">
+            <img src="/images/cart.png" height="20" width="30"></img>
+            My Cart
+        </button>
         <div ng-show="user" class="welcome">
-            <span>Welcome, {{ user.first_name || user.email }}!</span>
+            <span>Welcome, {{ user.isAdmin ? "Admin" : "" }} {{ user.first_name || user.email }}!</span>
         </div>
     </div>
 </nav>
