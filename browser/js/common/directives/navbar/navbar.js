@@ -5,7 +5,12 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
         scope: {},
         templateUrl: 'js/common/directives/navbar/navbar.html',
         link: function (scope) {
-            
+
+            scope.items = [
+                { label: 'Users', state: 'users' },
+                { label: 'Orders', state: 'orders' },
+            ];
+
             scope.user = null;
 
             scope.isLoggedIn = function () {

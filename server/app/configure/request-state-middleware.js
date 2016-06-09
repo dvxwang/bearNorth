@@ -9,7 +9,7 @@ var User = db.model('user');
 module.exports = function (app) {
 
 	var session_secret = app.getValue('env').SESSION_SECRET;
-  app.use(session({
+  	app.use(session({
 		secret: session_secret,
 		resave: false,
 		saveUninitialized: false

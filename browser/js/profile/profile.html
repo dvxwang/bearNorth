@@ -1,17 +1,83 @@
-<div class="profilePage" ng-controller='ProfileCtrl'>
-	<div class="aboutMe">
-		<div class="sectionHeader">Your Info</div>
+<div class="profilePage container" ng-controller='ProfileCtrl'>
+	<!-- <div class="aboutMe row">
+		<div class="page-header col-lg-12">Profile Information</div>
 		<ul class="userItem">Email: {{user.email}}</ul>
 		<ul class="userItem">Location: {{user.geography}}</ul>
 		<ul class="userItem">Age: {{user.age}}</ul>
 		<ul class="userItem">Gender: {{user.gender}}</ul>
+	</div> -->
+
+	<div class="aboutMe row">
+		<div class= "col-lg-12">
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h3 class="panel-title">Profile Information</h3>
+				</div>
+
+				<div class="panel-body">
+					<table class="table table-user-information">
+						<tbody>
+						<tr>
+						  <td>Name:</td> <td>{{user.first_name}} {{user.last_name}}</td>
+						</tr>
+						<tr>
+						  <td>Email:</td> <td>{{user.email}}</td>
+						</tr>
+						<tr>
+						  <td>Address:</td> <td>{{user.defaultAddress}}</td>
+						</tr>
+						<tr>
+						  <td>Gender:</td> <td>{{user.gender}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- <div class="panel-footer">
+					<p class="pull-right">
+	                    <button class="btn btn-sm btn-warning" data-toggle="tooltip"
+	                            data-original-title="Edit Profile"><span class="glyphicon glyphicon-edit"></span></button>
+	                    <button class="btn btn-sm btn-danger" data-toggle="tooltip"
+	                            data-original-title="Remove User"><span class="glyphicon glyphicon-remove"></span></button>
+	                </p>
+				</div> -->
+				
+
+			</div>
+		</div>
 	</div>
-	<div class="orderHistory">
-		<div class="sectionHeader">Order History</div>
-		<ul ng-repeat="order in orders" class="userItem">Order: {{order.title}}</ul>
+
+	<div class="orderHistory row">
+		<div class= "col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Order History</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+					<li class="list-group-item" ng-repeat="order in orders">Order: {{order.title}}</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="reviews">
-		<div class="sectionHeader">Reviews</div>
-		<ul ng-repeat="review in reviews" class="userItem">Review: {{review.title}}</ul>
+	
+	<div class="reviews row">
+		<div class= "col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Reviews</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+					<li class="list-group-item" ng-repeat="review in reviews">
+						<h4 class="list-group-item-heading">{{review.product}}</h4>
+						<p class="list-group-item-text">{{review.review}}</p>
+						<span class="glyphicon glyphicon-star" ng-repeat="n in review.rating"></span>
+						<span class="glyphicon glyphicon-star-empty"></span>
+					</li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
