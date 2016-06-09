@@ -18,7 +18,7 @@ router.get('/', function (req, res) {
 });
 
 //creates new order for unsigned-in user, route is POST to api/orders
-//creates new order for signed-in user, route is POST to api/users/:userId/orders 
+//creates new order for signed-in user, route is POST to api/users/:userId/orders
 
 router.post('/', function(req, res, next) {
     Order.create(req.body)
@@ -74,6 +74,7 @@ router.delete('/:orderId', function(req, res, next) {
 
 //adds order detail to existing order
 router.post('/:orderId/addItem', function(req, res, next) {
+  console.log('in route)')
     //must send an order detail object WITH productId property
     OrderDetail.create(req.body)
     .then(function(orderDetail) {
@@ -124,5 +125,3 @@ router.put('/:orderId/:detailId', function(req, res, next) {
 })
 
 module.exports = router;
-
-

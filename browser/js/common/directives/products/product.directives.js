@@ -1,4 +1,4 @@
-app.directive('productCatalogListing', function() {
+app.directive('productCatalogListing', function(CartFactory) {
   return {
     restrict: 'E',
     templateUrl: 'js/common/directives/products/product-catalog-listing.html',
@@ -6,7 +6,9 @@ app.directive('productCatalogListing', function() {
       product: '='
     },
     link: function(scope, element, attrs) {
-
+      scope.addToCart = function(product) {
+        CartFactory.addToCart(product);
+      }
     }
   };
 });

@@ -4,7 +4,7 @@
 <div class="prod-summary">
   <a ui-sref="product({ productId: product.id })">{{ product.brand }} {{ product.name }}</a>
   <ul>
-    <li>Buy: {{ product.purchase_price }}</li>
+    <li><a ng-click="addToCart(product)">Buy: {{ product.purchase_price }}</a></li>
     <li>Rent: {{ product.rental_price }}</li>
   </ul>
 </div>

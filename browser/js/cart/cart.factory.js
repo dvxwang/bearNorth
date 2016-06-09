@@ -1,11 +1,21 @@
 'use strict';
 
-app.factory('Cart', function ($http) {
+app.factory('CartFactory', function ($http) {
 
-  var order = {};
+  var order = [],
+      orderId = 1;
 
-  var Cart;
-  
+  return {
 
-  return Cart;
+    addToCart: function(product) {
+      $http.post('/api/orders/' + orderId + '/addItem', product)
+      .then( function(order) {
+        console.log(order)
+      })
+    },
+    getCart: function() {
+      return order;
+    }
+
+  }
 });
