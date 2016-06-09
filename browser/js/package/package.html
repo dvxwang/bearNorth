@@ -14,22 +14,29 @@
       Custom Package
       <div class='customPackage'>
         <div>{{criteria}}</div>
-        <div ng-repeat="item in mainPackage">
-          <input type="checkbox"> {{item.name}} <button class="seeMore(item)">see more</button>
+        <div ng-repeat="item in mainPackage" class="productRow">
+          <input type="checkbox">{{item.category}}: {{item.name}} <button ng-click="seeMore(item)">see more</button>
         </div> 
-        <button>Add More Items!</button>
-        <div>Buy: {{totalPrice}}</div>
-        <div>Rent: {{rentalPrice}}</div>
+        <button class="productRow">Add More Items!</button>
+          <select>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="opel">Opel</option>
+            <option value="audi">Audi</option>
+          </select>
+        <div class="productRow">Buy: {{totalPrice}}</div>
+        <div class="productRow">Rent: {{rentalPrice}}</div>
       </div>
     </div>
     <div class="col-md-4 activity-name-col show options">
-      <div ng-repeat="item in alternatives">
-        <div>{{item.name}}</div>
-        <img src="{{item.imageUrl}}">
-        <div>{{item.description}}</div>
-        <div>{{item.price}}</div>
-        <div>{{item.rentalPrice}}</div>
-        <button>Swap In!</button>
+      <div>{{altCategory}}</div>
+      <div class="altRow" ng-repeat="item in alternatives">
+        <div>Name: {{item.name}}</div>
+        <img src="{{item.pictureUrl}}">
+        <div>Description: {{item.description}}</div>
+        <div>Buy: {{item.purchase_price}}</div>
+        <div>Rent: {{item.rental_price}}</div>
+        <button ng-click='swap(item)'>Swap In!</button>
       </div>
     </div>
   </div>
@@ -41,6 +48,20 @@
     }
     .options{
       overflow: auto;
+    }
+    .productRow{
+      font-size: 14px;
+      text-align: left;
+      padding-left: 30%;
+    }
+    .altRow{
+      font-size: 14px;
+      text-align: left;
+      padding-left: 5%;
+    }
+    .altRow img{
+      height: 40px;
+      width: 40px;
     }
   </style>
 
