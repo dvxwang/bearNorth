@@ -1,11 +1,11 @@
 'use strict';
 var Sequelize = require('sequelize');
 
-module.exports = function (db) {
+module.exports = function (db) { //two files, one for order, one for orderDetail CdV/OB
 
     db.define('order', {
         address: {
-            type: Sequelize.TEXT,
+            type: Sequelize.TEXT, //no empty strings? CdV/OB
             allowNull: false
         },
         status: {
@@ -37,7 +37,7 @@ module.exports = function (db) {
             type: Sequelize.DECIMAL
         },
         rentalDays: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER, //set minimum value
             defaultValue: 1
         },
         isRental: {
@@ -58,7 +58,7 @@ module.exports = function (db) {
 
     Order.addScope('defaultScope', {include: [{model: OrderDetail}]}, {override: true})
     Order.beforeDestroy(function(order) {
-      return OrderDetail.destroy({where: {orderId: order.id}});
+      return OrderDetail.destroy({where: {orderId: order.id}}); //discuss transactions CdV/OB
     })
 
 

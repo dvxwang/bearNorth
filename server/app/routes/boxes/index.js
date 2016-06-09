@@ -22,10 +22,10 @@ router.post('/', function(req, res, next) {
 })
 
 // --- Get a specific box matching specific criteria
-router.post('/match', function(req, res, next) {
+router.post('/match', function(req, res, next) {  //post is returning info, use get instead w/ query params CdV/OB
   Box.findAll({ where: req.body }) // may need to split out fields specifically
   .then(function(result){
-    var query = result[0].dataValues.productList.map(function(val){return {id: val}});
+    var query = result[0].dataValues.productList.map(function(val){return {id: val}});  //.dataValues unecessary, return res.products b/c already on scope/associated CdV/OB
     return Product.findAll({ where: {$or: query} });
   })
   .then(function(products){

@@ -28,7 +28,7 @@ module.exports = function (db) {
     }
   },
   {
-    defaultScope: Product
+    defaultScope: Product //look at order model for syntax CdV/OB
   });
 
 };

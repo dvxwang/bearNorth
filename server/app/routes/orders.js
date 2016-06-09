@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
 router.post('/', function(req, res, next) {
     Order.create(req.body)
     .then(function(order) {
-        if (req.user) order.addUser(req.user);
+        if (req.user) order.addUser(req.user); //return user.addOrder CdV/OB
     })
     .then(order => {
         res.json(order);
@@ -73,14 +73,14 @@ router.delete('/:orderId', function(req, res, next) {
 //-------ADD/DELETE/UPDATE ORDER DETAILS TO EXISTING ORDERS-------
 
 //adds order detail to existing order
-router.post('/:orderId/addItem', function(req, res, next) {
+router.post('/:orderId/addItem', function(req, res, next) { //route should be verbless (just item, not addItem)
     //must send an order detail object WITH productId property
     OrderDetail.create(req.body)
-    .then(function(orderDetail) {
+    .tap(function(orderDetail) {    // .tap change OB
         return orderDetail.setProduct(req.body.productId)
-            .then(function() {
-               return req.order.addOrderDetail(orderDetail);
-            })
+    })
+    .then(function(orderDetail) {
+       return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
     })
     .then(order => {
         res.json(order);
@@ -106,7 +106,7 @@ router.param('detailId', function(req, res, next, detailId) {
 })
 
 //deletes order detail
-router.delete('/:orderId/:detailId', function(req, res, next) {
+router.delete('/:orderId/:detailId', function(req, res, next) { //should be mounted on /orderID/item/detailId CdV/OB
     req.orderDetail.destroy()
     .then(function() {
         res.sendStatus(204);

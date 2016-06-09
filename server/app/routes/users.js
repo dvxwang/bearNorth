@@ -18,10 +18,10 @@ router.param('userId', function(req, res, next, userId) {
             res.status(404);
             return next(new Error('User not found.'));
         }
-        req.user = user;
+        req.user = user; //req.profile changed already
         next();
     })
-    .catch(function(err) {
+    .catch(function(err) { //can probably shorten to just calling next(err), should default to 500 CdV/OB
         res.status(500);
         next(err);
     });

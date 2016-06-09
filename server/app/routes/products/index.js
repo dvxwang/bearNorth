@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
 })
 
 // --- Specific category
-router.post('/categories/', function (req, res, next) {
+router.post('/categories/', function (req, res, next) { //change POST CdV/OB
   console.log("Reached here: ",req.body);
   Product.findAll({ where: req.body })
   .then(products => res.send(products))
