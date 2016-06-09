@@ -69,7 +69,12 @@
 				</div>
 				<div class="panel-body">
 					<ul class="list-group">
-					<li class="list-group-item" ng-repeat="review in reviews">Review: {{review.title}}</li>
+					<li class="list-group-item" ng-repeat="review in reviews">
+						<h4 class="list-group-item-heading">{{review.product}}</h4>
+						<p class="list-group-item-text">{{review.review}}</p>
+						<span class="glyphicon glyphicon-star" ng-repeat="n in review.rating"></span>
+						<span class="glyphicon glyphicon-star-empty"></span>
+					</li>
 					</ul>
 				</div>
 			</div>
