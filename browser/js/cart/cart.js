@@ -10,8 +10,8 @@ app.config(function ($stateProvider) {
 
 app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory) {
 
-  $scope.order = CartFactory.getCart();
+  $scope.cart = CartFactory.getCart();
 
-  console.log($scope.order);
+  console.log($scope.cart);
 
 });

@@ -8,7 +8,7 @@ app.directive('productCatalogListing', function(CartFactory) {
     link: function(scope, element, attrs) {
       scope.addToCart = function(product) {
         CartFactory.addToCart(product);
-      }
+      };
     }
   };
 });

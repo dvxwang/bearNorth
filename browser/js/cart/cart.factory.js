@@ -2,19 +2,20 @@
 
 app.factory('CartFactory', function ($http) {
 
-  var order = [],
+  var cart = {},
       orderId = 1;
+  cart.products = [];
 
   return {
-
     addToCart: function(product) {
       $http.post('/api/orders/' + orderId + '/addItem', product)
       .then( function(order) {
         console.log(order)
+        cart.products.push(product);
       })
     },
     getCart: function() {
-      return order;
+      return cart;
     }
 
   }
