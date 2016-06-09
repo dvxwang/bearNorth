@@ -6,7 +6,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl',function($state,$scope){
+app.controller('HomeCtrl', function($state,$scope){
 	
 	$scope.goToSurvey = function(activity){
 		var choice = activity.target.firstChild.data;

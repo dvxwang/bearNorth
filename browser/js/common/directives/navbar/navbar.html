@@ -5,6 +5,11 @@
                 <bearnorth-logo></bearnorth-logo>
             </a>
         </div>
+        <ul class="nav navbar-nav" ng-show="user.isAdmin">
+            <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
+                <button ui-sref="{{ item.state }}" class="btn user-button">{{ item.label }}</button>
+            </li>
+        </ul>
         <button ng-show="!user" ui-sref="login" class="btn user-button">Login</button>
         <button ng-show="!user" ui-sref="signup" class="btn user-button">Signup</button>
         <button ng-show="user" ng-click="logout()" class="btn user-button">Logout</button>
@@ -14,7 +19,7 @@
             My Cart
         </button>
         <div ng-show="user" class="welcome">
-            <span>Welcome, {{ user.first_name || user.email }}!</span>
+            <span>Welcome, {{ user.isAdmin ? "Admin" : "" }} {{ user.first_name || user.email }}!</span>
         </div>
     </div>
 </nav>
