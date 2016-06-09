@@ -46,7 +46,16 @@ var seedUsers = function () {
             age: 54,
             gender: 'Male',
             isAdmin: true
-        }
+        },
+        {
+            first_name: 'Mr.',
+            last_name: 'Admin',
+            email: 'm@m.m',
+            password: 'm',
+            age: 54,
+            gender: 'Male',
+            isAdmin: true
+        },
     ];
 
     var creatingUsers = users.map(function (userObj) {

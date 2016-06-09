@@ -13,6 +13,13 @@ module.exports = function (db) {
     // /api so they are isolated from our GET /* wildcard.
     app.use('/api', require('./routes'));
 
+    var validFrontendRoutes = ['/', '/users', '/users/:id'];
+    var indexPath = path.join(__dirname, 'views', 'index.html');
+    validFrontendRoutes.forEach(function (stateRoute) {
+      app.get(stateRoute, function (req, res) {
+        res.sendFile(indexPath);
+      });
+    });
 
     /*
      This middleware will catch any URLs resembling a file extension
