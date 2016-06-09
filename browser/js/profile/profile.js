@@ -21,8 +21,13 @@ app.controller('ProfileCtrl', function ($scope, AuthService) {
 	{title:"Order Title 2"},
 	];
 
-	$scope.reviews=[
-	{title:"Review Title 1"},
-	{title:"Review Title 2"},
-	];
+	$scope.reviews=[{ //to be pulled by client
+		product: 'North Face Titanium Tent', 
+		review: 'This was excellent',
+		rating: 5
+	}, {
+		product: 'Black Backpack',
+		review: 'Did not like material',
+		rating: new Array(4)
+	}];
 });
