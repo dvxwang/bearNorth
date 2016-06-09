@@ -8,7 +8,7 @@ module.exports = function (db) {
     db.define('product', {
         name: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
         },
         category: {
         	type: Sequelize.STRING,
