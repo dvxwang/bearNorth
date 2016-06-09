@@ -12,6 +12,8 @@ app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory) {
 
   $scope.cart = CartFactory.getCart();
 
-  console.log($scope.cart);
+  $scope.removeFromCart = function(productId) {
+    CartFactory.removeFromCart(productId);
+  }
 
 });
