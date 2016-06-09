@@ -18,7 +18,7 @@ module.exports = function (app, db) {
     });
 
     var User = db.model('user');
-
+    var Order = db.model('order');
     dbStore.sync();
 
     // First, our session middleware will set/read sessions from the request.
@@ -38,7 +38,18 @@ module.exports = function (app, db) {
 
     // When we give a cookie to the browser, it is just the userId (encrypted with our secret).
     passport.serializeUser(function (user, done) {
-        done(null, user.id);
+        Order.findOne({
+            where: {
+                userId: user.id,
+                status: 'pending'
+            }
+        })
+        .then(order => {
+            done(null, {
+                id: user.id,
+                cart: order
+            });
+        })
     });
 
     // When we receive a cookie from the browser, we use that id to set our req.user

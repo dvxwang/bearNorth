@@ -4,6 +4,9 @@ app.directive('productCatalogListing', function() {
     templateUrl: 'js/common/directives/products/product-catalog-listing.html',
     scope: {
       product: '='
+    },
+    link: function(scope, element, attrs) {
+
     }
   };
 });
