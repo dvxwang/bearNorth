@@ -26,12 +26,18 @@
             {{ item.product.category }}
           </td>
           <td>
-            <form class="form-inline">
-              <input class="form-control input-sm" value="{{ item.quantity }}">
-              <button class="btn btn-default btn-sm">Update</button>
+            <form name="updateForm" class="form-inline">
+              <div class="input-group">
+                <input class="form-control input-sm" ng-value="{{ item.quantity }}" ng-model="qty">
+                <span class="input-group-btn">
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity+1)">+</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity-1)">-</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, qty)">Update</button>
+                  <button class="btn btn-default btn-sm" ng-click="removeFromCart(item.product.id)">Remove</button>
+                </span>
+              </div>
             </form>
-            <br><br>
-            <button class="btn btn-default btn-xs" ng-click="removeFromCart(item.product.id)">Remove</button>
+            <br>
           </td>
           <td>{{ item.subtotal | number: 2 }}</td>
         </tr>
