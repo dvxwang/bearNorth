@@ -1,5 +1,5 @@
 'use strict';
-window.app = angular.module('FullstackGeneratedApp', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate', 'ngKookies']);
+window.app = angular.module('FullstackGeneratedApp', ['fsaPreBuilt', 'ui.router', 'ui.bootstrap', 'ngAnimate', 'LocalStorageModule']);
 
 app.config(function ($urlRouterProvider, $locationProvider) {
     // This turns off hashbang urls (/#about) and changes it to something normal (/about)
@@ -11,12 +11,6 @@ app.config(function ($urlRouterProvider, $locationProvider) {
         window.location.reload();
     });
 });
-
-app.config(['$kookiesProvider',
-    function ($kookiesProvider) {
-        $kookiesProvider.config.json = true;
-    }
-]);
 
 // This app.run is for controlling access to specific states.
 app.run(function ($rootScope, AuthService, $state) {

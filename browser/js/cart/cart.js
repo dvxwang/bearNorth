@@ -3,15 +3,19 @@ app.config(function ($stateProvider) {
     $stateProvider.state('cart', {
         url: '/cart',
         templateUrl: 'js/cart/cart.html',
-        controller: 'CartCtrl'
+        controller: 'CartCtrl',
+        resolve: {
+          cart: function(CartFactory) {
+            return CartFactory.getCart();
+          }
+        }
     });
 
 });
 
-app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, $rootScope, AUTH_EVENTS, $kookies, Session) {
+app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, cart) {
 
-  $scope.cart = CartFactory.getCart();
-  console.log($scope.cart);
+  $scope.cart = cart
 
   $scope.removeFromCart = function(productId) {
     CartFactory.removeFromCart(productId);

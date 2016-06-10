@@ -48,18 +48,16 @@
         ]);
     });
 
-    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, CartFactory, $kookies) {
+    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, CartFactory, localStorageService) {
 
         function onSuccessfulLogin(response) {
           var data = response.data;
           Session.create(data.id, data.user);
           $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
           return CartFactory.getPendingOrderDetails(Session.user.id)
-          .then( function(orders) {
-              $kookies.remove('cart');
-              $kookies.set('cart', orders);
-              console.log($kookies.get());
-              return data.user;
+          .then( function(cart) {
+            localStorageService.set('cart', cart);
+            return data.user;
           })
         }
 
@@ -110,7 +108,7 @@
         };
 
         this.logout = function () {
-            $kookies.remove('cart');
+            localStorageService.remove('cart');
             return $http.get('/logout').then(function () {
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
