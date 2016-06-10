@@ -2,8 +2,6 @@
 
 app.factory('CartFactory', function ($http, $kookies) {
 
-
-
   var cart = [];
 
   function syncCookie() {

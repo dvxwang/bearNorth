@@ -12,7 +12,7 @@ app.config(function ($urlRouterProvider, $locationProvider) {
     });
 });
 
-app.config(['$kookiesProvider',
+app.config(['$kookiesProvider', 
     function ($kookiesProvider) {
         $kookiesProvider.config.json = true;
     }

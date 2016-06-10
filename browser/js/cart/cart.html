@@ -1,5 +1,36 @@
 <div class="container">
-  <ul>
-    <li ng-repeat="item in cart">{{ item }} <a ng-click="removeFromCart(product.id)">remove</a></li>
-  </ul>
+  <div class="sectionHeader">
+    <h1>My Cart</h1>
+    <p>List of Products</p>
+  </div>
+  <div ng-repeat="item in cart">
+    <img src="{{ item.product.pictureUrl }}" style="display: inline-block;"></img>
+    <ul class="userItem" style="list-style-type: none;">
+      <li>Name: {{ item.product.name }}</li>
+      <li>Category: {{ item.product.category }}</li>
+      <li>Description: {{ item.product.description }}</li>
+      <li>Purchase Price: {{ item.product.purchase_price }}</li>
+      <li>Rental Price: {{ item.product.rental_price }}</li>
+      <li>Quantity: {{ item.product.quantity }}</li>
+      <li><a ng-click="removeFromCart(item.product.id)">Remove</a></li>
+    </ul>
+  </div>
 </div>
+
+<!-- <div class="profilePage" ng-controller='ProfileCtrl'>
+  <div class="aboutMe">
+    <div class="sectionHeader">Your Info</div>
+    <ul class="userItem">Email: {{user.email}}</ul>
+    <ul class="userItem">Location: {{user.geography}}</ul>
+    <ul class="userItem">Age: {{user.age}}</ul>
+    <ul class="userItem">Gender: {{user.gender}}</ul>
+  </div>
+  <div class="orderHistory">
+    <div class="sectionHeader">Order History</div>
+    <ul ng-repeat="order in orders" class="userItem">Order: {{order.title}}</ul>
+  </div>
+  <div class="reviews">
+    <div class="sectionHeader">Reviews</div>
+    <ul ng-repeat="review in reviews" class="userItem">Review: {{review.title}}</ul>
+  </div>
+</div> -->
