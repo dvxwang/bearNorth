@@ -17,31 +17,18 @@ module.exports = function (app, db) {
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
         User.findOne({
-                where: {
-                    google_id: profile.id
-                }
-            })
-            .then(function (user) {
-                if (user) {
-                    return user;
-                } else {
-                    return User.create({
-                        first_name: profile.given_name,
-                        last_name: profile.family_name,
-                        email: profile.email,
-                        gender: profile.gender,
-                        google_id: profile.id
-                    });
-                }
-            })
-            .then(function (userToLogin) {
-                done(null, userToLogin);
-            })
-            .catch(function (err) {
-                console.error('Error creating user from Google authentication', err);
-                done(err);
-            });
-
+            where: {googleId: profile.id},
+            defaults: {
+                first_name: profile.name.givenName,
+                last_name: profile.name.familyName,
+                email: profile.emails[0].value,
+                gender: profile._json.gender,
+            }
+        })
+        .spread(function (user) {
+            done(null, user)
+        })
+        .catch(done);
     };
 
     passport.use(new GoogleStrategy(googleCredentials, verifyCallback));
