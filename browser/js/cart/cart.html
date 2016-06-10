@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="sectionHeader">
+    <h1>My Cart</h1>
+    <p>List of Products</p>
+  </div>
+  <div ng-repeat="item in cart">
+    <img ng-src="{{ item.product.pictureUrl }}" style="display: inline-block; height: 100px"></img>
+    <ul class="userItem" style="list-style-type: none;">
+      <li>Name: {{ item.product.name }}</li>
+      <li>Category: {{ item.product.category }}</li>
+      <li>Description: {{ item.product.description }}</li>
+      <li>Subtotal: {{ item.subtotal }}</li>
+      <li>Quantity: {{ item.quantity }}</li>
+      <li><a ng-click="removeFromCart(item.product.id)">Remove</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- <div class="profilePage" ng-controller='ProfileCtrl'>
+  <div class="aboutMe">
+    <div class="sectionHeader">Your Info</div>
+    <ul class="userItem">Email: {{user.email}}</ul>
+    <ul class="userItem">Location: {{user.geography}}</ul>
+    <ul class="userItem">Age: {{user.age}}</ul>
+    <ul class="userItem">Gender: {{user.gender}}</ul>
+  </div>
+  <div class="orderHistory">
+    <div class="sectionHeader">Order History</div>
+    <ul ng-repeat="order in orders" class="userItem">Order: {{order.title}}</ul>
+  </div>
+  <div class="reviews">
+    <div class="sectionHeader">Reviews</div>
+    <ul ng-repeat="review in reviews" class="userItem">Review: {{review.title}}</ul>
+  </div>
+</div> -->

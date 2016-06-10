@@ -33,7 +33,6 @@ app.config(function ($stateProvider) {
 // -- all products
 app.controller('ProductsCtrl', function ($scope, products) {
   $scope.products = products;
-  console.log(products)
 });
 
 // -- specific product

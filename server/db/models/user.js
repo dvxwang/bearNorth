@@ -42,7 +42,7 @@ module.exports = function (db) {
             type: Sequelize.INTEGER
         },
         gender: {
-            type: Sequelize.ENUM('Male', 'Female')
+            type: Sequelize.STRING
         },
         defaultShipping: {
             type: Sequelize.TEXT
