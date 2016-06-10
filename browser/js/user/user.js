@@ -3,7 +3,8 @@
 app.config(function ($stateProvider) {
   $stateProvider.state('users', {
     url: '/users',
-    templateUrl: 'js/user/user.list.html',
+    template: 'HELLO WORLD',
+    // templateUrl: 'js/user/user.list.html',
     controller: 'UserListCtrl',
     resolve: {
       currentUser: function (AuthService) {
@@ -20,8 +21,10 @@ app.config(function ($stateProvider) {
   });
 });
 
+
 app.controller('UserListCtrl', function ($scope, users, User) {
   $scope.users = users;
+
   $scope.addUser = function () {
     $scope.userAdd.save()
     .then(function (user) {

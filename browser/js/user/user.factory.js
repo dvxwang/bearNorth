@@ -1,9 +1,10 @@
 'use strict';
 
-app.factory('User', function ($http, Order) {
+app.factory('User', function ($http) {
   function User (props) {
     angular.extend(this, props);
   }
+
 
   User.url = '/api/users/';
 
@@ -11,17 +12,17 @@ app.factory('User', function ($http, Order) {
     return User.url + this.id;
   };
 
-  User.prototype.isNew = function () {
-    return !this.id
-  };
+  User.prototype.getOrders = function() {
+    return $http.get(this.getUrl()+'/orders')
+    .then(function (res) {
+      return res.data;
+    });
+  }
 
   User.prototype.fetch = function () {
     return $http.get(this.getUrl())
     .then(function (res) {
       var user = new User(res.data);
-      // user.orders = user.orders.map(function (obj) {
-      //   return new Order(obj);
-      // });
       return user;
     });
   };

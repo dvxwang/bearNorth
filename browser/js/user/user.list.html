@@ -18,12 +18,11 @@
   <br><br>
   <div class="user-list">
     <a
-      ng-repeat="user in users | filter:userSearch"
+      ng-repeat="user in users"
       ui-sref="user({id: user.id})"
       ui-sref-active="active"
-      class="list-group-item min-content"
-      ng-if="!user.isDestroyed">
-      <user-item model="user" after-remove="user.isDestroyed = true"></user-item>
+      class="list-group-item min-content">
+      <user-item user="user"></user-item>
     </a>
   </div>
   <div class="fixed">
