@@ -13,6 +13,13 @@ router.get('/', function(req, res, next) {
   .catch(next);
 })
 
+// --- Get all categories
+router.get('/allCategories', function(req, res, next) {
+  Product.aggregate('category', 'DISTINCT', { plain: false })
+  .then(products => res.send(products))
+  .catch(next);
+})
+
 // --- Create new product
 // need to ensure user is admin
 router.post('/', function(req, res, next) {
@@ -22,7 +29,7 @@ router.post('/', function(req, res, next) {
 })
 
 // --- Specific category
-router.post('/categories/', function (req, res, next) {
+router.post('/categories/', function (req, res, next) { //change POST CdV/OB
   console.log("Reached here: ",req.body);
   Product.findAll({ where: req.body })
   .then(products => res.send(products))

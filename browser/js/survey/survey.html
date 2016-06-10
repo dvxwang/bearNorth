@@ -1,47 +1,41 @@
 <section id="home">
-  <!-- logo -->
-  <div class="row logo-row stripe-row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <bearnorth-logo></bearnorth-logo>
-    </div>
-    <div class="col-md-2"></div>
-  </div>
-
+  
   <!-- activities -->
+  <div class='surveyTitle'>Tell us about your trip!</div>
+
   <div class="row diff">
     <div class="col-md-4 activity-name-col">
-      <button class='difSelect'>Easy</button>
+      <div class='difSelect surveyOption'>Easy</div>
     </div>
     <div class="col-md-4 activity-name-col">
-      <button class='difSelect'>Moderate</button>
+      <div class='difSelect surveyOption'>Moderate</div>
     </div>
     <div class="col-md-4 activity-name-col">
-      <button class='difSelect'>Hard</button>
+      <div class='difSelect surveyOption'>Hardcore</div>
     </div>
   </div>
 
   <div class="row temp">
     <div class="col-md-4 activity-name-col">
-      <button class='tempSelect'>Warm</button>
+      <div class='tempSelect surveyOption'>Warm</div>
     </div>
     <div class="col-md-4 activity-name-col">
-      <button class='tempSelect'>Cold</button>
+      <div class='tempSelect surveyOption'>Cold</div>
     </div>
     <div class="col-md-4 activity-name-col">
-      <button class='tempSelect'>Wet</button>
+      <div class='tempSelect surveyOption'>Wet</div>
     </div>
   </div>
 
   <div class="row length">
     <div class="col-md-4 activity-name-col">
-      <button class='lenSelect'>Short</button>
+      <div class='lenSelect surveyOption'>Short</div>
     </div>
     <div class="col-md-4 activity-name-col">
-      <button class='lenSelect'>Medium</button>
+      <div class='lenSelect surveyOption'>Medium</div>
     </div>
     <div class="col-md-4 activity-name-col">
-      <button class='lenSelect'>Long</button>
+      <div class='lenSelect surveyOption'>Long</div>
     </div>
   </div>
 
@@ -51,5 +45,24 @@
     </div>
   </div>
 
-
+  <style>
+    .surveyTitle {
+      margin-left: 25%;
+      width: 50%;
+      font-size: 60px;
+      text-align: center;
+    }
+    .surveyOption {
+      height:20%;
+      width: 95%;
+      background-color: sienna;
+      text-align: center;
+      padding-top: 15%;
+      padding-bottom: 15%;
+      margin-left: 2%;
+    }
+    .selected {
+      background-color: burlywood;
+    }
+  </style>
 </section>

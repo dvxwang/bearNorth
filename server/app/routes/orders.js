@@ -7,7 +7,6 @@ var OrderDetail = db.model('orderDetail');
 var Product = db.model('product');
 var Auth = require('../configure/auth-middleware')
 
-
 //get ALL orders (need to ensure user is admin) if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {
@@ -93,11 +92,11 @@ router.delete('/:orderId', function(req, res, next) {
 router.post('/:orderId/item', function(req, res, next) {
     //must send an order detail object WITH productId property
     OrderDetail.create(req.body)
-    .then(function(orderDetail) {
+    .tap(function(orderDetail) {    // .tap change OB
         return orderDetail.setProduct(req.body.productId)
-            .then(function() {
-               return req.order.addOrderDetail(orderDetail);
-            })
+    })
+    .then(function(orderDetail) {
+       return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
     })
     .then(order => {
         res.json(order);

@@ -51,7 +51,7 @@ var seedUsers = function () {
         {
             first_name: 'Mr.',
             last_name: 'Admin',
-            email: 'm@m.m',
+            email: 'm@m.com',
             password: 'm',
             age: 54,
             gender: 'Male',
@@ -164,6 +164,14 @@ var testOrders = function() {
 db.sync({ force: true })
     .then(function () {
         return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox()])
+    })
+    .then(function() {
+        return Box.findAll();
+    })
+    .then(function(result){
+        return result.map(function(box){
+            return Promise.all([box.addProduct(1), box.addProduct(2), box.addProduct(4)]);
+        });
     })
     .then(function() {
         return Promise.all([OrderDetail.findById(1), Product.findById(1)])

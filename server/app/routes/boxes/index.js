@@ -1,8 +1,7 @@
 'use strict';
 var router = require('express').Router();
 module.exports = router;
-var db = require('../../../db/_db');
-require('../../../db/models/box')(db);
+var db = require('../../../db');
 var Box = db.model('box');
 var Product = db.model('product');
 
@@ -22,15 +21,13 @@ router.post('/', function(req, res, next) {
 })
 
 // --- Get a specific box matching specific criteria
-router.post('/match', function(req, res, next) {
-  Box.findAll({ where: req.body }) // may need to split out fields specifically
+router.get('/match', function(req, res, next) {  //post is returning info, use get instead w/ query params CdV/OB
+  Box.findOne({ where: req.params })
   .then(function(result){
-    var query = result[0].dataValues.productList.map(function(val){return {id: val}});
-    return Product.findAll({ where: {$or: query} });
+    return result.getProducts();
   })
   .then(function(products){
-    var toSend = products.map(function(product){return product.dataValues});
-    res.send(toSend);
+    res.send(products);
   })
   .catch(next);
 })
