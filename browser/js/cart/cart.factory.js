@@ -1,11 +1,13 @@
 'use strict';
 
-app.factory('CartFactory', function ($http, $kookies) {
+app.factory('CartFactory', function ($http, $kookies, ProductFactory) {
 
-  var cart = [];
+  var cart = [],
+      orderId = 1; // temporarily fixed
 
   function syncCookie() {
-    $kookies.set('cart', cart);
+    $kookies.remove('cart');
+    $kookies.set('cart', cart );
   }
 
   return {
@@ -15,15 +17,19 @@ app.factory('CartFactory', function ($http, $kookies) {
         productId: product.id,
         quantity: 1,
         rentalDays: 1,
-        subtotal: product.purchase_price,
-        product: product
+        unitPrice: product.purchase_price,
+        subtotal: product.purchase_price * 1, // should multiply by quantity
       }
       cart.push(cartItem);
       syncCookie();
+      // should only post to database if a user is logged in
+      return $http.post('/api/orders/' + orderId + '/addItem', cartItem)
+      .then( function(order) {
+        return order;
+      })
     },
     getCart: function() {
-      return $kookies.get().cart;
-      // return cart;
+      return $kookies.get('cart');
     },
     getPendingOrderDetails: function(userId) {
       return $http.get('/api/users/' + userId + '/orders/pending')

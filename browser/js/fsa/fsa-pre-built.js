@@ -56,7 +56,9 @@
           $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
           return CartFactory.getPendingOrderDetails(Session.user.id)
           .then( function(orders) {
+              $kookies.remove('cart');
               $kookies.set('cart', orders);
+              console.log($kookies.get());
               return data.user;
           })
         }
@@ -108,6 +110,7 @@
         };
 
         this.logout = function () {
+            $kookies.remove('cart');
             return $http.get('/logout').then(function () {
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);

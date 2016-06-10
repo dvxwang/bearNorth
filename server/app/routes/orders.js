@@ -28,7 +28,8 @@ router.get('/:status', function (req, res) {
         include:
           { model: Product }
       }
-    ]})
+    ]
+  })
   .then(orders => res.json(orders));
 });
 
