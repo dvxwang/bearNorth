@@ -1,5 +1,37 @@
 <div class="container">
-  <ul>
-    <li ng-repeat="product in cart.products">{{ product }}</li>
-  </ul>
+  <div class="sectionHeader">
+    <h1>My Cart</h1>
+    <p>List of Products</p>
+  </div>
+  <div ng-repeat="product in cart.products"> 
+    <img src="{{ product.pictureUrl }}" style="display: inline-block;"></img>
+    <ul class="userItem" style="list-style-type: none;">
+      <li>Name: {{ product.name }}</li>
+      <li>Category: {{ product.category }}</li>
+      <li>Description: {{ product.description }}</li>
+      <li>Purchase Price: {{ product.purchase_price }}</li>
+      <li>Rental Price: {{ product.rental_price }}</li>
+      <li>Quantity: {{ product.quantity }}</li>
+    </ul>
+    <button>Buy</button>
+    {{ product }}
+  </div>
 </div>
+
+<!-- <div class="profilePage" ng-controller='ProfileCtrl'>
+  <div class="aboutMe">
+    <div class="sectionHeader">Your Info</div>
+    <ul class="userItem">Email: {{user.email}}</ul>
+    <ul class="userItem">Location: {{user.geography}}</ul>
+    <ul class="userItem">Age: {{user.age}}</ul>
+    <ul class="userItem">Gender: {{user.gender}}</ul>
+  </div>
+  <div class="orderHistory">
+    <div class="sectionHeader">Order History</div>
+    <ul ng-repeat="order in orders" class="userItem">Order: {{order.title}}</ul>
+  </div>
+  <div class="reviews">
+    <div class="sectionHeader">Reviews</div>
+    <ul ng-repeat="review in reviews" class="userItem">Review: {{review.title}}</ul>
+  </div>
+</div> -->

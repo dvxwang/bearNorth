@@ -8,10 +8,10 @@
     <div class="col-md-2"></div>
   </div>
 
-  <!-- activities -->
+  <!-- activities --><!-- 
   <div class="row">
     <div class="col-md-4 activity-name-col">
-      <button ng-click="goToSurvey($event)">Camp</button>
+      <button >Camp</button>
     </div>
     <div class="col-md-4 activity-name-col">
       <button ng-click="goToSurvey($event)">Kayak</button>
@@ -19,16 +19,25 @@
     <div class="col-md-4 activity-name-col">
       <button ng-click="goToSurvey($event)">Climb</button>
     </div>
-  </div>
+  </div> -->
   <div class="row">
     <div class="col-md-4 activity-icon-col">
-      <img src="/images/camp.png" class="activity-icon">
+      <a ui-sref="survey({choice: 'camp'})">
+        <div class="activity-name-col">Camp</div>
+        <img src="/images/camp.png" class="activity-icon">
+      </a>
     </div>
     <div class="col-md-4 activity-icon-col">
-      <img src="/images/kayak.png" class="activity-icon">
+      <a ui-sref="survey({choice: 'kayak'})">
+        <div class="activity-name-col">Kayak</div>
+        <img src="/images/kayak.png" class="activity-icon">
+      </a>
     </div>
     <div class="col-md-4 activity-icon-col">
-      <img src="/images/climb.png" class="activity-icon">
+      <a ui-sref="survey({choice: 'climb'})">
+        <div class="activity-name-col">Climb</div>
+        <img src="/images/climb.png" class="activity-icon">
+      </a>
     </div>
   </div>
 
