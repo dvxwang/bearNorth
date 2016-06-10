@@ -22,8 +22,9 @@ router.post('/', function(req, res, next) {
 })
 
 // --- Specific category
-router.get('/categories/:category', function (req, res, next) {
-  Product.findAll({ where: { category: req.params.category }})
+router.post('/categories/', function (req, res, next) {
+  console.log("Reached here: ",req.body);
+  Product.findAll({ where: req.body })
   .then(products => res.send(products))
   .catch(next);
 })

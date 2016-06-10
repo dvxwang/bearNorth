@@ -164,7 +164,6 @@ var testOrders = function() {
 db.sync({ force: true })
     .then(function () {
         return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox()])
-        // return Promise.all([seedBox()])
     })
     .then(function() {
         return Promise.all([OrderDetail.findById(1), Product.findById(1)])

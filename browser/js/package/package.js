@@ -18,19 +18,28 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 		trip_length: selectObj[3],
 	};
 
-	$http.get('/match',queryObj)
+	$http.post('/api/boxes/match',queryObj)
 	.then(function(result){
-		$scope.mainPackage=result;
-		$scope.totalPrice= result.reduce(function(a,b){
-			return a+=b.price;
-		},0);
-		$scope.rentalPrice= $scope.totalPrice;
+		$scope.mainPackage=result.data;
+		$scope.totalPrice= "$"+result.data.reduce(function(a,b){
+			return a+=Number(b.purchase_price);
+		},0).toFixed(2);
+		$scope.rentalPrice= "$"+result.data.reduce(function(a,b){
+			return a+=Number(b.rental_price);
+		},0).toFixed(2);
 	})
 
 	$scope.seeMore=function(item){
-		$http.get('/', {type: item.type})
+		$scope.altCategory="Alternative: "+item.category;
+		$scope.currentItem=item;
+		$http.post('/api/products/categories', {category: item.category})
 		.then(function(result){
-			$scope.alternatives = result;
+			$scope.alternatives = result.data;
 		})
+	}
+
+	$scope.swap=function(item){
+		$scope.mainPackage[$scope.mainPackage.indexOf($scope.currentItem)]=item;
+		$scope.currentItem=item;
 	}
 })
