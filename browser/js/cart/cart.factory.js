@@ -4,11 +4,7 @@ app.factory('CartFactory', function ($http, $kookies) {
 
 
 
-  var cart = {};
-  cart.products = [];
-
-  // load cart if it exists
-  if($kookies.get().cart) cart = $kookies.get().cart;
+  var cart = [];
 
   function syncCookie() {
     $kookies.set('cart', cart);
@@ -16,20 +12,36 @@ app.factory('CartFactory', function ($http, $kookies) {
 
   return {
     addToCart: function(product) {
-      cart.products.push(product);
+      var cartItem = {
+        isRental: false,
+        productId: product.id,
+        quantity: 1,
+        rentalDays: 1,
+        subtotal: product.purchase_price,
+        product: product
+      }
+      cart.push(cartItem);
       syncCookie();
     },
     getCart: function() {
       return cart;
     },
+    getPendingOrders: function(userId) {
+      return $http.get('/api/users/' + userId + '/orders/pending')
+      .then(function(res) {
+        cart = res.data[0].orderDetails;
+        syncCookie();
+        return cart;
+      });
+    },
     removeFromCart: function(productId) {
       var indexToRemove;
-      cart.products.forEach( function(product, index) {
-        if(product.id === productId) {
+      cart.forEach( function(item, index) {
+        if(item.product.id === productId) {
           indexToRemove = index;
         }
       });
-      cart.products.splice(indexToRemove,1);
+      cart.splice(indexToRemove,1);
       syncCookie();
     }
 

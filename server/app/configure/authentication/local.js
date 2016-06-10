@@ -1,5 +1,6 @@
 'use strict';
 var passport = require('passport');
+var session = require('express-session');
 var LocalStrategy = require('passport-local').Strategy;
 
 module.exports = function (app, db) {
