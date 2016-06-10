@@ -22,10 +22,7 @@ router.param('userId', function(req, res, next, userId) {
         req.requestedUser = user;
         next();
     })
-    .catch(function(err) { //can probably shorten to just calling next(err), should default to 500 CdV/OB
-        res.status(500);
-        next(err);
-    });
+    .catch(next);
 });
 
 router.get('/:userId', Auth.assertAdminOrSelf, function (req, res) {

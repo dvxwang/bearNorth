@@ -4,7 +4,7 @@ module.exports = router;
 var db = require('../../../db/_db');
 require('../../../db/models/products')(db);
 var Product = db.model('product');
-
+var Auth = require('../../configure/auth-middleware')
 
 // --- Get all products
 router.get('/', function(req, res, next) {
@@ -14,16 +14,14 @@ router.get('/', function(req, res, next) {
 })
 
 // --- Create new product
-// need to ensure user is admin
-router.post('/', function(req, res, next) {
+router.post('/', Auth.assertAdmin, function(req, res, next) {
   Product.create(req.body)
   .then(product => res.status(201).send(product))
   .catch(next);
 })
 
 // --- Specific category
-router.post('/categories/', function (req, res, next) { //change POST CdV/OB
-  console.log("Reached here: ",req.body);
+router.post('/categories/', function (req, res, next) {
   Product.findAll({ where: req.body })
   .then(products => res.send(products))
   .catch(next);
@@ -41,8 +39,7 @@ router.get('/:id', function (req, res, next) {
 });
 
 // ------ update
-// need to ensure user is admin
-router.put('/:id', function (req, res, next) {
+router.put('/:id', Auth.assertAdmin, function (req, res, next) {
   Product.findById(req.params.id)
   .then(function(product) {
     if (!product) throw HttpError(404);
@@ -53,9 +50,8 @@ router.put('/:id', function (req, res, next) {
 });
 
 // ------ delete
-// need to ensure user is admin
-router.delete('/:id', function (req, res, next) {
-  Product.findById(req.params.id) // need to ensure user is admin
+router.delete('/:id', Auth.assertAdmin, function (req, res, next) {
+  Product.findById(req.params.id)
   .then(function(product) {
     if (!product) throw HttpError(404);
     else return product.destroy();
