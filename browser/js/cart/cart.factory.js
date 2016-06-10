@@ -22,9 +22,10 @@ app.factory('CartFactory', function ($http, $kookies) {
       syncCookie();
     },
     getCart: function() {
-      return cart;
+      return $kookies.get().cart;
+      // return cart;
     },
-    getPendingOrders: function(userId) {
+    getPendingOrderDetails: function(userId) {
       return $http.get('/api/users/' + userId + '/orders/pending')
       .then(function(res) {
         cart = res.data[0].orderDetails;

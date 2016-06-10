@@ -48,13 +48,17 @@
         ]);
     });
 
-    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, CartFactory) {
+    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, CartFactory, $kookies) {
 
         function onSuccessfulLogin(response) {
-            var data = response.data;
-            Session.create(data.id, data.user);
-            $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-            return data.user;
+          var data = response.data;
+          Session.create(data.id, data.user);
+          $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
+          return CartFactory.getPendingOrderDetails(Session.user.id)
+          .then( function(orders) {
+              $kookies.set('cart', orders);
+              return data.user;
+          })
         }
 
         // Uses the session factory to see if an

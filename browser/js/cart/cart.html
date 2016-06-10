@@ -4,14 +4,13 @@
     <p>List of Products</p>
   </div>
   <div ng-repeat="item in cart">
-    <img src="{{ item.product.pictureUrl }}" style="display: inline-block;"></img>
+    <img src="{{ item.product.pictureUrl }}" style="display: inline-block; height: 100px"></img>
     <ul class="userItem" style="list-style-type: none;">
       <li>Name: {{ item.product.name }}</li>
       <li>Category: {{ item.product.category }}</li>
       <li>Description: {{ item.product.description }}</li>
-      <li>Purchase Price: {{ item.product.purchase_price }}</li>
-      <li>Rental Price: {{ item.product.rental_price }}</li>
-      <li>Quantity: {{ item.product.quantity }}</li>
+      <li>Subtotal: {{ item.subtotal }}</li>
+      <li>Quantity: {{ item.quantity }}</li>
       <li><a ng-click="removeFromCart(item.product.id)">Remove</a></li>
     </ul>
   </div>
