@@ -22,4 +22,9 @@ app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, c
     $scope.cart = CartFactory.getCart();
   }
 
+  $scope.updateQuantity = function(productId, qty) {
+    CartFactory.updateQuantity(productId, qty);
+    $scope.cart = CartFactory.getCart();
+  }
+
 });
