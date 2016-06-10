@@ -4,7 +4,7 @@
     <p>List of Products</p>
   </div>
   <div ng-repeat="item in cart">
-    <img src="{{ item.product.pictureUrl }}" style="display: inline-block; height: 100px"></img>
+    <img ng-src="{{ item.product.pictureUrl }}" style="display: inline-block; height: 100px"></img>
     <ul class="userItem" style="list-style-type: none;">
       <li>Name: {{ item.product.name }}</li>
       <li>Category: {{ item.product.category }}</li>

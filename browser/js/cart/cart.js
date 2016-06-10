@@ -19,6 +19,7 @@ app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, c
 
   $scope.removeFromCart = function(productId) {
     CartFactory.removeFromCart(productId);
+    $scope.cart = CartFactory.getCart();
   }
 
 });
