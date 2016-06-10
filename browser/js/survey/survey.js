@@ -10,18 +10,33 @@ app.config(function ($stateProvider) {
 app.controller('SurveyCtrl',function($state,$scope,$stateParams){
 	
 	$(document).ready(function(){
-	    $(".difSelect").on('click', function(){
-	        $(".difSelect").removeClass('selected');
-	        $(this).addClass('selected');
-	    });
-	    $(".tempSelect").on('click', function(){
-	        $(".tempSelect").removeClass('selected');
-	        $(this).addClass('selected');
-	    });
-	    $(".lenSelect").on('click', function(){
-	        $(".lenSelect").removeClass('selected');
-	        $(this).addClass('selected');
-	    });
+		$(".difSelect").on('click', function(){
+			if($(this).hasClass('selected')){
+				$(".difSelect").removeClass('selected');
+			}
+			else {
+				$(".difSelect").removeClass('selected');
+				$(this).addClass('selected');
+			}
+		});
+		$(".tempSelect").on('click', function(){
+			if($(this).hasClass('selected')){
+				$(".tempSelect").removeClass('selected');
+			}
+			else {
+				$(".tempSelect").removeClass('selected');
+				$(this).addClass('selected');
+			}
+		});
+		$(".lenSelect").on('click', function(){
+			if($(this).hasClass('selected')){
+				$(".lenSelect").removeClass('selected');
+			}
+			else {
+				$(".lenSelect").removeClass('selected');
+				$(this).addClass('selected');
+			}
+		});
 	})
 	
 	$scope.goToPackage = function(){

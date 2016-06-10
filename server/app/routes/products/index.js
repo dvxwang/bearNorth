@@ -13,6 +13,13 @@ router.get('/', function(req, res, next) {
   .catch(next);
 })
 
+// --- Get all categories
+router.get('/allCategories', function(req, res, next) {
+  Product.aggregate('category', 'DISTINCT', { plain: false })
+  .then(products => res.send(products))
+  .catch(next);
+})
+
 // --- Create new product
 router.post('/', Auth.assertAdmin, function(req, res, next) {
   Product.create(req.body)
