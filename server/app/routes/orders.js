@@ -6,7 +6,6 @@ var Order = db.model('order');
 var OrderDetail = db.model('orderDetail');
 var Product = db.model('product');
 
-
 //get ALL orders (need to ensure user is admin) if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {

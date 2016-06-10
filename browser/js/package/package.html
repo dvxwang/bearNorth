@@ -1,12 +1,4 @@
 <section id="home">
-  <!-- logo -->
-  <div class="row logo-row stripe-row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <bearnorth-logo></bearnorth-logo>
-    </div>
-    <div class="col-md-2"></div>
-  </div>
 
   <!-- activities -->
   <div class="row">
@@ -17,12 +9,9 @@
         <div ng-repeat="item in mainPackage" class="productRow">
           <input type="checkbox">{{item.category}}: {{item.name}} <button ng-click="seeMore(item)">see more</button>
         </div> 
-        <button class="productRow">Add More Items!</button>
-          <select>
-            <option value="volvo">Volvo</option>
-            <option value="saab">Saab</option>
-            <option value="opel">Opel</option>
-            <option value="audi">Audi</option>
+        <button class="productRow" ng-click="wantToAdd=true">Add More Items!</button>
+          <select ng-show="wantToAdd" id="optionBar" ng-model="addOptions" ng-change="seeMoreOptions()">
+            <option ng-repeat='category in categories' >{{category.DISTINCT}}</option>
           </select>
         <div class="productRow">Buy: {{totalPrice}}</div>
         <div class="productRow">Rent: {{rentalPrice}}</div>
@@ -36,7 +25,7 @@
         <div>Description: {{item.description}}</div>
         <div>Buy: {{item.purchase_price}}</div>
         <div>Rent: {{item.rental_price}}</div>
-        <button ng-click='swap(item)'>Swap In!</button>
+        <button ng-click='swap(item)'>Add In!</button>
       </div>
     </div>
   </div>

@@ -13,6 +13,13 @@ router.get('/', function(req, res, next) {
   .catch(next);
 })
 
+// --- Get all categories
+router.get('/allCategories', function(req, res, next) {
+  Product.aggregate('category', 'DISTINCT', { plain: false })
+  .then(products => res.send(products))
+  .catch(next);
+})
+
 // --- Create new product
 // need to ensure user is admin
 router.post('/', function(req, res, next) {

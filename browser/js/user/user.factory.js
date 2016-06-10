@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('User', function ($http, Order) {
+app.factory('User', function ($http) {
   function User (props) {
     angular.extend(this, props);
   }
