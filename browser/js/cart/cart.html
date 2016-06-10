@@ -14,6 +14,9 @@
       <li>Quantity: {{ product.quantity }}</li>
     </ul>
     <button>Buy</button>
+    <ul>
+      <li ng-repeat="product in cart.products">{{ product }} <a ng-click="removeFromCart(product.id)">Remove</a></li>
+    </ul>
     {{ product }}
   </div>
 </div>
