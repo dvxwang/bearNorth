@@ -18,8 +18,24 @@ router.get('/', function (req, res) {
     });
 });
 
+//get ALL orders for a given status (need to ensure user is admin) if route is api/orders/[status]
+//get all orders for a given status specific user IF route is api/users/:userId/orders/[status]
+router.get('/:status', function (req, res) {
+  var user = (req.user) ? {userId: req.user.id} : null;
+  Order.findAll({
+    where: { userId: user.userId, status: req.params.status },
+    include: [
+      { model: OrderDetail,
+        include:
+          { model: Product }
+      }
+    ]
+  })
+  .then(orders => res.json(orders));
+});
+
 //creates new order for unsigned-in user, route is POST to api/orders
-//creates new order for signed-in user, route is POST to api/users/:userId/orders 
+//creates new order for signed-in user, route is POST to api/users/:userId/orders
 
 router.post('/', function(req, res, next) {
     Order.create(req.body)
@@ -125,5 +141,3 @@ router.put('/:orderId/item/:detailId', function(req, res, next) {
 })
 
 module.exports = router;
-
-
