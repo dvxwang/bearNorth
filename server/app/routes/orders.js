@@ -38,8 +38,11 @@ router.get('/:status', function (req, res) {
 
 router.post('/', function(req, res, next) {
     Order.create(req.body)
-    .then(function(order) {
-        if (req.requestedUser) order.addUser(req.requestedUser);
+    .tap(function(order) {
+        if (req.requestedUser) {
+            order.addUser(req.requestedUser);
+            req.requestedUser.addOrder(order);
+        }
     })
     .then(order => {
         res.json(order);
@@ -86,20 +89,38 @@ router.delete('/:orderId', function(req, res, next) {
     })
 })
 
-//-------ADD/DELETE/UPDATE ORDER DETAILS TO EXISTING ORDERS-------
+
+//-------GET/ADD/DELETE/UPDATE ORDER DETAILS TO EXISTING ORDERS-------
+
+//gets order details for this order
+router.get('/:orderId/item', function(req, res, next) {
+    OrderDetail.findAll({
+        where: {
+            orderId: req.order.id
+        }
+    })
+    .then(orderDetails=> {
+        res.send(orderDetails);
+    })
+    .catch(next);
+})
 
 //adds order detail to existing order
 router.post('/:orderId/item', function(req, res, next) {
     //must send an order detail object WITH productId property
     OrderDetail.create(req.body)
-    .tap(function(orderDetail) {    // .tap change OB
+    .tap(function(orderDetail) {
         return orderDetail.setProduct(req.body.productId)
     })
     .then(function(orderDetail) {
-       return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
+        return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
     })
     .then(order => {
-        res.json(order);
+        return order.reload({include: [{model: OrderDetail}]});
+    })
+    .then(updatedOrder => {
+        console.log(updatedOrder)
+        res.json(updatedOrder);
     })
     .catch(next);
 })
