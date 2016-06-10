@@ -3,8 +3,9 @@ var router = require('express').Router();
 var db = require('../../db');
 var User = db.model('user');
 var orderRouter = require('./orders');
+var Auth = require('../configure/auth-middleware')
 
-router.get('/', function (req, res) {
+router.get('/', Auth.assertAdmin, function (req, res) {
     User.all()
     .then(users => {
         res.json(users);
@@ -18,36 +19,36 @@ router.param('userId', function(req, res, next, userId) {
             res.status(404);
             return next(new Error('User not found.'));
         }
-        req.user = user;
+        req.requestedUser = user;
         next();
     })
     .catch(function(err) {
         res.status(500);
         next(err);
     });
-})
-
-router.get('/:userId', function (req, res) {
-    res.json(req.user);
 });
 
-router.put('/:userId', function (req, res, next) {
-    req.user.update(req.body)
+router.get('/:userId', Auth.assertAdminOrSelf, function (req, res) {
+    res.json(req.requestedUser);
+});
+
+router.put('/:userId', Auth.assertAdminOrSelf, function (req, res, next) {
+    req.requestedUser.update(req.body)
     .then(function(user) {
         res.send(user)
     })
     .catch(next);
 });
 
-router.delete('/:userId', function(req, res, next) {
-    req.user.destroy()
+router.delete('/:userId', Auth.assertAdminOrSelf, function(req, res, next) {
+    req.requestedUser.destroy()
     .then(function() {
         res.sendStatus(204)
     })
     .catch(next);
 })
 
-router.use('/:userId/orders', orderRouter);
+router.use('/:userId/orders', Auth.assertAdminOrSelf, orderRouter);
 
 
 module.exports = router;

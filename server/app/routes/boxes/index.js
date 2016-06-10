@@ -4,7 +4,7 @@ module.exports = router;
 var db = require('../../../db/_db');
 require('../../../db/models/box')(db);
 var Box = db.model('box');
-
+var Product = db.model('product');
 
 // --- Get all boxes
 router.get('/', function(req, res, next) {
@@ -22,9 +22,16 @@ router.post('/', function(req, res, next) {
 })
 
 // --- Get a specific box matching specific criteria
-router.get('/match', function(req, res, next) {
-  Box.findAll({ where: req.params }) // may need to split out fields specifically
-  .then(box => res.send(box))
+router.post('/match', function(req, res, next) {
+  Box.findAll({ where: req.body }) // may need to split out fields specifically
+  .then(function(result){
+    var query = result[0].dataValues.productList.map(function(val){return {id: val}});
+    return Product.findAll({ where: {$or: query} });
+  })
+  .then(function(products){
+    var toSend = products.map(function(product){return product.dataValues});
+    res.send(toSend);
+  })
   .catch(next);
 })
 

@@ -24,7 +24,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
       cart.push(cartItem);
 
       syncLocalStorage();
-      return $http.post('/api/orders/' + orderId + '/addItem', cartItem)
+      return $http.post('/api/orders/' + orderId + '/item', cartItem)
       .then( function(order) {
         return order;
       })
