@@ -10,8 +10,12 @@ var Auth = require('../configure/auth-middleware')
 //get ALL orders (need to ensure user is admin) if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {
-    var user = (req.requestedUser) ? {userId: req.requestedUser.id} : null;
-    Order.all({where: user})
+    var whereCondition = {};
+    if (req.requestedUser) {
+        whereCondition.where = {};
+        whereCondition.where.userId = req.requestedUser.id;
+    }
+    Order.all(whereCondition)
     .then(orders => {
         res.json(orders);
     });

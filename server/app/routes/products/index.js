@@ -35,39 +35,43 @@ router.post('/categories/', function (req, res, next) {
   .catch(next);
 })
 
-// --- Specific product
-// ------ get
-router.get('/:id', function (req, res, next) {
-  Product.findById(req.params.id)
-  .then(function(product) {
-    if (!product) throw HttpError(404);
-    res.send(product);
+router.param('productId', function(req, res, next, productId) {
+  Product.findById(productId)
+  .then(product => {
+    if (!product) {
+      res.status(404);
+      throw next(new Error('Product not found.'));
+    }
+    else {
+        req.requestedProduct = product;
+        next();
+    }
   })
   .catch(next);
+})
+
+// --- Specific product
+// ------ get
+router.get('/:productId', function (req, res, next) {
+  res.json(req.requestedProduct);
 });
 
 // ------ update
-router.put('/:id', Auth.assertAdmin, function (req, res, next) {
-  Product.findById(req.params.id)
+router.put('/:productId', Auth.assertAdmin, function (req, res, next) {
+  req.requestedProduct.update(req.body)
   .then(function(product) {
-    if (!product) throw HttpError(404);
-    else return product.update(req.body);
+      res.send(product);
   })
-  .then(updatedProduct => res.send(updatedProduct))
   .catch(next);
 });
 
 // ------ delete
-router.delete('/:id', Auth.assertAdmin, function (req, res, next) {
-  Product.findById(req.params.id)
-  .then(function(product) {
-    if (!product) throw HttpError(404);
-    else return product.destroy();
-  })
+router.delete('/:productId', Auth.assertAdmin, function (req, res, next) {
+  req.requestedProduct.destroy()
   .then(function() {
-    res.status(204).end();
+      res.sendStatus(204)
   })
   .catch(next);
 });
 
-router.use('/:id/reviews', reviewRouter);
+router.use('/:productId/reviews', reviewRouter);

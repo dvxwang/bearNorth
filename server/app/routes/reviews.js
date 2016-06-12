@@ -8,33 +8,108 @@ var Auth = require('../configure/auth-middleware')
 
 //get ALL reviews (need to ensure user is admin) if route is api/reviews
 //get all reviews for specific user IF route is api/users/:userId/reviews
-router.get('/', function (req, res) {
-    var user = req.requestedUser || null;
-    Review.all({
-        where: user
-    })
+router.get('/', function (req, res, next) {
+    var whereCondition = {};
+    whereCondition.where = {};
+    if (req.requestedUser) {
+        whereCondition.where.userId = req.requestedUser.id;
+    }
+    if (req.requestedProduct) {
+        whereCondition.where.productId = req.requestedProduct.id;
+    }
+    Review.findAll(whereCondition)
     .then(reviews => {
-        res.json(reviews);
-    });
+        if (!reviews) {
+            throw new Error('No reviews found.');
+        }
+        else res.json(reviews);
+    })
+    .catch(next);
 });
+
+router.param('productId', function(req, res, next, productId) {
+  if (req.requestedProduct) next();
+  Product.findById(productId)
+  .then(product => {
+    if (!product) {
+      res.status(404);
+      throw next(new Error('Product not found.'));
+    }
+    else {
+        req.requestedProduct = product;
+        next();
+    }
+  })
+  .catch(next);
+})
+
+router.param('userId', function(req, res, next, userId) {
+    if (req.requestedUser) next();
+    User.findById(userId)
+    .then(user => {
+        if (!user) {
+            res.status(404);
+            throw next(new Error('User not found.'));
+        }
+        else {
+            req.requestedUser = user;
+            next();
+        }
+    })
+    .catch(next);
+});
+
+function findReview(req, res, next) {
+    if (!req.requestedProduct || !req.requestedUser) {
+        var err = new Error('Missing Product or User information');
+        next(err);
+    }
+    var whereCondition = {};
+    whereCondition.where = {};
+    whereCondition.where.userId = req.requestedUser.id;
+    whereCondition.where.productId = req.requestedProduct.id;
+    Review.findAll(whereCondition)
+    .then(reviews => {
+        if (!reviews) {
+            throw new Error('No reviews found.');
+        }
+        else res.json(reviews);
+    })
+    .catch(next);
+}
+
+// get review for a specific product if at /users/:userId/reviews/products/:productId
+
+router.get('/products/:productId', function(req, res, next) {
+    findReview(req, res, next);
+})
+
+// get review for a specific user if at /products/:productId/reviews/users/userId
+
+router.get('/users/:userId', function(req, res, next) {
+    findReview(req, res, next);
+})
+
 
 //creates new review for unsigned-in user, route is POST to api/reviews
 //creates new review for signed-in user, route is POST to api/users/:userId/reviews
 
 router.post('/', function(req, res, next) {
-    var product;
-    Product.findById(req.query.productId)
-    .then(_product => {
-        product = _product;
-        return Review.create(req.body);
-    })
+    Review.create(req.body)
     .tap(function(review) {
         if (req.requestedUser) {
             review.setUser(req.requestedUser);
             req.requestedUser.addReview(review);
         }
-        if (product) {
-            review.setProduct(product);
+        if (req.requestedProduct) {
+            review.setProduct(req.requestedProduct);
+            req.requestedProduct.addReview(review);
+        }
+        else if (req.query.userId) {
+            review.setUser(req.query.userId);
+        }
+        else if (req.query.productId) {
+            review.setProduct(req.query.productId);
         }
     })
     .then(review => {
@@ -42,6 +117,39 @@ router.post('/', function(req, res, next) {
     })
     .catch(next);
 })
+
+function createReview(req, res, next) {
+    if (!req.requestedProduct || !req.requestedUser) {
+        var err = new Error('Missing Product or User information');
+        next(err);
+    }
+    Review.create(req.body)
+    .tap(function(review) {
+        review.setUser(req.requestedUser);
+        req.requestedUser.addReview(review);
+        console.log(req.requestedProduct);
+        review.setProduct(req.requestedProduct.id);
+        // req.requestedProduct.addReview isn't a function <?>
+        // req.requestedProduct.addReview(review);
+    })
+    .then(review => {
+        res.json(review);
+    })
+    .catch(next);
+}
+
+// create new review for a specific product if at /users/:userId/reviews/products/:productId
+
+router.post('/products/:productId', function(req, res, next) {
+    createReview(req, res, next);
+})
+
+// create new review for a specific product if at /products/:productId/reviews/users/userId
+
+router.post('/users/:userId', function(req, res, next) {
+    createReview(req, res, next);
+})
+
 
 //----------GET/DELETE/UPDATE EXISTING ORDERS--------------
 
@@ -51,15 +159,11 @@ router.param('reviewId', function(req, res, next, reviewId) {
     .then(review => {
         if (!review) {
             res.status(404);
-            return next(new Error('Review not found.'));
+            throw next(new Error('Review not found.'));
         }
-        req.review = review;
-        next();
+        else req.review = review;
     })
-    .catch(function(err) {
-        res.status(500);
-        next(err);
-    });
+    .catch(next);
 })
 
 router.get('/:reviewId', function (req, res) {
@@ -70,16 +174,15 @@ router.get('/:reviewId', function (req, res) {
 router.put('/:reviewId', function (req, res, next) {
     req.review.update(req.body)
     .then(function(review) {
-        res.send(review)
-    })
-    .catch(next);
+        res.send(review);
+    });
 });
 
 router.delete('/:reviewId', function(req, res, next) {
     req.review.destroy()
     .then(function() {
-        res.sendStatus(204)
-    })
+        res.sendStatus(204);
+    });
 });
 
 module.exports = router;
