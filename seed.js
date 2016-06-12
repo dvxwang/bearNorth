@@ -24,6 +24,7 @@ var Product = db.model('product');
 var Order = db.model('order');
 var Box = db.model('box');
 var OrderDetail = db.model('orderDetail');
+var Review = db.model('review');
 var Promise = require('sequelize').Promise;
 var chance = require('chance')(123);
 
@@ -161,9 +162,28 @@ var testOrders = function() {
 
 }
 
+var seedReviews = function () {
+
+    var reviews = [
+        {
+            rating: 5,
+            title: "This product was amazing.",
+            description: "Description"
+        },
+    ];
+
+    var creatingReviews = reviews.map(function (reviewObj) {
+        return Review.create(reviewObj);
+    });
+
+    return Promise.all(creatingReviews);
+
+};
+
+
 db.sync({ force: true })
     .then(function () {
-        return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox()])
+        return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox(), seedReviews()])
     })
     .then(function() {
         return Box.findAll();

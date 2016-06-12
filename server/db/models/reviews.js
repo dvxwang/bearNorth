@@ -10,10 +10,14 @@ module.exports = function (db) {
             allowNull: false,
             validate: { min: 1, max: 5 }
         },
-        review: {
+        title: {
             type: Sequelize.TEXT,
-            allowNull: false
-        }
+            allowNull: false,
+            validate: {notEmpty: true}
+        },
+        description: {
+            type: Sequelize.TEXT
+        },
     });
 
 };

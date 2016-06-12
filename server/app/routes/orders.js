@@ -113,7 +113,7 @@ router.post('/:orderId/item', function(req, res, next) {
         return orderDetail.setProduct(req.body.productId)
     })
     .then(function(orderDetail) {
-        return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
+        return req.order.addOrderDetail(orderDetail);
     })
     .then(order => {
         return order.reload({include: [{model: OrderDetail}]});

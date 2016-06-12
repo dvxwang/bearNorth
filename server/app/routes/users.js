@@ -3,6 +3,7 @@ var router = require('express').Router();
 var db = require('../../db');
 var User = db.model('user');
 var orderRouter = require('./orders');
+var reviewRouter = require('./reviews');
 var Auth = require('../configure/auth-middleware')
 
 router.get('/', Auth.assertAdmin, function (req, res) {
@@ -46,6 +47,7 @@ router.delete('/:userId', Auth.assertAdminOrSelf, function(req, res, next) {
 })
 
 router.use('/:userId/orders', Auth.assertAdminOrSelf, orderRouter);
+router.use('/:userId/reviews', reviewRouter);
 
 
 module.exports = router;

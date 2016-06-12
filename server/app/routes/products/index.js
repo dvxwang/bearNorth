@@ -4,7 +4,8 @@ module.exports = router;
 var db = require('../../../db/_db');
 require('../../../db/models/products')(db);
 var Product = db.model('product');
-var Auth = require('../../configure/auth-middleware')
+var Auth = require('../../configure/auth-middleware');
+var reviewRouter = require('../reviews');
 
 // --- Get all products
 router.get('/', function(req, res, next) {
@@ -68,3 +69,5 @@ router.delete('/:id', Auth.assertAdmin, function (req, res, next) {
   })
   .catch(next);
 });
+
+router.use('/:id/reviews', reviewRouter);
