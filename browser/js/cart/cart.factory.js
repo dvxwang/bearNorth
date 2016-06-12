@@ -3,7 +3,7 @@
 app.factory('CartFactory', function ($http, ProductFactory, localStorageService) {
 
   var cart = [],
-      orderId = 1; // temporarily fixed
+      orderId; // temporarily fixed
 
   function syncLocalStorage() {
     return localStorageService.set('cart', cart);
@@ -17,6 +17,14 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
       }
     };
     return -1;
+  }
+
+  function createNewOrder() {
+    return $http.post('/api/orders')
+    .then(function(newOrder) {
+      orderId = newOrder.id;
+      return newOrder;
+    })
   }
 
   return {
@@ -35,7 +43,15 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
       cart.push(cartItem);
 
       syncLocalStorage();
-      return $http.post('/api/orders/' + orderId + '/item', cartItem)
+      // syncronize with database
+      return new Promise(function() {
+        if(!orderId) { // if no pending order was found, create one
+          return createNewOrder();
+        } else return;
+      })
+      .then( function() {
+        return $http.post('/api/orders/' + orderId + '/item', cartItem);
+      })
       .then( function(order) {
         return order;
       })
@@ -49,6 +65,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
       return $http.get('/api/users/' + userId + '/orders/pending')
       .then(function(res) {
         cart = res.data[0].orderDetails;
+        orderId = cart.orderId;
         syncLocalStorage();
         return localStorageService.get('cart');
       })
