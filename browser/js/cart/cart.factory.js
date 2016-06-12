@@ -55,19 +55,19 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
     },
 
     removeFromCart: function(productId) {
-      var indexToRemove = findProductIdx(productId);
+      var indexToRemove = findProductIdx(productId),
+          removedItem = cart[indexToRemove];
       cart.splice(indexToRemove,1);
       syncLocalStorage();
+      return $http.delete('/api/orders/' + orderId + '/item/' + removedItem.id);
     },
 
     updateQuantity: function(productId, newQty) {
-      console.log(cart)
-      console.log(newQty);
       var indexToUpdate = findProductIdx(productId);
       cart[indexToUpdate].quantity = newQty || cart[indexToUpdate].quantity;
       cart[indexToUpdate].subtotal = cart[indexToUpdate].quantity * +cart[indexToUpdate].unitPrice;
-      console.log(cart[indexToUpdate])
       syncLocalStorage();
+      return $http.put('/api/orders/' + orderId + '/item/' + cart[indexToUpdate].id, { quantity: newQty });
     }
 
   }

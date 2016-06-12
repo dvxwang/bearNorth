@@ -18,8 +18,7 @@ module.exports = function (db) { //two files, one for order, one for orderDetail
         rentalDays: {
             type: Sequelize.INTEGER, //set minimum value
             allowNull: false,
-            defaultValue: 1,
-            validate: {min: 1}
+            defaultValue: 1
         },
         isRental: {
             type: Sequelize.BOOLEAN,
@@ -37,4 +36,3 @@ module.exports = function (db) { //two files, one for order, one for orderDetail
         }
     })
 }
-
