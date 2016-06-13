@@ -16,7 +16,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory) {
+app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory, $state) {
 
   $scope.cart = cart;
   $scope.orderTotal = orderTotal;
@@ -41,7 +41,10 @@ app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory) 
           };
 
       // Submit the form:
-      return CartFactory.submitOrder(shippingDetails, paymentToken);
+      return CartFactory.submitOrder(shippingDetails, paymentToken)
+      .then( function() {
+        $state.go('home');
+      });
     }
   }
 
