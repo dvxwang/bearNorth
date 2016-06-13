@@ -4,7 +4,7 @@ var Auth = require('../configure/auth-middleware')
 
 module.exports = router;
 
-router.use('/members', require('./members'));
+router.use('/members', Auth.assertAdmin, require('./members'));
 router.use('/products', require('./products'));
 router.use('/boxes', require('./boxes'));
 

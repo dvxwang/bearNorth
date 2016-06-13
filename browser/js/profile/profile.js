@@ -5,21 +5,24 @@ app.config(function ($stateProvider) {
     $stateProvider.state('profile', {
         url: '/profile',
         templateUrl: 'js/profile/profile.html',
-        controller: 'ProfileCtrl'
+        controller: 'ProfileCtrl',
+        resolve: {
+        	user: function(AuthService) {
+        		return AuthService.getLoggedInUser()
+        	}
+        }
     });
 
 });
 
-app.controller('ProfileCtrl', function ($scope, AuthService) {
-	AuthService.getLoggedInUser().then(function (user) {
-    	$scope.user = user;
-    });
+app.controller('ProfileCtrl', function ($scope, user, User) {
 
+	$scope.user = new User(user);
 
-	$scope.orders=[
-	{title:"Order Title 1"},
-	{title:"Order Title 2"},
-	];
+	$scope.user.getOrders()
+	.then(function(orders) {
+		$scope.orders = orders;
+	})
 
 	$scope.reviews=[{ //to be pulled by client
 		product: 'North Face Titanium Tent', 

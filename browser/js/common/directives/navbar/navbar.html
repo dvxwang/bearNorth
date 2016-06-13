@@ -7,7 +7,7 @@
         </div>
         <ul class="nav navbar-nav" ng-show="user.isAdmin">
             <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <button ui-sref="{{ item.state }}" class="btn user-button">{{ item.label }}</button>
+                <button ui-sref="users" class="btn user-button">{{ item.label }}</button>
             </li>
         </ul>
         <button ng-show="!user" ui-sref="login" class="btn user-button">Login</button>
