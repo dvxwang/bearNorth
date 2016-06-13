@@ -12,6 +12,10 @@ app.factory('User', function ($http) {
     return User.url + this.id;
   };
 
+  User.prototype.isNew = function () {
+    return !this.id
+  };
+
   User.prototype.getOrders = function() {
     return $http.get(this.getUrl()+'/orders')
     .then(function (res) {

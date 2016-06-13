@@ -5,7 +5,15 @@ app.directive('userItem', function() {
 		restrict: 'E',
 		templateUrl: '/js/profile/user-item.html',
 		scope: {
-			user: '=user'
+			user: '=user',
+			ngClick: '&',
+			title: '@'
+		},
+		link: function(scope, elem, attrs) {
+			if (attrs.hasOwnProperty('edit')) scope.edit = true;
+			if (attrs.hasOwnProperty('disable')) scope.disable = true;
+
+			
 		}
 	}
 })

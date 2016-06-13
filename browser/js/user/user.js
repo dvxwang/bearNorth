@@ -3,17 +3,9 @@
 app.config(function ($stateProvider) {
   $stateProvider.state('users', {
     url: '/users',
-    template: 'HELLO WORLD',
-    // templateUrl: 'js/user/user.list.html',
+    templateUrl: 'js/user/user.list.html',
     controller: 'UserListCtrl',
     resolve: {
-      currentUser: function (AuthService) {
-        return AuthService.refreshMe()
-        .then(function (me) {
-          if (!me.id) throw Error('Not logged in');
-          else return me;
-        });
-      },
       users: function (User) {
         return User.fetchAll();
       }
