@@ -28,7 +28,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
 
   // Factory functions
 
-  return {
+  var cartFactory = {
 
     addToCart: function(product, qty, buyOrRent, rentalDays) {
       var quantity = qty || 1;
@@ -62,7 +62,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     // takes an array of objects with product/quantity/buyOrRent/rentalDays properties
     addPackageToCart: function(arrOfItems) {
       arrOfItems.forEach(function(item) {
-        CartFactory.addToCart(item.product, item.quantity, item.buyOrRent, item.rentalDays);
+        cartFactory.addToCart(item.product, item.quantity, item.buyOrRent, item.rentalDays);
       });
     },
 
@@ -105,4 +105,6 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     }
 
   }
+
+  return cartFactory;
 });
