@@ -6,13 +6,14 @@ var db = require('./db');
 var server = require('http').createServer();
 
 var createApplication = function () {
+	console.log("app created");
     var app = require('./app')(db);
     server.on('request', app); // Attach the Express application.
     require('./io')(server);   // Attach socket.io.
 };
 
 var startServer = function () {
-
+	console.log("server started");
     var PORT = process.env.PORT || 1337;
 
     server.listen(PORT, function () {
