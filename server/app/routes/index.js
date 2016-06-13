@@ -9,7 +9,7 @@ router.use('/products', require('./products'));
 router.use('/boxes', require('./boxes'));
 
 router.use('/users', require('./users'));
-router.use('/orders', require('./orders'));
+router.use('/orders', Auth.assertAdmin, require('./orders'));
 
 // Make sure this is after all of
 // the registered routes!

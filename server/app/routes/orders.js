@@ -7,7 +7,7 @@ var OrderDetail = db.model('orderDetail');
 var Product = db.model('product');
 var Auth = require('../configure/auth-middleware')
 
-//get ALL orders (need to ensure user is admin) if route is api/orders
+//get ALL orders if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {
     var user = (req.requestedUser) ? {userId: req.requestedUser.id} : null;
@@ -15,22 +15,6 @@ router.get('/', function (req, res) {
     .then(orders => {
         res.json(orders);
     });
-});
-
-//get ALL orders for a given status (need to ensure user is admin) if route is api/orders/[status]
-//get all orders for a given status specific user IF route is api/users/:userId/orders/[status]
-router.get('/:status', function (req, res) {
-  var user = (req.user) ? {userId: req.user.id} : null;
-  Order.findAll({
-    where: { userId: user.userId, status: req.params.status },
-    include: [
-      { model: OrderDetail,
-        include:
-          { model: Product }
-      }
-    ]
-  })
-  .then(orders => res.json(orders));
 });
 
 //creates new order for unsigned-in user, route is POST to api/orders
@@ -125,6 +109,8 @@ router.post('/:orderId/item', function(req, res, next) {
     .catch(next);
 })
 
+
+
 //for all requests to api/orders/:orderId/:detailId, searches OrderDetail table for that line item
 router.param('detailId', function(req, res, next, detailId) {
     OrderDetail.findById(detailId)
@@ -161,7 +147,3 @@ router.put('/:orderId/item/:detailId', function(req, res, next) {
 })
 
 module.exports = router;
-<<<<<<< HEAD
-
-=======
->>>>>>> c2a57146153b88cbc7c4e9ed8b2366887f3e84c0

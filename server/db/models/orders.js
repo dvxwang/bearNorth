@@ -5,9 +5,7 @@ module.exports = function (db) { //two files, one for order, one for orderDetail
 
     db.define('order', {
         address: {
-            type: Sequelize.TEXT, //no empty strings? CdV/OB
-            allowNull: false,
-            validate: {notEmpty: true}
+            type: Sequelize.TEXT //no empty strings? CdV/OB
         },
         status: {
             type: Sequelize.ENUM('pending', 'active', 'fulfilled', 'returned'),

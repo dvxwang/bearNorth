@@ -46,9 +46,9 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
     },
 
     getPendingOrderDetails: function(userId) {
-      return $http.get('/api/users/' + userId + '/orders/pending')
+      return $http.get('/api/users/' + userId + '/cart')
       .then(function(res) {
-        cart = res.data[0].orderDetails;
+        if (res.data[0]) cart = res.data[0].orderDetails;
         syncLocalStorage();
         return localStorageService.get('cart');
       })

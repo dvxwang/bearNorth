@@ -1,0 +1,51 @@
+
+  <div class="panel panel-default">
+    <div class="panel-heading clearfix" ng-click="show=!show">
+      <div class="pull-left ">
+        <h3 class="panel-title">Order #{{order.id}}</h3>
+        <p>{{order.createdAt | date:'medium'}}</p>
+      </div>
+      <div class="pull-right ">
+        <i>{{order.status}}</i>
+      </div>
+    </div>
+    <table ng-show="show" class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Rent/Buy</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="detail in order.orderDetails">
+          <td>
+            <a ui-sref="product({ productId: detail.productId })">
+              <img ng-src="{{ detail.product.pictureUrl }}" style="height: 100px"></img>
+            </a>
+          </td>
+          <td>
+            <a ui-sref="product({ productId: detail.productId })">
+              <b>{{ detail.product.name }}</b>
+            </a><br>
+            {{ detail.product.category }}
+          </td>
+          <td>
+            {{detail.quantity}}
+            <br>
+          </td>
+          <td>{{(detail.isRental) ? 'Rent' : 'Buy'}}</td>
+          <td>{{ detail.subtotal | currency }}</td>
+        </tr>
+        <tr> 
+          <th scope="row">Total</th>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>{{total(order) | currency}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -21,6 +21,8 @@ Order.hasMany(OrderDetail);
 OrderDetail.belongsTo(Order);
 OrderDetail.belongsTo(Product); //productHasMany(OrderDetail) may be useful CdV/OB
 Product.hasMany(OrderDetail);
+OrderDetail.addScope('defaultScope', {include: [{model: Product}]}, {override: true})
+
 
 Product.hasMany(Review);
 Review.belongsTo(User); //review should belong to a product too CdV/OB
