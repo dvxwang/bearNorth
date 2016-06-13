@@ -60,10 +60,12 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     getCart: function() {
-      return localStorageService.get('cart');
+      cart = localStorageService.get('cart');
+      return cart;
     },
 
     getPendingOrderDetails: function(userId) {
+      console.log(cart)
       return $http.get('/api/users/' + userId + '/orders/pending')
       .then(function(res) {
         if(res.data) {

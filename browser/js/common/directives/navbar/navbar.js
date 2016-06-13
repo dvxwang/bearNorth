@@ -35,7 +35,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
 
             setUser();
 
-            scope.numItemsInCart = 0;
+            scope.numItemsInCart = CartFactory.getNumItems();
             var setNumItemsInCart = function() {
               scope.numItemsInCart = CartFactory.getNumItems();
             }

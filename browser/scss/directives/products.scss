@@ -31,7 +31,14 @@ product-catalog-listing {
   padding: 25px 0 10px 0;
   border-bottom: 2px solid black;
   margin: 0 0 25px 0;
+  h2 {
+    display: inline;
+  }
   &:hover {
     cursor: pointer;
+  }
+  .glyphicon {
+    font-size: 1.2em;
+    color: #005826;
   }
 }
