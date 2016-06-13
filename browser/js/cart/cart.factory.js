@@ -76,7 +76,6 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     getNumItems: function() {
-      console.log('checking number of items')
       return cart.length;
     },
 
