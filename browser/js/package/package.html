@@ -17,8 +17,8 @@
             <option ng-repeat='category in categories' >{{category.DISTINCT}}</option>
           </select>
           <div class='priceRow'>
-            <div class="priceItem"><b style='color:black'>Buy:</b> {{totalPrice}}</div>
-            <div class="priceItem"><b style='color:black'>Rent:</b> {{rentalPrice}}</div>
+            <div class="priceItem" ng-click='addCart("buy")'><b style='color:black'>Buy:</b> {{totalPrice}}</div>
+            <div class="priceItem" ng-click='addCart("rent")'><b style='color:black'>Rent:</b> {{rentalPrice}}</div>
           </div>
       </div>
     </div>
@@ -77,6 +77,9 @@
       color: green;
       border-top: thin solid lightGray;
       padding-top: 2%;
+    }
+    .priceItem:hover {
+      cursor: pointer;
     }
     input[type=checkbox] {
       -ms-transform: scale(2); /* IE */

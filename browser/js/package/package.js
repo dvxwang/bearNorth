@@ -6,7 +6,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
+app.controller('PackageCtrl',function($state,$scope,$stateParams,$http, CartFactory){
 	var selectObj=$stateParams.selection.split(',');
 	var queryObj = {
 		activity: selectObj[0],
@@ -37,6 +37,14 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 		setTotals();
 	})
 
+	$scope.addCart = function(buyorrent){
+		var toAddCart = $scope.mainPackage.filter(function(a){
+			return (!a.toIgnore);
+		})
+		for (var i=0; i<toAddCart.length; i++){
+			CartFactory.addToCart(toAddCart[i],1,buyorrent,0);
+		}
+	}
 	$scope.seeMore=function(item){
 		$scope.wantToAdd=false;
 		$scope.currentItem=item;
