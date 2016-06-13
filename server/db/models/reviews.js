@@ -13,7 +13,7 @@ module.exports = function (db) {
         title: {
             type: Sequelize.TEXT,
             allowNull: false,
-            validate: {notEmpty: true}
+            validate: {notEmpty: true, len: [3,30]}
         },
         description: {
             type: Sequelize.TEXT
