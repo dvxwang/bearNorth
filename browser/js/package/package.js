@@ -23,13 +23,13 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 			headerObj[j]=queryObj[i];
 		}
 	}
-	
+
 	$scope.criteria= headerObj;
 
 	$http.get('/api/products/allCategories')
 	.then(function(result){
 		$scope.categories = result.data;
-	})	
+	})
 
 	$http.get('/api/boxes/match',{params: queryObj})
 	.then(function(result){
@@ -48,7 +48,7 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 	}
 
 	$scope.seeMoreOptions=function(){
-	    var category = document.getElementById("optionBar").value;
+    var category = document.getElementById("optionBar").value;
 		$http.post('/api/products/categories', {category: category})
 		.then(function(result){
 			$scope.altCategory="Alternative: "+category;

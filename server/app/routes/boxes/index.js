@@ -3,7 +3,6 @@ var router = require('express').Router();
 module.exports = router;
 var db = require('../../../db');
 var Box = db.model('box');
-var Product = db.model('product');
 
 // --- Get all boxes
 router.get('/', function(req, res, next) {
@@ -16,7 +15,7 @@ router.get('/', function(req, res, next) {
 // need to ensure user is admin
 router.post('/', function(req, res, next) {
   Box.create(req.body)
-  .then(box => res.status(201).send(box))
+  .then(box => res.status(201).end(box))
   .catch(next);
 })
 
@@ -37,7 +36,7 @@ router.get('/match', function(req, res, next) {  //post is returning info, use g
 router.get('/:id', function (req, res, next) {
   Box.findById(req.params.id)
   .then(function(box) {
-    if (!box) throw HttpError(404);
+    if (!box) res.status(404).end();
     res.send(box);
   })
   .catch(next);
@@ -48,7 +47,7 @@ router.get('/:id', function (req, res, next) {
 router.put('/:id', function (req, res, next) {
   Box.findById(req.params.id)
   .then(function(box) {
-    if (!box) throw HttpError(404);
+    if (!box) res.status(404).end();
     else return box.update(req.body);
   })
   .then(updatedbox => res.send(updatedbox))
@@ -60,7 +59,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
   Box.findById(req.params.id) // need to ensure user is admin
   .then(function(box) {
-    if (!box) throw HttpError(404);
+    if (!box) res.status(404).end();
     else return box.destroy();
   })
   .then(function() {

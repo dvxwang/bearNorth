@@ -33,6 +33,15 @@ app.config(function ($stateProvider) {
 // -- all products
 app.controller('ProductsCtrl', function ($scope, products) {
   $scope.products = products;
+
+  // Product category toggleability
+  $scope.showCategory = {};
+  Object.keys($scope.products).forEach( function(key) {
+    $scope.showCategory[key] = false;
+  });
+  $scope.toggleShowCategory = function(category) {
+    $scope.showCategory[category] = !$scope.showCategory[category];
+  }
 });
 
 // -- specific product
