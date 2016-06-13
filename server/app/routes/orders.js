@@ -165,7 +165,3 @@ router.put('/:orderId/item/:detailId', function(req, res, next) {
 })
 
 module.exports = router;
-<<<<<<< HEAD
-
-=======
->>>>>>> c2a57146153b88cbc7c4e9ed8b2366887f3e84c0
