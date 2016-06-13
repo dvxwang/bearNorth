@@ -27,8 +27,11 @@ product-catalog-listing {
 
 }
 
-.catelog-category-name {
+.catalog-category-name {
   padding: 25px 0 10px 0;
   border-bottom: 2px solid black;
   margin: 0 0 25px 0;
+  &:hover {
+    cursor: pointer;
+  }
 }
