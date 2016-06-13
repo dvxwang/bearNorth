@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('CartFactory', function ($http, ProductFactory, localStorageService) {
+app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope) {
 
   var cart = [],
       orderId;
@@ -44,6 +44,8 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
       cart.push(cartItem);
 
       syncLocalStorage();
+      $rootScope.$broadcast('cart-item-added');
+
       // syncronize with database
       if(!orderId) { // if no pending order was found, create one
         return createNewOrder()
@@ -71,6 +73,11 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
           localStorageService.get('cart');
         } else console.log('No cart found in local storage');
       })
+    },
+
+    getNumItems: function() {
+      console.log('checking number of items')
+      return cart.length;
     },
 
     removeFromCart: function(productId) {
