@@ -52,7 +52,7 @@ router.param('productId', function(req, res, next, productId) {
 
 // --- Specific product
 // ------ get
-router.get('/:productId', function (req, res, next) {
+router.get('/:productId', function (req, res) {
   res.json(req.requestedProduct);
 });
 

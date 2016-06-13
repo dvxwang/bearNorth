@@ -70,7 +70,7 @@
 				<div class="panel-body">
 					<ul class="list-group">
 					<li class="list-group-item" ng-repeat="review in reviews">
-						<a ui-sref="review({productId: review.productId,
+						<a ui-sref="userReview({productId: review.productId,
 																reviewId: review.id,
 																userId: review.userId})">
 							<h4 class="list-group-item-heading">{{review.title}}</h4>
@@ -81,7 +81,6 @@
 	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 4"></i>
 	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 5"></i>
 	          </a>
-        </div>     
 					</li>
 					</ul>
 				</div>

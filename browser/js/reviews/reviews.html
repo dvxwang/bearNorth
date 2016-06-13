@@ -1,7 +1,19 @@
-<h4>{{review.title}}</h4>
-<h2>{{review.description}}</h2>
-<i class="glyphicon glyphicon-star" ng-if="review.rating >= 1"></i>
-<i class="glyphicon glyphicon-star" ng-if="review.rating >= 2"></i>
-<i class="glyphicon glyphicon-star" ng-if="review.rating >= 3"></i>
-<i class="glyphicon glyphicon-star" ng-if="review.rating >= 4"></i>
-<i class="glyphicon glyphicon-star" ng-if="review.rating >= 5"></i>
+<div class="reviews row">
+	<div class= "col-lg-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Title: {{ review.title }} <br> 
+					Rating:
+	        <i class="glyphicon glyphicon-star" ng-if="review.rating >= 1"></i>
+	        <i class="glyphicon glyphicon-star" ng-if="review.rating >= 2"></i>
+	        <i class="glyphicon glyphicon-star" ng-if="review.rating >= 3"></i>
+	        <i class="glyphicon glyphicon-star" ng-if="review.rating >= 4"></i>
+	        <i class="glyphicon glyphicon-star" ng-if="review.rating >= 5"></i>
+        <h3>
+			</div>
+			<div class="panel-body">
+				<p class="list-group-item-text">Description: <br>{{review.description}}</p>
+      </div>
+		</div>
+	</div>
+</div>

@@ -13,5 +13,11 @@ app.factory('ReviewFactory', function($http) {
         return reviews;
       })
     },
+    getProductReviews: function(productId) {
+      return $http.get(this.getProductUrl(productId))
+      .then(reviews => {
+        return reviews;
+      })
+    },
   }
 });

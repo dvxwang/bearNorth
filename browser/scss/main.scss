@@ -18,6 +18,13 @@ body {
   padding-top: 60px;
   margin: 0 auto;
 }
+a {
+	color: #000
+}
+
+a:-webkit-any-link {
+	text-decoration: none
+}
 
 @import 'directives/main';
 @import 'home/main';
@@ -26,4 +33,5 @@ body {
 @import 'login/main';
 @import 'signup/main';
 @import 'profile/main';
-@import 'user/main'
+@import 'product/main';
+@import 'user/main';

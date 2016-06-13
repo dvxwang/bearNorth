@@ -4,7 +4,6 @@ var db = require('../../db');
 var User = db.model('user');
 var Review = db.model('review');
 var Product = db.model('product');
-var Auth = require('../configure/auth-middleware')
 
 //get ALL reviews (need to ensure user is admin) if route is api/reviews
 //get all reviews for specific user IF route is api/users/:userId/reviews
@@ -171,14 +170,14 @@ router.get('/:reviewId', function (req, res) {
 });
 
 
-router.put('/:reviewId', function (req, res, next) {
+router.put('/:reviewId', function (req, res) {
     req.review.update(req.body)
     .then(function(review) {
         res.send(review);
     });
 });
 
-router.delete('/:reviewId', function(req, res, next) {
+router.delete('/:reviewId', function(req, res) {
     req.review.destroy()
     .then(function() {
         res.sendStatus(204);

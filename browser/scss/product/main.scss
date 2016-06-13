@@ -1,0 +1,22 @@
+.product {
+	img {
+		width: 300px;
+		height: 300px;
+	}
+	.col-lg-9 {
+		height: 200px;
+	}
+}
+.cartbox {
+	ul {
+		-webkit-padding-start: 10px;
+	}
+	width: 200px;
+	border-radius: 4px;
+	position: relative;
+	padding: 14px 18px;
+	button {
+		width: 100%;
+		vertical-align: middle;
+	}
+}
