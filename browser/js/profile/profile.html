@@ -70,10 +70,18 @@
 				<div class="panel-body">
 					<ul class="list-group">
 					<li class="list-group-item" ng-repeat="review in reviews">
-						<h4 class="list-group-item-heading">{{review.product}}</h4>
-						<p class="list-group-item-text">{{review.review}}</p>
-						<span class="glyphicon glyphicon-star" ng-repeat="n in review.rating"></span>
-						<span class="glyphicon glyphicon-star-empty"></span>
+						<a ui-sref="review({productId: review.productId,
+																reviewId: review.id,
+																userId: review.userId})">
+							<h4 class="list-group-item-heading">{{review.title}}</h4>
+							<p class="list-group-item-text">{{review.description}}</p>
+	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 1"></i>
+	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 2"></i>
+	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 3"></i>
+	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 4"></i>
+	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 5"></i>
+	          </a>
+        </div>     
 					</li>
 					</ul>
 				</div>
