@@ -1,15 +1,15 @@
 'use strict';
 var router = require('express').Router();
-var Auth = require('../configure/auth-middleware')
-
+var Auth = require('../configure/auth-middleware');
 module.exports = router;
 
 router.use('/members', Auth.assertAdmin, require('./members'));
 router.use('/products', require('./products'));
 router.use('/boxes', require('./boxes'));
-
 router.use('/users', require('./users'));
 router.use('/orders', Auth.assertAdmin, require('./orders'));
+router.use('/reviews', require('./reviews'));
+
 
 // Make sure this is after all of
 // the registered routes!

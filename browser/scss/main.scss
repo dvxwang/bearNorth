@@ -18,12 +18,19 @@ body {
   padding-top: 60px;
   margin: 0 auto;
 }
+a {
+	color: #000
+}
+
+a:-webkit-any-link {
+	text-decoration: none
+}
 
 @import 'directives/main';
 @import 'home/main';
-@import 'about/main';
-@import 'tutorial/main';
 @import 'login/main';
 @import 'signup/main';
 @import 'profile/main';
-@import 'user/main'
+@import 'cart/main';
+@import 'product/main';
+@import 'user/main';

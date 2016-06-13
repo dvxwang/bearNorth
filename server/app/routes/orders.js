@@ -1,17 +1,19 @@
 'use strict';
 var router = require('express').Router();
 var db = require('../../db');
-var User = db.model('user');
 var Order = db.model('order');
 var OrderDetail = db.model('orderDetail');
 var Product = db.model('product');
-var Auth = require('../configure/auth-middleware')
 
 //get ALL orders if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {
-    var user = (req.requestedUser) ? {userId: req.requestedUser.id} : null;
-    Order.all({where: user})
+    var whereCondition = {};
+    if (req.requestedUser) {
+        whereCondition.where = {};
+        whereCondition.where.userId = req.requestedUser.id;
+    }
+    Order.all(whereCondition)
     .then(orders => {
         res.json(orders);
     });
@@ -71,6 +73,7 @@ router.delete('/:orderId', function(req, res, next) {
     .then(function() {
         res.sendStatus(204)
     })
+    .catch(next);
 })
 
 
@@ -97,7 +100,7 @@ router.post('/:orderId/item', function(req, res, next) {
         return orderDetail.setProduct(req.body.productId)
     })
     .then(function(orderDetail) {
-        return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
+        return req.order.addOrderDetail(orderDetail);
     })
     .then(order => {
         return order.reload({include: [{model: OrderDetail}]});

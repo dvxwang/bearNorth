@@ -1,4 +1,4 @@
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, CartFactory) {
 
     return {
         restrict: 'E',
@@ -33,7 +33,18 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
                 scope.user = null;
             };
 
+            scope.search = function() {
+                $state.go('products', {searchText: scope.searchText}); 
+            }
+
             setUser();
+
+            scope.numItemsInCart = CartFactory.getNumItems();
+            var updateCartSummary = function() {
+              scope.numItemsInCart = CartFactory.getNumItems();
+            }
+
+            $rootScope.$on('cart-updated', updateCartSummary);
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
@@ -43,4 +54,17 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
 
     };
 
+});
+
+app.directive('searchBar', function ($state) {
+    return function (scope, element, attrs) {
+        element.on("keydown keypress", function (event) {
+            if (event.which === 13) {   
+                scope.$apply(function (){
+                    scope.$eval(attrs.searchBar);
+                });
+                event.preventDefault();
+            }
+        });
+    };
 });

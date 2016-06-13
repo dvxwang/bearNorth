@@ -3,11 +3,16 @@
     <div class="panel-heading">
       <h3 class="panel-title">My Cart</h3>
     </div>
+    <div class="panel-body panel-order-total">
+      <b>Order Total: </b>{{ orderTotal | currency }} &nbsp;
+      <button class="btn btn-success">Checkout <span class="glyphicon glyphicon-play"></span></button>
+    </div>
     <table class="table">
       <thead>
         <tr>
           <th></th>
           <th>Product</th>
+          <th>Price (each)</th>
           <th>Quantity</th>
           <th>Subtotal</th>
         </tr>
@@ -25,6 +30,7 @@
             </a><br>
             {{ item.product.category }}
           </td>
+          <td>{{ item.unitPrice | currency }}</td>
           <td>
             <form name="updateForm" class="form-inline">
               <div class="input-group">
@@ -39,7 +45,7 @@
             </form>
             <br>
           </td>
-          <td>{{ item.subtotal | number: 2 }}</td>
+          <td>{{ item.subtotal | currency }}</td>
         </tr>
       </tbody>
     </table>

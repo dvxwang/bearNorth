@@ -30,13 +30,12 @@ module.exports = function (db) { //two files, one for order, one for orderDetail
 
     var Order = db.model('order');
     var OrderDetail = db.model('orderDetail');
-    
+
     Order.addScope('defaultScope', {include: [{model: OrderDetail}]}, {override: true})
-    
+
     Order.beforeDestroy(function(order) {
       return OrderDetail.destroy({where: {orderId: order.id}}); //discuss transactions CdV/OB
     })
 
 
 }
-

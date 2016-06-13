@@ -5,6 +5,8 @@ var User = db.model('user');
 var orderRouter = require('./orders');
 var Auth = require('../configure/auth-middleware');
 var Order = db.model('order');
+var reviewRouter = require('./reviews');
+var Auth = require('../configure/auth-middleware')
 
 
 router.get('/', Auth.assertAdmin, function (req, res) {
@@ -19,10 +21,12 @@ router.param('userId', function(req, res, next, userId) {
     .then(user => {
         if (!user) {
             res.status(404);
-            return next(new Error('User not found.'));
+            throw next(new Error('User not found.'));
         }
-        req.requestedUser = user;
-        next();
+        else {
+            req.requestedUser = user;
+            next();
+        }
     })
     .catch(next);
 });
@@ -34,7 +38,7 @@ router.get('/:userId', Auth.assertAdminOrSelf, function (req, res) {
 router.put('/:userId', Auth.assertAdminOrSelf, function (req, res, next) {
     req.requestedUser.update(req.body)
     .then(function(user) {
-        res.send(user)
+        res.send(user);
     })
     .catch(next);
 });
@@ -61,6 +65,7 @@ router.get('/:userId/cart', Auth.assertAdminOrSelf, function(req, res, next) {
 })
 
 router.use('/:userId/orders', Auth.assertAdminOrSelf, orderRouter);
+router.use('/:userId/reviews', reviewRouter);
 
 
 module.exports = router;

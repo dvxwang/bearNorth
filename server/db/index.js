@@ -15,17 +15,18 @@ var OrderDetail = db.model('orderDetail');
 var Box = db.model('box');
 var Review = db.model('review');
 
-Order.belongsTo(User); //maybe add other side of relationship (User has many orders) CdV/OB
+Order.belongsTo(User);
 User.hasMany(Order);
 Order.hasMany(OrderDetail); 
 OrderDetail.belongsTo(Order);
-OrderDetail.belongsTo(Product); //productHasMany(OrderDetail) may be useful CdV/OB
+OrderDetail.belongsTo(Product);
 Product.hasMany(OrderDetail);
 OrderDetail.addScope('defaultScope', {include: [{model: Product}]}, {override: true})
 
 
-Product.hasMany(Review);
-Review.belongsTo(User); //review should belong to a product too CdV/OB
+Product.belongsToMany(Review, {through: 'ProductReviews'});
+User.belongsToMany(Review, {through: 'UserReviews'});
+Review.belongsTo(User);
 Review.belongsTo(Product);
 console.log("Reached index file");
 Box.belongsToMany(Product, {through: 'BoxProduct'});
