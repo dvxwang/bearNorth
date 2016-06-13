@@ -5,7 +5,7 @@ app.directive('productCatalogListing', function(CartFactory) {
     scope: {
       product: '='
     },
-    link: function(scope, element, attrs) {
+    link: function(scope) {
       scope.addToCart = function(product) {
         return CartFactory.addToCart(product);
       };

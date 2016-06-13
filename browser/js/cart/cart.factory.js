@@ -10,9 +10,8 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
   }
 
   function findProductIdx(productId) {
-    var indexToReturn;
     for(var i=0; i<cart.length; i++) {
-      if(cart[i].product.id == productId) {
+      if(cart[i].product.id === productId) {
         return i;
       }
     };
@@ -48,7 +47,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
       // syncronize with database
       if(!orderId) { // if no pending order was found, create one
         return createNewOrder()
-        .then(function(newOrder) {
+        .then(function() {
           return $http.post('/api/orders/' + orderId + '/item', cartItem)
         })
         .then(res => res.data);

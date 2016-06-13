@@ -7,11 +7,11 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
-	var selectObj=$stateParams.selection.split(',');
-	
+  var selectObj=$stateParams.selection.split(',');
+
 	$scope.criteria=selectObj;
 
-	var queryObj = {
+  var queryObj = {
 		activity: selectObj[0],
 		difficulty: selectObj[1],
 		climate: selectObj[2],
@@ -21,7 +21,7 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 	$http.get('/api/products/allCategories')
 	.then(function(result){
 		$scope.categories = result.data;
-	})	
+	})
 
 	$http.get('/api/boxes/match',{params: queryObj})
 	.then(function(result){
@@ -47,7 +47,7 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 	}
 
 	$scope.seeMoreOptions=function(){
-	    var category = document.getElementById("optionBar").value;
+    var category = document.getElementById("optionBar").value;
 		$http.post('/api/products/categories', {category: category})
 		.then(function(result){
 			$scope.altCategory="Alternative: "+category;

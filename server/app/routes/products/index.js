@@ -39,7 +39,7 @@ router.post('/categories/', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
   Product.findById(req.params.id)
   .then(function(product) {
-    if (!product) throw HttpError(404);
+    if (!product) res.status(404).end();
     res.send(product);
   })
   .catch(next);
@@ -49,7 +49,7 @@ router.get('/:id', function (req, res, next) {
 router.put('/:id', Auth.assertAdmin, function (req, res, next) {
   Product.findById(req.params.id)
   .then(function(product) {
-    if (!product) throw HttpError(404);
+    if (!product) res.status(404).end();
     else return product.update(req.body);
   })
   .then(updatedProduct => res.send(updatedProduct))
@@ -60,7 +60,7 @@ router.put('/:id', Auth.assertAdmin, function (req, res, next) {
 router.delete('/:id', Auth.assertAdmin, function (req, res, next) {
   Product.findById(req.params.id)
   .then(function(product) {
-    if (!product) throw HttpError(404);
+    if (!product) res.status(404).end();
     else return product.destroy();
   })
   .then(function() {

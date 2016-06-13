@@ -1,11 +1,9 @@
 'use strict';
 var router = require('express').Router();
 var db = require('../../db');
-var User = db.model('user');
 var Order = db.model('order');
 var OrderDetail = db.model('orderDetail');
 var Product = db.model('product');
-var Auth = require('../configure/auth-middleware')
 
 //get ALL orders (need to ensure user is admin) if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
@@ -87,6 +85,7 @@ router.delete('/:orderId', function(req, res, next) {
     .then(function() {
         res.sendStatus(204)
     })
+    .catch(next);
 })
 
 
