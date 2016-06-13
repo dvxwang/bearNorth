@@ -36,11 +36,11 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
             setUser();
 
             scope.numItemsInCart = CartFactory.getNumItems();
-            var setNumItemsInCart = function() {
+            var updateCartSummary = function() {
               scope.numItemsInCart = CartFactory.getNumItems();
             }
 
-            $rootScope.$on('cart-item-added', setNumItemsInCart);
+            $rootScope.$on('cart-updated', updateCartSummary);
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);

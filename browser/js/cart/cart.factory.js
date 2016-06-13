@@ -1,13 +1,12 @@
 'use strict';
 
-app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope) {
+app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope, Session) {
 
   var cart = [],
-      orderId,
-      orderTotal = 0;
+      orderId;
 
   function syncLocalStorage() {
-    return localStorageService.set('cart', cart);
+    localStorageService.set('cart', cart);
   }
 
   function findProductIdx(productId) {
@@ -25,6 +24,10 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       orderId = res.data.id;
       return res.data;
     })
+  }
+
+  function isLoggedIn() {
+    return !!Session.user;
   }
 
   // Factory functions
@@ -45,18 +48,20 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       cart.push(cartItem);
 
       syncLocalStorage();
-      $rootScope.$broadcast('cart-item-added');
+      $rootScope.$broadcast('cart-updated');
 
-      // syncronize with database
-      if(!orderId) { // if no pending order was found, create one
-        return createNewOrder()
-        .then(function() {
+      // syncronize with database if logged in
+      if(isLoggedIn()) {
+        if(!orderId) { // if no pending order was found, create one
+          return createNewOrder()
+          .then(function() {
+            return $http.post('/api/orders/' + orderId + '/item', cartItem)
+          })
+          .then(res => res.data);
+        } else { // append to existing order
           return $http.post('/api/orders/' + orderId + '/item', cartItem)
-        })
-        .then(res => res.data);
-      } else { // append to existing order
-        return $http.post('/api/orders/' + orderId + '/item', cartItem)
-        .then(res => res.data);
+          .then(res => res.data);
+        }
       }
     },
 
@@ -68,30 +73,36 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     getCart: function() {
-      cart = localStorageService.get('cart');
-      return cart;
+      return localStorageService.get('cart');
     },
 
     getPendingOrderDetails: function(userId) {
-      return $http.get('/api/users/' + userId + '/orders/pending')
-      .then(function(res) {
-        if(res.data) {
-          cart = res.data[0].orderDetails;
-          orderId = cart.orderId;
-          syncLocalStorage();
-          localStorageService.get('cart');
-        } else console.log('No cart found in local storage');
-      })
+      if(isLoggedIn()) {
+        return $http.get('/api/users/' + userId + '/orders/pending')
+        .then(function(res) {
+          if(res.data[0] && res.data[0].orderDetails) {
+            cart = res.data[0].orderDetails;
+            orderId = cart.orderId;
+            syncLocalStorage();
+            $rootScope.$broadcast('cart-updated');
+            return localStorageService.get('cart');
+          } else console.log('No pending cart found in database');
+        })
+      }
     },
 
     getNumItems: function() {
-      return cart.length;
+      if(cart) return cart.length;
+      return 0;
     },
 
     getTotal: function() {
-      cart.forEach( function(item) {
-        orderTotal += item.subtotal;
-      });
+      var orderTotal = 0;
+      if(cart) {
+        cart.forEach( function(item) {
+          orderTotal += item.subtotal;
+        });
+      }
       return orderTotal;
     },
 
@@ -100,16 +111,19 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
           removedItem = cart[indexToRemove];
       cart.splice(indexToRemove,1);
       syncLocalStorage();
-      return $http.delete('/api/orders/' + orderId + '/item/' + removedItem.id);
+      $rootScope.$broadcast('cart-updated');
+      // update order database if user is logged in & has an order ID
+      if(orderId && isLoggedIn()) $http.delete('/api/orders/' + orderId + '/item/' + removedItem.id);
     },
 
     updateQuantity: function(productId, newQty) {
       var indexToUpdate = findProductIdx(productId);
       cart[indexToUpdate].quantity = newQty || cart[indexToUpdate].quantity;
       cart[indexToUpdate].subtotal = cart[indexToUpdate].quantity * +cart[indexToUpdate].unitPrice;
-      $rootScope.$broadcast('cart-updated');
       syncLocalStorage();
-      return $http.put('/api/orders/' + orderId + '/item/' + cart[indexToUpdate].id, { quantity: newQty });
+      $rootScope.$broadcast('cart-updated');
+      // update order database if user is logged in & has an order ID
+      if(orderId && isLoggedIn()) $http.put('/api/orders/' + orderId + '/item/' + cart[indexToUpdate].id, { quantity: newQty });
     }
 
   }

@@ -19,6 +19,7 @@ app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, c
 
   $scope.orderTotal = CartFactory.getTotal();
   $rootScope.$on('cart-updated', function() {
+    $scope.cart = CartFactory.getCart();
     $scope.orderTotal = CartFactory.getTotal();
   });
 
@@ -28,10 +29,8 @@ app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, c
   }
 
   $scope.updateQuantity = function(productId, qty) {
-    CartFactory.updateQuantity(productId, qty)
-    .then( function() {
-      $scope.cart = CartFactory.getCart();
-    });
+    CartFactory.updateQuantity(productId, qty);
+    $scope.cart = CartFactory.getCart();
   }
 
 });
