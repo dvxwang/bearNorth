@@ -1,6 +1,5 @@
 'use strict';
 var router = require('express').Router();
-var db = require('../../db');
 var stripeSecret = require('../../env').STRIPE_SECRET;
 var stripe = require("stripe")(stripeSecret);
 
@@ -24,7 +23,7 @@ router.post('/', function (req, res) {
     });
   })
   .then( function(charge) {
-
+    res.json(charge);
   });
 
 });
