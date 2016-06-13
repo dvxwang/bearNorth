@@ -6,8 +6,8 @@
       <span class="glyphicon glyphicon-minus-sign" ng-show="showCategory[category]"></span>
     </div>
   </div>
-  <div class="row" ng-show="showCategory[category]">
-    <div ng-repeat="product in productList" class="col-md-3">
+  <div class="row">
+    <div ng-repeat="product in productList" class="productElement">
       <product-catalog-listing product="product"></product-catalog-listing>
     </div>
   </div>

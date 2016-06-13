@@ -1,0 +1,39 @@
+.product {
+	img {
+		width: 300px;
+		height: 300px;
+	}
+	.col-lg-9 {
+		height: 200px;
+	}
+}
+.productElement {
+	display: inline-block;
+	width: 23%;
+	height: 150px;
+	margin: 5px 10px;
+	vertical-align: top;
+	.list-group-item {
+		width: 100%;
+		height: 100%;
+		button {
+			position: absolute;
+			bottom: 10%;
+			right: 15%;
+			width: 70%;
+		}
+	}
+}
+.cartbox {
+	ul {
+		-webkit-padding-start: 10px;
+	}
+	width: 200px;
+	border-radius: 4px;
+	position: relative;
+	padding: 14px 18px;
+	button {
+		width: 100%;
+		vertical-align: middle;
+	}
+}
