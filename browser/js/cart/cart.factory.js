@@ -21,9 +21,9 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
 
   function createNewOrder() {
     return $http.post('/api/orders')
-    .then(function(newOrder) {
-      orderId = newOrder.id;
-      return newOrder;
+    .then(function(res) {
+      orderId = res.data.id;
+      return res.data;
     })
   }
 
@@ -44,17 +44,16 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
 
       syncLocalStorage();
       // syncronize with database
-      return new Promise(function() {
-        if(!orderId) { // if no pending order was found, create one
-          return createNewOrder();
-        } else return;
-      })
-      .then( function() {
-        return $http.post('/api/orders/' + orderId + '/item', cartItem);
-      })
-      .then( function(order) {
-        return order;
-      })
+      if(!orderId) { // if no pending order was found, create one
+        return createNewOrder()
+        .then(function(newOrder) {
+          return $http.post('/api/orders/' + orderId + '/item', cartItem)
+        })
+        .then(res => res.data);
+      } else { // append to existing order
+        return $http.post('/api/orders/' + orderId + '/item', cartItem)
+        .then(res => res.data);
+      }
     },
 
     getCart: function() {
