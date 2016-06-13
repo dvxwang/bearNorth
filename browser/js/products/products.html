@@ -1,3 +1,5 @@
+
+<input class="container form-control" id="filterBar" placeholder="Filter..." ng-model="searchText"/>
 <div ng-repeat="(category, productList) in products" class="container">
   <div class="row">
     <div class="col-md-12 catelog-category-name">
@@ -5,7 +7,7 @@
     </div>
   </div>
   <div class="row">
-    <div ng-repeat="product in productList" class="productElement">
+    <div ng-repeat="product in productList | filter:searchText" class="productElement">
       <product-catalog-listing product="product"></product-catalog-listing>
     </div>
   </div>

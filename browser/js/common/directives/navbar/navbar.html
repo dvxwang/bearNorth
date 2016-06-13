@@ -21,5 +21,6 @@
         <div ng-show="user" class="welcome">
             <span>Welcome, {{ user.isAdmin ? "Admin" : "" }} {{ user.first_name || user.email }}!</span>
         </div>
+        <input class="form-control" id="searchBar" placeholder="Search for a product..." ng-model="searchText" search-bar="search()"/>
     </div>
 </nav>
