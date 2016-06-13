@@ -1,6 +1,6 @@
 <div class="container">
   <div class="panel panel-default">
-    <form class="" method="POST" id="payment-form">
+    <form name="orderForm" class="form-horizontal" stripe-form="stripeCallback">
       <div class="payment-errors alert alert-danger" role="alert"></div>
 
       <div class="panel-heading">
@@ -10,13 +10,13 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Name</label>
           <div class="col-sm-10">
-            <input type="text" class="form-horizontal form-control" placeholder="Name">
+            <input type="text" class="form-horizontal form-control" ng-model="orderName" placeholder="Name">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-2 control-label">Address</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" placeholder="Address">
+            <input type="text" class="form-control" ng-model="orderAddress" placeholder="Address">
           </div>
         </div>
       </div>
@@ -28,19 +28,17 @@
         <div class="form-group">
           <label class="col-sm-2 control-label">Card Number</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" size="20" data-stripe="number" placeholder="Credit Card Number" value="4242 4242 4242 4242">
+            <input type="text" class="form-control" size="20" ng-model="number" payments-validate="card" placeholder="Credit Card Number">
           </div>
         </div>
         <div class="form-group">
           <label class="col-sm-2 control-label">CVC</label>
           <div class="col-sm-4">
-            <input type="text" class="form-control" size="4" data-stripe="cvc" placeholder="CVC" value="123">
+            <input type="text" class="form-control" size="4" ng-model="cvc" payments-validate="cvc" placeholder="CVC">
           </div>
           <label class="col-sm-2 control-label">Expiration</label>
           <div class="col-sm-4">
-            <input class="form-inline form-control" style="width:20%; display: inline" type="text" size="2" data-stripe="exp_month" placeholder="MM" value="12">
-            <span class="input-group-addon" style="width:20%; display: inline"> / </span>
-            <input class="form-inline form-control" style="width:20%; display: inline" type="text" size="2" data-stripe="exp_year" placeholder="YY" value="17">
+            <input type="text" class="form-control" size="5" ng-model="expiry" payments-validate="expiry" placeholder="MM/DD">
           </div>
         </div>
       </div>
@@ -49,7 +47,7 @@
         <h3 class="panel-title">Order Review</h3>
       </div>
       <div class="panel-body">
-        <input class="btn btn-primary" type="submit" class="submit" value="Buy Now - {{ orderTotal | currency }}">
+        <button class="btn btn-primary" type="submit">Buy Now - {{ orderTotal | currency }}</button>
       </div>
 
     </form>

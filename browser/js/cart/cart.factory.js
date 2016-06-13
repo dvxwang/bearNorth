@@ -82,7 +82,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
         .then(function(res) {
           if(res.data[0] && res.data[0].orderDetails) {
             cart = res.data[0].orderDetails;
-            orderId = cart.orderId;
+            orderId = cart[0].orderId;
             syncLocalStorage();
             $rootScope.$broadcast('cart-updated');
             return localStorageService.get('cart');
@@ -114,6 +114,27 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       $rootScope.$broadcast('cart-updated');
       // update order database if user is logged in & has an order ID
       if(orderId && isLoggedIn()) $http.delete('/api/orders/' + orderId + '/item/' + removedItem.id);
+    },
+
+    submitOrder: function(shippingDetails, paymentToken) {
+      var order = {
+        address: shippingDetails.address,
+        status: 'active',
+        paymentToken: paymentToken
+      }
+
+      if(orderId) { // cart is already in database
+        $http.put('/api/orders/' + orderId, order)
+        .then( function(res) {
+          var order = res.data;
+        })
+      } else { // order must be created from scratch
+        $http.post('/api/orders/', order)
+        .then( function(res) {
+          var order = res.data;
+        })
+      }
+
     },
 
     updateQuantity: function(productId, newQty) {
