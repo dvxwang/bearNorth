@@ -1,18 +1,48 @@
 <div class="container">
-  <div class="sectionHeader">
-    <h1>My Cart</h1>
-    <p>List of Products</p>
-  </div>
-  <div ng-repeat="item in cart">
-    <img ng-src="{{ item.product.pictureUrl }}" style="display: inline-block; height: 100px"></img>
-    <ul class="userItem" style="list-style-type: none;">
-      <li>Name: {{ item.product.name }}</li>
-      <li>Category: {{ item.product.category }}</li>
-      <li>Description: {{ item.product.description }}</li>
-      <li>Subtotal: {{ item.subtotal }}</li>
-      <li>Quantity: {{ item.quantity }}</li>
-      <li><a ng-click="removeFromCart(item.product.id)">Remove</a></li>
-    </ul>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">My Cart</h3>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in cart">
+          <td>
+            <a ui-sref="product({ productId: item.productId })">
+              <img ng-src="{{ item.product.pictureUrl }}" style="height: 100px"></img>
+            </a>
+          </td>
+          <td>
+            <a ui-sref="product({ productId: item.productId })">
+              <b>{{ item.product.name }}</b>
+            </a><br>
+            {{ item.product.category }}
+          </td>
+          <td>
+            <form name="updateForm" class="form-inline">
+              <div class="input-group">
+                <input class="form-control input-sm" ng-value="{{ item.quantity }}" ng-model="qty">
+                <span class="input-group-btn">
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity+1)">+</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity-1)">-</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, qty)">Update</button>
+                  <button class="btn btn-default btn-sm" ng-click="removeFromCart(item.product.id)">Remove</button>
+                </span>
+              </div>
+            </form>
+            <br>
+          </td>
+          <td>{{ item.subtotal | number: 2 }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
