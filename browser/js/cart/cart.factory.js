@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope, Session) {
+app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope, Session, $q) {
 
   var cart = [],
       orderId;
@@ -124,14 +124,26 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       }
 
       if(orderId) { // cart is already in database
-        $http.put('/api/orders/' + orderId, order)
+        return $http.put('/api/orders/' + orderId, order)
         .then( function(res) {
-          var order = res.data;
+          // reset cart data after completed checkout
+          cart = [];
+          orderId = null;
         })
       } else { // order must be created from scratch
-        $http.post('/api/orders/', order)
+        order.userId = 17; // TEMPORARILY HARD CODED
+        return $http.post('/api/orders/', order)
         .then( function(res) {
           var order = res.data;
+          var addingOrderDetails = [];
+          cart.forEach( function(item) {
+            addingOrderDetails.push($http.post('/api/orders/' + order.id + '/item', item));
+          })
+          return $q.all(addingOrderDetails); // append cart items
+        })
+        .then( function(responses) {
+          cart = [];
+          orderId = null;
         })
       }
 
