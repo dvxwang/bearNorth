@@ -3,7 +3,8 @@
 app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope) {
 
   var cart = [],
-      orderId;
+      orderId,
+      orderTotal = 0;
 
   function syncLocalStorage() {
     return localStorageService.set('cart', cart);
@@ -72,7 +73,6 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     getPendingOrderDetails: function(userId) {
-      console.log(cart)
       return $http.get('/api/users/' + userId + '/orders/pending')
       .then(function(res) {
         if(res.data) {
@@ -88,6 +88,13 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       return cart.length;
     },
 
+    getTotal: function() {
+      cart.forEach( function(item) {
+        orderTotal += item.subtotal;
+      });
+      return orderTotal;
+    },
+
     removeFromCart: function(productId) {
       var indexToRemove = findProductIdx(productId),
           removedItem = cart[indexToRemove];
@@ -100,6 +107,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       var indexToUpdate = findProductIdx(productId);
       cart[indexToUpdate].quantity = newQty || cart[indexToUpdate].quantity;
       cart[indexToUpdate].subtotal = cart[indexToUpdate].quantity * +cart[indexToUpdate].unitPrice;
+      $rootScope.$broadcast('cart-updated');
       syncLocalStorage();
       return $http.put('/api/orders/' + orderId + '/item/' + cart[indexToUpdate].id, { quantity: newQty });
     }

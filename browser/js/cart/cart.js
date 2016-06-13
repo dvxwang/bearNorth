@@ -13,9 +13,14 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, cart) {
+app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, cart, $rootScope) {
 
   $scope.cart = cart
+
+  $scope.orderTotal = CartFactory.getTotal();
+  $rootScope.$on('cart-updated', function() {
+    $scope.orderTotal = CartFactory.getTotal();
+  });
 
   $scope.removeFromCart = function(productId) {
     CartFactory.removeFromCart(productId);
