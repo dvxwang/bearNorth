@@ -59,6 +59,13 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       }
     },
 
+    // takes an array of objects with product/quantity/buyOrRent/rentalDays properties
+    addPackageToCart: function(arrOfItems) {
+      arrOfItems.forEach(function(item) {
+        CartFactory.addToCart(item.product, item.quantity, item.buyOrRent, item.rentalDays);
+      });
+    },
+
     getCart: function() {
       cart = localStorageService.get('cart');
       return cart;
