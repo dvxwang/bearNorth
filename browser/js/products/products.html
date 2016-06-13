@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="row">
-    <div ng-repeat="product in productList" class="productElement">
+    <div ng-repeat="product in productList" class="productElement" ng-show="showCategory[category]">
       <product-catalog-listing product="product"></product-catalog-listing>
     </div>
   </div>

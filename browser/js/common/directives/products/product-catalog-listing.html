@@ -1,19 +1,21 @@
 <div class="list-group-item">
-	<a ui-sref="product({ productId: product.id })">
 		<div class="prod-img">
-		  <img ng-src="{{ product.pictureUrl }}">
+			<a ui-sref="product({ productId: product.id })">
+		  	<img ng-src="{{ product.pictureUrl }}">
+			</a>
 		</div>
 		<div class="prod-summary">
 			<div class="row">
-		  	{{ product.brand }} <b>{{ product.name }}</b>
+				<a ui-sref="product({ productId: product.id })">
+		  		{{ product.brand }} <b>{{ product.name }}</b>
+				</a>
 			</div>
 			<div class="row" style="position:absolute; bottom: 50px;">
 			  <ul>
-			    <li><a ng-click="addToCart(product)">Buy: {{ product.purchase_price }}</a></li>
-			    <li>Rent: {{ product.rental_price }}</li>
+			    <li>Buy: {{ product.purchase_price/100 | currency  }}</li>
+			    <li>Rent: {{ product.rental_price/100 | currency  }}</li>
 			  </ul>
 			</div>
 		</div>
-		<button class="btn btn-warning btn-sm" ng-click="addToCart(product) && $event.stopPropagation()">Add to cart</button>
-	</a>
+		<button class="btn btn-default btn-sm" ng-click="addToCart(product) && $event.stopPropagation()">Add to cart</button>
 </div>
