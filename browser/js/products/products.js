@@ -35,6 +35,15 @@ app.config(function ($stateProvider) {
 app.controller('ProductsCtrl', function ($scope, products, $stateParams) {
   $scope.products = products;
   $scope.searchText = $stateParams.searchText;
+
+  // Product category toggleability
+  $scope.showCategory = {};
+  Object.keys($scope.products).forEach( function(key) {
+    $scope.showCategory[key] = false;
+  });
+  $scope.toggleShowCategory = function(category) {
+    $scope.showCategory[category] = !$scope.showCategory[category];
+  }
 });
 
 // -- specific product

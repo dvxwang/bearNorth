@@ -57,6 +57,7 @@
           return CartFactory.getPendingOrderDetails(Session.user.id)
           .then( function(cart) {
             localStorageService.set('cart', cart);
+            $rootScope.$broadcast('cart-updated');
             return data.user;
           })
         }

@@ -1,4 +1,5 @@
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, CartFactory) {
+
     return {
         restrict: 'E',
         scope: {},
@@ -37,6 +38,13 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state) 
             }
 
             setUser();
+
+            scope.numItemsInCart = CartFactory.getNumItems();
+            var updateCartSummary = function() {
+              scope.numItemsInCart = CartFactory.getNumItems();
+            }
+
+            $rootScope.$on('cart-updated', updateCartSummary);
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);

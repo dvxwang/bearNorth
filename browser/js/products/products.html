@@ -2,8 +2,10 @@
 <input class="container form-control" id="filterBar" placeholder="Filter..." ng-model="searchText"/>
 <div ng-repeat="(category, productList) in products" class="container">
   <div class="row">
-    <div class="col-md-12 catelog-category-name">
-      <h2>{{ category }}</h2>
+    <div class="col-md-12 catalog-category-name" ng-click="toggleShowCategory(category)">
+      <h2>{{ category }} </h2>
+      <span class="glyphicon glyphicon-plus-sign" ng-hide="showCategory[category]"></span>
+      <span class="glyphicon glyphicon-minus-sign" ng-show="showCategory[category]"></span>
     </div>
   </div>
   <div class="row">
