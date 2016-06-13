@@ -3,7 +3,7 @@
 app.factory('CartFactory', function ($http, ProductFactory, localStorageService) {
 
   var cart = [],
-      orderId; // temporarily fixed
+      orderId;
 
   function syncLocalStorage() {
     return localStorageService.set('cart', cart);
@@ -26,6 +26,8 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
       return res.data;
     })
   }
+
+  // Factory functions
 
   return {
 
@@ -63,10 +65,12 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService)
     getPendingOrderDetails: function(userId) {
       return $http.get('/api/users/' + userId + '/orders/pending')
       .then(function(res) {
-        cart = res.data[0].orderDetails;
-        orderId = cart.orderId;
-        syncLocalStorage();
-        return localStorageService.get('cart');
+        if(res.data) {
+          cart = res.data[0].orderDetails;
+          orderId = cart.orderId;
+          syncLocalStorage();
+          localStorageService.get('cart');
+        } else console.log('No cart found in local storage');
       })
     },
 
