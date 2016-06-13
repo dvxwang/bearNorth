@@ -1,0 +1,18 @@
+
+
+store order ID on cookie
+
+FRONT END:
+  - store order on cookie
+    - also add as new order with pending status in database
+  - editing cart
+    - items added to cookie
+      - registered users only: also added to pending order's orderDetails
+  - viewing cart
+    - order from cookie
+
+
+BACK END:
+  - serializeUser
+    - search for any pending order for user
+    - append pending order to the cookie

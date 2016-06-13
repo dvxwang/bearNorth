@@ -22,10 +22,7 @@ router.param('userId', function(req, res, next, userId) {
         req.requestedUser = user;
         next();
     })
-    .catch(function(err) {
-        res.status(500);
-        next(err);
-    });
+    .catch(next);
 });
 
 router.get('/:userId', Auth.assertAdminOrSelf, function (req, res) {

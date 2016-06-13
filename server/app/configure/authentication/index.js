@@ -18,7 +18,7 @@ module.exports = function (app, db) {
     });
 
     var User = db.model('user');
-
+    var Order = db.model('order');
     dbStore.sync();
 
     // First, our session middleware will set/read sessions from the request.

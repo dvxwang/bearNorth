@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">My Cart</h3>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in cart">
+          <td>
+            <a ui-sref="product({ productId: item.productId })">
+              <img ng-src="{{ item.product.pictureUrl }}" style="height: 100px"></img>
+            </a>
+          </td>
+          <td>
+            <a ui-sref="product({ productId: item.productId })">
+              <b>{{ item.product.name }}</b>
+            </a><br>
+            {{ item.product.category }}
+          </td>
+          <td>
+            <form name="updateForm" class="form-inline">
+              <div class="input-group">
+                <input class="form-control input-sm" ng-value="{{ item.quantity }}" ng-model="qty">
+                <span class="input-group-btn">
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity+1)">+</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity-1)">-</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, qty)">Update</button>
+                  <button class="btn btn-default btn-sm" ng-click="removeFromCart(item.product.id)">Remove</button>
+                </span>
+              </div>
+            </form>
+            <br>
+          </td>
+          <td>{{ item.subtotal | number: 2 }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- <div class="profilePage" ng-controller='ProfileCtrl'>
+  <div class="aboutMe">
+    <div class="sectionHeader">Your Info</div>
+    <ul class="userItem">Email: {{user.email}}</ul>
+    <ul class="userItem">Location: {{user.geography}}</ul>
+    <ul class="userItem">Age: {{user.age}}</ul>
+    <ul class="userItem">Gender: {{user.gender}}</ul>
+  </div>
+  <div class="orderHistory">
+    <div class="sectionHeader">Order History</div>
+    <ul ng-repeat="order in orders" class="userItem">Order: {{order.title}}</ul>
+  </div>
+  <div class="reviews">
+    <div class="sectionHeader">Reviews</div>
+    <ul ng-repeat="review in reviews" class="userItem">Review: {{review.title}}</ul>
+  </div>
+</div> -->

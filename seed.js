@@ -54,7 +54,7 @@ var seedUsers = function () {
         {
             first_name: 'Mr.',
             last_name: 'Admin',
-            email: 'm@m.m',
+            email: 'm@m.com',
             password: 'm',
             age: 54,
             gender: 'Male',
@@ -202,6 +202,14 @@ db.sync({ force: true })
             orders.push(createOrder());
         }
         return Promise.all(orders);
+    })
+    .then(function() {
+        return Box.findAll();
+    })
+    .then(function(result){
+        return result.map(function(box){
+            return Promise.all([box.addProduct(1), box.addProduct(2), box.addProduct(4)]);
+        });
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));

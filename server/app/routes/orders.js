@@ -7,7 +7,6 @@ var OrderDetail = db.model('orderDetail');
 var Product = db.model('product');
 var Auth = require('../configure/auth-middleware')
 
-
 //get ALL orders (need to ensure user is admin) if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {
@@ -18,13 +17,32 @@ router.get('/', function (req, res) {
     });
 });
 
+//get ALL orders for a given status (need to ensure user is admin) if route is api/orders/[status]
+//get all orders for a given status specific user IF route is api/users/:userId/orders/[status]
+router.get('/:status', function (req, res) {
+  var user = (req.user) ? {userId: req.user.id} : null;
+  Order.findAll({
+    where: { userId: user.userId, status: req.params.status },
+    include: [
+      { model: OrderDetail,
+        include:
+          { model: Product }
+      }
+    ]
+  })
+  .then(orders => res.json(orders));
+});
+
 //creates new order for unsigned-in user, route is POST to api/orders
-//creates new order for signed-in user, route is POST to api/users/:userId/orders 
+//creates new order for signed-in user, route is POST to api/users/:userId/orders
 
 router.post('/', function(req, res, next) {
     Order.create(req.body)
-    .then(function(order) {
-        if (req.requestedUser) order.addUser(req.requestedUser);
+    .tap(function(order) {
+        if (req.requestedUser) {
+            order.addUser(req.requestedUser);
+            req.requestedUser.addOrder(order);
+        }
     })
     .then(order => {
         res.json(order);
@@ -71,20 +89,38 @@ router.delete('/:orderId', function(req, res, next) {
     })
 })
 
-//-------ADD/DELETE/UPDATE ORDER DETAILS TO EXISTING ORDERS-------
+
+//-------GET/ADD/DELETE/UPDATE ORDER DETAILS TO EXISTING ORDERS-------
+
+//gets order details for this order
+router.get('/:orderId/item', function(req, res, next) {
+    OrderDetail.findAll({
+        where: {
+            orderId: req.order.id
+        }
+    })
+    .then(orderDetails=> {
+        res.send(orderDetails);
+    })
+    .catch(next);
+})
 
 //adds order detail to existing order
 router.post('/:orderId/item', function(req, res, next) {
     //must send an order detail object WITH productId property
     OrderDetail.create(req.body)
-    .then(function(orderDetail) {
+    .tap(function(orderDetail) {
         return orderDetail.setProduct(req.body.productId)
-            .then(function() {
-               return req.order.addOrderDetail(orderDetail);
-            })
+    })
+    .then(function(orderDetail) {
+        return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
     })
     .then(order => {
-        res.json(order);
+        return order.reload({include: [{model: OrderDetail}]});
+    })
+    .then(updatedOrder => {
+        console.log(updatedOrder)
+        res.json(updatedOrder);
     })
     .catch(next);
 })
@@ -125,4 +161,7 @@ router.put('/:orderId/item/:detailId', function(req, res, next) {
 })
 
 module.exports = router;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c2a57146153b88cbc7c4e9ed8b2366887f3e84c0
