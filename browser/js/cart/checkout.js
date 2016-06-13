@@ -41,7 +41,7 @@ app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory) 
           };
 
       // Submit the form:
-      CartFactory.submitOrder(shippingDetails, paymentToken);
+      return CartFactory.submitOrder(shippingDetails, paymentToken);
     }
   }
 

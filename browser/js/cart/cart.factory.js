@@ -19,7 +19,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
   }
 
   function createNewOrder() {
-    return $http.post('/api/orders')
+    return $http.post('/api/orders', { userId: Session.user.id })
     .then(function(res) {
       orderId = res.data.id;
       return res.data;
@@ -123,7 +123,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
         paymentToken: paymentToken
       }
 
-      if(orderId) { // cart is already in database
+      if(orderId) { // pending order is already in database => update status to active
         return $http.put('/api/orders/' + orderId, order)
         .then( function(res) {
           // reset cart data after completed checkout
@@ -131,12 +131,13 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
           orderId = null;
         })
       } else { // order must be created from scratch
-        order.userId = 17; // TEMPORARILY HARD CODED
+        if(isLoggedIn()) order.userId = Session.user.id;
         return $http.post('/api/orders/', order)
         .then( function(res) {
-          var order = res.data;
-          var addingOrderDetails = [];
+          var order = res.data,
+              addingOrderDetails = [];
           cart.forEach( function(item) {
+            item.orderId = order.id;
             addingOrderDetails.push($http.post('/api/orders/' + order.id + '/item', item));
           })
           return $q.all(addingOrderDetails); // append cart items
