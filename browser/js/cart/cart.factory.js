@@ -82,7 +82,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
         .then(function(res) {
           if(res.data[0] && res.data[0].orderDetails) {
             cart = res.data[0].orderDetails;
-            orderId = cart[0].orderId;
+            orderId = res.data[0].id;
             syncLocalStorage();
             $rootScope.$broadcast('cart-updated');
             return localStorageService.get('cart');
