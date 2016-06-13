@@ -1,56 +1,170 @@
 <section id="home">
 
   <!-- activities -->
+  <div class="tripHeader">Let us help you preapre for your trip!</div>
+  <div class='tripBar'>
+    <div class="tripChoices" ng-repeat='(possibility,choice) in criteria'><b>{{possibility}}:</b> {{choice}}</div>
+  </div>
   <div class="row">
-    <div class="col-md-8 activity-name-col show">
-      Custom Package
+    <div class="col-md-8 show">
+      <div class='packageTitle'>Recommended Package</div>
       <div class='customPackage'>
-        <div>{{criteria}}</div>
-        <div ng-repeat="item in mainPackage" class="productRow">
-          <input type="checkbox">{{item.category}}: {{item.name}} <button ng-click="seeMore(item)">see more</button>
+        <div ng-repeat="item in mainPackage track by item.id" class="productRow">
+          <div class='choiceRow'> <input type="checkbox" ng-init="itemCheck=true" ng-change="toggleItem(item)" ng-model="itemCheck">{{item.category}}: {{item.name}}</div> <div class='choiceButton' ng-click="seeMore(item)">see more</div>
         </div> 
-        <button class="productRow" ng-click="wantToAdd=true">Add More Items!</button>
+        <div class="addRow" ng-click="wantToAdd=true">Add More Items!</div>
           <select ng-show="wantToAdd" id="optionBar" ng-model="addOptions" ng-change="seeMoreOptions()">
             <option ng-repeat='category in categories' >{{category.DISTINCT}}</option>
           </select>
-        <div class="productRow">Buy: {{totalPrice}}</div>
-        <div class="productRow">Rent: {{rentalPrice}}</div>
+          <div class='priceRow'>
+            <div class="priceItem"><b style='color:black'>Buy:</b> {{totalPrice}}</div>
+            <div class="priceItem"><b style='color:black'>Rent:</b> {{rentalPrice}}</div>
+          </div>
       </div>
     </div>
-    <div class="col-md-4 activity-name-col show options">
-      <div>{{altCategory}}</div>
-      <div class="altRow" ng-repeat="item in alternatives">
-        <div>Name: {{item.name}}</div>
-        <img src="{{item.pictureUrl}}">
-        <div>Description: {{item.description}}</div>
-        <div>Buy: {{item.purchase_price}}</div>
-        <div>Rent: {{item.rental_price}}</div>
-        <button ng-click='swap(item)'>Add In!</button>
+    <div class="col-md-4 show options">
+      <div class='packageTitle'>{{altCategory}}</div>
+      <div class="altRow" ng-repeat="item in alternatives" ng-class="{currentAlt: (item.id===currentItem.id)}">
+        <div class='altPhoto'>
+          <img src="{{item.pictureUrl}}">
+        </div>
+        <div class='altText'>
+          <div><b>Name:</b> {{item.name}}</div>
+          <div><b>Description:</b> {{item.description}}</div>
+          <div><b>Buy:</b> ${{item.purchase_price}}</div>
+          <div><b>Rent:</b> ${{item.rental_price}}</div>
+          <div ng-show='item.id!==currentItem.id' class='addButton' ng-click='swap(item)'>Add In!</div>
+          <div ng-show='item.id===currentItem.id' class='addButton'>Current Selection</div>
+        </div>
       </div>
     </div>
   </div>
 
   <style>
+    .currentAlt {
+      background-color: mintCream;
+    }
+    .currentAlt .altText .addButton{
+      content: "Current Selection";
+    }
+    .addButton {
+      color: Green;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .addButton:hover {
+      cursor: pointer;
+    }
+    .altText {
+      margin-left: 5%;
+      width: 40%;
+      float: left;
+    }
+    .altPhoto {
+      width: 40%;
+      float: left;
+    }
+    .priceRow {
+      margin-top: 2%;
+      margin-left: 20%;
+      width: 100%;
+    }
+    .priceItem {
+      float: left;
+      width:30%;
+      font-size: 30px;
+      text-align: center;
+      color: green;
+      border-top: thin solid lightGray;
+      padding-top: 2%;
+    }
+    input[type=checkbox] {
+      -ms-transform: scale(2); /* IE */
+      -moz-transform: scale(2); /* FF */
+      -webkit-transform: scale(2); /* Safari and Chrome */
+      -o-transform: scale(2); /* Opera */
+      padding: 10px;
+      margin-right: 2%;
+    }
+    .packageTitle {
+      font-size: 30px;
+      text-align: center;
+      padding-top: 5%;
+      padding-bottom: 5%;
+    }
+    .tripHeader {
+      text-align: center;
+      font-size: 50px;
+      padding-top: 1%;
+      padding-bottom: 1%;
+    }
+    .tripChoices {
+      width:20%;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 16px;
+    }
+    .tripBar {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 1%;
+      display: flex;
+      width: 70%;
+    }
     .show{
       border: thin black solid;
-      height: 500px;
+      height: 600px;
+      border-bottom: none;
     }
     .options{
       overflow: auto;
+      padding-left: 0;
     }
-    .productRow{
-      font-size: 14px;
+    .productRow, .addRow{
+      font-size: 24px;
+      text-indent: 10px;
       text-align: left;
-      padding-left: 30%;
+      padding-left: 20%;
+      margin-bottom: 1%;
+      display: inline-block;
+      width: 100%;
+    }
+    .addRow {
+      padding-left: 27%;
+      color: DimGray;
+      width: 64%;
+    }
+    .addRow:hover {
+      color: Black;
+    }
+    .productRow .choiceButton{
+      position: absolute;
+      right: 25%;
+    }
+    .choiceButton:hover {
+      cursor: pointer;
+    }
+    .productRow input{
+      margin-right: 5%;
+    }
+    .choiceRow {
+      float: left;
+      width: 150%;
     }
     .altRow{
       font-size: 14px;
       text-align: left;
-      padding-left: 5%;
+      padding: 2% 0 2% 5%;
+      border-top: thin solid lightGray;
+      height: 35%;
     }
     .altRow img{
-      height: 40px;
-      width: 40px;
+      height: 100%;
+      width: 100%;
+    }
+    #main{
+      padding-top: 0;
     }
   </style>
 

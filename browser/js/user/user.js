@@ -6,13 +6,6 @@ app.config(function ($stateProvider) {
     templateUrl: 'js/user/user.list.html',
     controller: 'UserListCtrl',
     resolve: {
-      currentUser: function (AuthService) {
-        return AuthService.refreshMe()
-        .then(function (me) {
-          if (!me.id) throw Error('Not logged in');
-          else return me;
-        });
-      },
       users: function (User) {
         return User.fetchAll();
       }
@@ -20,8 +13,10 @@ app.config(function ($stateProvider) {
   });
 });
 
+
 app.controller('UserListCtrl', function ($scope, users, User) {
   $scope.users = users;
+
   $scope.addUser = function () {
     $scope.userAdd.save()
     .then(function (user) {

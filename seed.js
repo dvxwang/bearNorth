@@ -28,6 +28,9 @@ var Review = db.model('review');
 var Promise = require('sequelize').Promise;
 var chance = require('chance')(123);
 
+var numUsers = 15;
+var numProducts = 150;
+
 var seedUsers = function () {
 
     var users = [
@@ -60,9 +63,29 @@ var seedUsers = function () {
         },
     ];
 
+    function generateRandomUser() {
+        var name = chance.name().split(' ');
+        return {
+            first_name: name[0],
+            last_name: name[1],
+            email: name.join('').toLowerCase()+'@fsa.com',
+            password: 'password',
+            defaultShipping: chance.address(),
+            age: chance.integer({min: 18, max: 70}),
+            gender: chance.pickone(['Male', 'Female']),
+            isAdmin: chance.bool({likelihood: 30})
+        }
+
+    }
+
+    while (users.length <= numUsers) {
+        users.push(generateRandomUser());
+    }
+
     var creatingUsers = users.map(function (userObj) {
         return User.create(userObj);
     });
+
 
     return Promise.all(creatingUsers);
 
@@ -114,17 +137,17 @@ var seedProducts = function() {
         
     var categories = ['Tent', 'Backpack', 'Kitchen', 'Sleeping Bag', 'Gear', 'Footwear', 'Clothing'];
     
-
     function createItem() {
-        var price = chance.floating({min: 10, max: 1000, fixed: 2});
         var category = chance.pickone(categories);
+        var price = generatePrice();
+
         return {
             name: chance.word()+' '+chance.word(),
             brand: chance.pickone(brands),
             category: category,
             quantity: chance.integer({min: 1, max: 30}),
             purchase_price: price,
-            rental_price: chance.floating({min: 2, max: price, fixed: 2}),
+            rental_price: generatePrice(price),
             pictureUrl: images[category] || 'http://ecx.images-amazon.com/images/I/81LmkUY3lLL._SL1500_.jpg',
             description: chance.sentence({words: 15})
         }
@@ -132,7 +155,7 @@ var seedProducts = function() {
 
     var products = [];
 
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < numProducts; i++) {
         products.push(createItem());
     }
 
@@ -143,21 +166,29 @@ var seedProducts = function() {
     return Promise.all(creatingProducts);
 };
 
-var testOrders = function() {
+function generatePrice(purchasePrice) {
+    var max = purchasePrice || 100000;
+    return chance.integer({min: 50, max: max});
+}
+
+
+var createOrder = function() {
     var order = {
-        address: '255 First Street, New York, New York',
+        address: chance.address(),
         status: 'pending',
-        shipDate: new Date() + 2*24*60*60*1000,
+        shipDate: chance.date({year: 2016}) ,
     }
 
     var detail = {
-        unitPrice: 15.00
+        unitPrice: generatePrice()
     }
 
 
     return Promise.all([Order.create(order), OrderDetail.create(detail)])
         .spread(function(order, orderDetail) {
-            return Promise.all([order.addOrderDetail(orderDetail), orderDetail.setOrder(order)])
+            var chanceProduct = chance.integer({min: 1, max: numProducts});
+            var chanceUser = chance.integer({min: 1, max: numUsers});
+            return Promise.all([order.addOrderDetail(orderDetail), orderDetail.setOrder(order), orderDetail.setProduct(chanceProduct), order.setUser(chanceUser)])
         })
 
 }
@@ -186,18 +217,19 @@ db.sync({ force: true })
         return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox(), seedReviews()])
     })
     .then(function() {
+        orders = [];
+        for (var i = 0; i < 10; i++) {
+            orders.push(createOrder());
+        }
+        return Promise.all(orders);
+    })
+    .then(function() {
         return Box.findAll();
     })
     .then(function(result){
         return result.map(function(box){
             return Promise.all([box.addProduct(1), box.addProduct(2), box.addProduct(4)]);
         });
-    })
-    .then(function() {
-        return Promise.all([OrderDetail.findById(1), Product.findById(1)])
-            .spread(function(detail, product) {
-                return detail.setProduct(product);
-            })
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));

@@ -8,15 +8,23 @@ app.config(function ($stateProvider) {
 
 app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 	var selectObj=$stateParams.selection.split(',');
-	
-	$scope.criteria=selectObj;
-
 	var queryObj = {
 		activity: selectObj[0],
 		difficulty: selectObj[1],
 		climate: selectObj[2],
 		trip_length: selectObj[3],
 	};
+
+	var headerObj={};
+
+	for (var i in queryObj) {
+		if (queryObj[i]!=='blank'){
+			var j = i.replace("_"," ").charAt(0).toUpperCase() + i.slice(1)
+			headerObj[j]=queryObj[i];
+		}
+	}
+	
+	$scope.criteria= headerObj;
 
 	$http.get('/api/products/allCategories')
 	.then(function(result){
@@ -26,14 +34,7 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 	$http.get('/api/boxes/match',{params: queryObj})
 	.then(function(result){
 		$scope.mainPackage=result.data;
-		$scope.totalPrice= "$"+result.data.reduce(function(a,b){
-			a+=Number(b.purchase_price);
-			return a;
-		},0).toFixed(2);
-		$scope.rentalPrice= "$"+result.data.reduce(function(a,b){
-			a+=Number(b.rental_price);
-			return a;
-		},0).toFixed(2);
+		setTotals();
 	})
 
 	$scope.seeMore=function(item){
@@ -55,13 +56,56 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http){
 		})
 	}
 
+	function searchInPackage(item) {
+		for (var i=0; i<$scope.mainPackage.length; i++){
+			if ($scope.mainPackage[i].id===item.id) {
+				return i;
+			}
+		}
+		return	true;
+	}
+
+	function setTotals() {
+		$scope.totalPrice= "$"+$scope.mainPackage.reduce(function(a,b){
+			console.log("reached total");
+			if(!b.priceIgnore) {
+				console.log("not ignored", b);
+				a+=Number(b.purchase_price);
+			}
+			return a;
+		},0).toFixed(2);
+		$scope.rentalPrice= "$"+$scope.mainPackage.reduce(function(a,b){
+			if(!b.priceIgnore) {
+				a+=Number(b.rental_price);
+			}
+			return a;
+		},0).toFixed(2);
+	}
+
 	$scope.swap=function(item){
 		if(!$scope.wantToAdd){
 			$scope.mainPackage[$scope.mainPackage.indexOf($scope.currentItem)]=item;
 			$scope.currentItem=item;
 		}
 		else {
-			$scope.mainPackage.push(item);
+			if(searchInPackage(item)){
+				$scope.mainPackage.push(item);
+				setTotals();
+			}
 		}
+	}
+
+	$scope.toggleItem=function(item){
+		console.log("reached toggle");
+		var toIgnore=$scope.mainPackage[searchInPackage(item)].priceIgnore;
+		if ($scope.mainPackage[searchInPackage(item)].priceIgnore){
+			console.log("reached second clause");
+			$scope.mainPackage[searchInPackage(item)].priceIgnore=!$scope.mainPackage[searchInPackage(item)].priceIgnore;
+		}
+		else {
+			console.log("reached first clause");
+			$scope.mainPackage[searchInPackage(item)].priceIgnore=true;
+		}
+		setTotals();
 	}
 })

@@ -5,24 +5,28 @@ app.config(function ($stateProvider) {
     $stateProvider.state('profile', {
         url: '/profile',
         templateUrl: 'js/profile/profile.html',
-        controller: 'ProfileCtrl'
+        controller: 'ProfileCtrl',
+        resolve: {
+        	user: function(AuthService) {
+        		return AuthService.getLoggedInUser()
+        	}
+        }
     });
 
 });
 
-app.controller('ProfileCtrl', function ($scope, AuthService, $http, ReviewFactory) {
-	AuthService.getLoggedInUser().then(function (user) {
-  	$scope.user = user;
-		ReviewFactory.getUserReviews(user.id)
-		.then(reviews => {
-			$scope.reviews = reviews.data;
-		});
-  });
+app.controller('ProfileCtrl', function ($scope, user, User, ReviewFactory) {
 
-	$scope.orders=[
-	{title:"Order Title 1"},
-	{title:"Order Title 2"},
-	];
+	$scope.user = new User(user);
+	ReviewFactory.getUserReviews($scope.user.id)
+	.then(reviews => {
+		$scope.reviews = reviews.data;
+	});
+
+	$scope.user.getOrders()
+	.then(function(orders) {
+		$scope.orders = orders;
+	})
 
 	$scope.getRating = function(numStars) {
 		var ratings = [];
@@ -32,3 +36,4 @@ app.controller('ProfileCtrl', function ($scope, AuthService, $http, ReviewFactor
 		return ratings;
 	};
 });
+

@@ -5,6 +5,7 @@ app.factory('User', function ($http) {
     angular.extend(this, props);
   }
 
+
   User.url = '/api/users/';
 
   User.prototype.getUrl = function () {
@@ -15,13 +16,17 @@ app.factory('User', function ($http) {
     return !this.id
   };
 
+  User.prototype.getOrders = function() {
+    return $http.get(this.getUrl()+'/orders')
+    .then(function (res) {
+      return res.data;
+    });
+  }
+
   User.prototype.fetch = function () {
     return $http.get(this.getUrl())
     .then(function (res) {
       var user = new User(res.data);
-      // user.orders = user.orders.map(function (obj) {
-      //   return new Order(obj);
-      // });
       return user;
     });
   };
