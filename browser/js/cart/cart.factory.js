@@ -165,7 +165,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     updateQuantity: function(productId, newQty) {
       var indexToUpdate = findProductIdx(productId);
       cart[indexToUpdate].quantity = newQty || cart[indexToUpdate].quantity;
-      cart[indexToUpdate].subtotal = cart[indexToUpdate].quantity * +cart[indexToUpdate].unitPrice;
+      cart[indexToUpdate].subtotal = cart[indexToUpdate].quantity * +cart[indexToUpdate].dollar_unitPrice;
       syncLocalStorage();
       $rootScope.$broadcast('cart-updated');
       // update order database if user is logged in & has an order ID

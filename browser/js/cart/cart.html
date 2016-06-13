@@ -30,7 +30,7 @@
             </a><br>
             {{ item.product.category }}
           </td>
-          <td>{{ item.unitPrice | currency }}</td>
+          <td>{{ item.dollar_unitPrice | currency }}</td>
           <td>
             <form name="updateForm" class="form-inline">
               <div class="input-group">
@@ -51,21 +51,3 @@
     </table>
   </div>
 </div>
-
-<!-- <div class="profilePage" ng-controller='ProfileCtrl'>
-  <div class="aboutMe">
-    <div class="sectionHeader">Your Info</div>
-    <ul class="userItem">Email: {{user.email}}</ul>
-    <ul class="userItem">Location: {{user.geography}}</ul>
-    <ul class="userItem">Age: {{user.age}}</ul>
-    <ul class="userItem">Gender: {{user.gender}}</ul>
-  </div>
-  <div class="orderHistory">
-    <div class="sectionHeader">Order History</div>
-    <ul ng-repeat="order in orders" class="userItem">Order: {{order.title}}</ul>
-  </div>
-  <div class="reviews">
-    <div class="sectionHeader">Reviews</div>
-    <ul ng-repeat="review in reviews" class="userItem">Review: {{review.title}}</ul>
-  </div>
-</div> -->
