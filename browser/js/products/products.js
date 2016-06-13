@@ -36,6 +36,13 @@ app.controller('ProductsCtrl', function ($scope, products) {
 });
 
 // -- specific product
-app.controller('ProductCtrl', function ($scope, product) {
+app.controller('ProductCtrl', function ($scope, product, ReviewFactory, CartFactory) {
   $scope.product = product;
+  $scope.addToCart = function() {
+    CartFactory.addToCart(product);
+  };
+  ReviewFactory.getProductReviews($scope.product.id)
+  .then(reviews => {
+    $scope.reviews = reviews.data;
+  });
 });

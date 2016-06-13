@@ -10,8 +10,12 @@ var Auth = require('../configure/auth-middleware')
 //get ALL orders (need to ensure user is admin) if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders
 router.get('/', function (req, res) {
-    var user = (req.requestedUser) ? {userId: req.requestedUser.id} : null;
-    Order.all({where: user})
+    var whereCondition = {};
+    if (req.requestedUser) {
+        whereCondition.where = {};
+        whereCondition.where.userId = req.requestedUser.id;
+    }
+    Order.all(whereCondition)
     .then(orders => {
         res.json(orders);
     });
@@ -113,7 +117,7 @@ router.post('/:orderId/item', function(req, res, next) {
         return orderDetail.setProduct(req.body.productId)
     })
     .then(function(orderDetail) {
-        return req.order.addOrderDetail(orderDetail);    //maybe reload or option on orderDetail CdV/OB
+        return req.order.addOrderDetail(orderDetail);
     })
     .then(order => {
         return order.reload({include: [{model: OrderDetail}]});
@@ -161,7 +165,3 @@ router.put('/:orderId/item/:detailId', function(req, res, next) {
 })
 
 module.exports = router;
-<<<<<<< HEAD
-
-=======
->>>>>>> c2a57146153b88cbc7c4e9ed8b2366887f3e84c0
