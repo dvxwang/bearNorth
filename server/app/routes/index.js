@@ -1,6 +1,6 @@
 'use strict';
 var router = require('express').Router();
-
+var Auth = require('../configure/auth-middleware');
 module.exports = router;
 
 router.use('/members', Auth.assertAdmin, require('./members'));
