@@ -21,6 +21,8 @@ Order.hasMany(OrderDetail);
 OrderDetail.belongsTo(Order);
 OrderDetail.belongsTo(Product);
 Product.hasMany(OrderDetail);
+OrderDetail.addScope('defaultScope', {include: [{model: Product}]}, {override: true})
+
 
 Product.belongsToMany(Review, {through: 'ProductReviews'});
 User.belongsToMany(Review, {through: 'UserReviews'});

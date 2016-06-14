@@ -52,16 +52,8 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
 
       // syncronize with database if logged in
       if(isLoggedIn()) {
-        if(!orderId) { // if no pending order was found, create one
-          return createNewOrder()
-          .then(function() {
-            return $http.post('/api/orders/' + orderId + '/item', cartItem)
-          })
-          .then(res => res.data);
-        } else { // append to existing order
           return $http.post('/api/orders/' + orderId + '/item', cartItem)
           .then(res => res.data);
-        }
       }
     },
 
@@ -78,15 +70,13 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
 
     getPendingOrderDetails: function(userId) {
       if(isLoggedIn()) {
-        return $http.get('/api/users/' + userId + '/orders/pending')
+        return $http.get('/api/users/' + userId + '/cart')
         .then(function(res) {
-          if(res.data[0] && res.data[0].orderDetails) {
-            cart = res.data[0].orderDetails;
-            orderId = res.data[0].id;
+            if (res.data.orderDetails) cart = res.data.orderDetails;  //check this object
+            orderId = res.data.id;
             syncLocalStorage();
             $rootScope.$broadcast('cart-updated');
             return localStorageService.get('cart');
-          } else console.log('No pending cart found in database');
         })
       }
     },

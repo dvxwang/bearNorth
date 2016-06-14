@@ -5,11 +5,7 @@ module.exports = function (db) { //two files, one for order, one for orderDetail
 
     db.define('order', {
         address: {
-            type: Sequelize.TEXT, //no empty strings? CdV/OB
-            // unable to add to order as unregistered user if address is required
-            // at creation; should replace allowNull with a validation at order placement
-            // allowNull: false,
-            // validate: {notEmpty: true}
+            type: Sequelize.TEXT //no empty strings? CdV/OB
         },
         status: {
             type: Sequelize.ENUM('pending', 'active', 'fulfilled', 'returned'),
