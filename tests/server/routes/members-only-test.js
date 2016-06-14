@@ -2,7 +2,7 @@
 var expect = require('chai').expect;
 
 var Sequelize = require('sequelize');
-var dbURI = 'postgres://localhost:5432/testing-fsg';
+var dbURI = require('../../../server/env/development').DATABASE_URI;
 var db = new Sequelize(dbURI, {
     logging: false
 });
@@ -10,7 +10,7 @@ require('../../../server/db/models/user')(db);
 
 var supertest = require('supertest');
 
-describe('Members Route', function () {
+xdescribe('Members Route', function () {
 
     var app, User;
 
