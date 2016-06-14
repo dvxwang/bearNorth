@@ -33,7 +33,6 @@ app.factory('Order', function ($http) {
     });
   };
 
-
   Order.prototype.save = function () {
     var verb;
     var url;

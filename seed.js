@@ -175,7 +175,7 @@ function generatePrice(purchasePrice) {
 var createOrder = function() {
     var order = {
         address: chance.address(),
-        status: 'pending',
+        status: chance.pickone(['active', 'fulfilled', 'returned']),
         shipDate: chance.date({year: 2016}) ,
     }
 

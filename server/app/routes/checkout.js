@@ -2,7 +2,10 @@
 var router = require('express').Router();
 var stripeSecret = require('../../env').STRIPE_SECRET;
 var stripe = require("stripe")(stripeSecret);
-
+var db = require('../../db');
+var Order = db.model('order');
+var OrderDetail = db.model('orderDetail');
+var Product = db.model('product');
 
 router.post('/', function (req, res) {
   var stripeToken = req.body.stripeToken,
@@ -27,5 +30,37 @@ router.post('/', function (req, res) {
   });
 
 });
+
+
+router.post('/orders', function(req, res, next) {
+  Order.create(req.body.order)
+    .tap(function(order) {
+        // if (req.requestedUser) {
+        //     order.addUser(req.requestedUser);
+        //     req.requestedUser.addOrder(order);
+        // }
+
+        var creatingOrderDetails = req.body.orderDetails.map(function(detail) {
+          return addOrderDetail(detail, order.id);
+        })
+
+        return Promise.all(creatingOrderDetails);
+    })
+    .then(order => {
+        return order.reload({include: [{model: OrderDetail}]});
+    })
+    .then(order => {
+        res.json(order);
+    })
+    .catch(next);
+})
+
+
+function addOrderDetail(detail, orderId) {
+  OrderDetail.create(detail)
+    .then(function(orderDetail) {
+        return Promise.all([orderDetail.setProduct(detail.productId), orderDetail.setOrder(orderId)]);
+    })
+}
 
 module.exports = router;

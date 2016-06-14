@@ -1,19 +1,21 @@
 <div class="container">
-  <div class="panel panel-default">
+  <div ng-show="{{!cart.length}}"><p><i>Your cart is empty!  </i><a ui-sref="products">Get shopping!</a></p></div>
+  <div class="panel panel-default" ng-show="{{cart.length}}">
     <div class="panel-heading">
       <h3 class="panel-title">My Cart</h3>
     </div>
     <div class="panel-body panel-order-total">
-      <b>Order Total: </b>{{ orderTotal | currency }} &nbsp;
-      <button class="btn btn-success" ui-sref="checkout">Checkout <span class="glyphicon glyphicon-play"></span></button>
-    </div>
+      <b>Order Total: </b>{{ orderTotal/100 | currency }}
+    </div>  
     <table class="table">
       <thead>
         <tr>
           <th></th>
           <th>Product</th>
           <th>Price (each)</th>
+          <th>Rent/Buy</th>
           <th>Quantity</th>
+          <th>Days to Rent</th>
           <th>Subtotal</th>
         </tr>
       </thead>
@@ -30,24 +32,42 @@
             </a><br>
             {{ item.product.category }}
           </td>
-          <td>{{ item.dollar_unitPrice | currency }}</td>
+          <td>{{ item.unitPrice/100 | currency }}</td>
+          <td>{{(item.isRental) ? 'Rent' : 'Buy'}}</td>
           <td>
             <form name="updateForm" class="form-inline">
               <div class="input-group">
                 <input class="form-control input-sm" ng-value="{{ item.quantity }}" ng-model="qty">
                 <span class="input-group-btn">
-                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity+1)">+</button>
-                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, item.quantity-1)">-</button>
-                  <button class="btn btn-default btn-sm" ng-click="updateQuantity(item.product.id, qty)">Update</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateItem(item.product.id, item.quantity+1)">+</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateItem(item.product.id, item.quantity-1)">-</button>
                   <button class="btn btn-default btn-sm" ng-click="removeFromCart(item.product.id)">Remove</button>
                 </span>
               </div>
             </form>
             <br>
           </td>
-          <td>{{ item.subtotal | currency }}</td>
+          <td>
+            <form name="updateForm" class="form-inline" ng-hide="{{!item.isRental}}">
+              <div class="input-group">
+                <input class="form-control input-sm" ng-value="{{ item.rentalDays }}" ng-model="item.rentalDays">
+                <span class="input-group-btn">
+                  <button class="btn btn-default btn-sm" ng-click="updateItem(item.product.id, item.quantity, item.rentalDays+1)">+</button>
+                  <button class="btn btn-default btn-sm" ng-click="updateItem(item.product.id, item.quantity, item.rentalDays-1)">-</button>
+                </span>
+              </div>
+            </form>
+            <br>
+          </td>
+          <td>{{ item.subtotal/100 | currency }}</td>
         </tr>
       </tbody>
     </table>
+    <div class="panel-footer">
+      <button class="btn btn-success btn-sm pull-right" ui-sref="checkout">
+        Checkout <span class="glyphicon glyphicon-play"></span>
+      </button>
+      <div class="clearfix"></div>
+    </div>
   </div>
 </div>

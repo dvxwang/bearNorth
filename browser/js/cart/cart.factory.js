@@ -18,41 +18,52 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     return -1;
   }
 
-  function createNewOrder() {
-    return $http.post('/api/orders', { userId: Session.user.id })
-    .then(function(res) {
-      orderId = res.data.id;
-      return res.data;
-    })
-  }
-
   function isLoggedIn() {
     return !!Session.user;
+  }
+
+  function getUrl() {
+    return '/api/users/'+Session.user.id+'/orders/'+orderId;
   }
 
   // Factory functions
 
   var cartFactory = {
 
-    addToCart: function(product, qty, buyOrRent, rentalDays) {
+    clearcart: function() {
+      cart = [];
+      orderId = null;
+      localStorageService.remove('cart');
+      syncLocalStorage();
+      $rootScope.$broadcast('cart-updated')
+    },
+
+    addToCart: function(product, qty, isRental, rentalDays) {
+
       var quantity = qty || 1;
+      var days = rentalDays || 0;
+      var price = (!isRental) ? product.purchase_price : product.rental_price;
+      var multiplier = (!isRental) ? 1 : rentalDays;
+      var subtotal = price * quantity * multiplier;
+
       var cartItem = {
-        isRental: false,
+        isRental: !!isRental,
         productId: product.id,
         quantity: quantity,
-        rentalDays: rentalDays || 0,
-        unitPrice: product.purchase_price,
-        subtotal: product.purchase_price * quantity,
+        rentalDays: days,
+        unitPrice: price,
+        subtotal: subtotal,
         product: product
       }
-      cart.push(cartItem);
 
+      cart.push(cartItem);
+      console.log('cart is', cart);
       syncLocalStorage();
       $rootScope.$broadcast('cart-updated');
 
       // syncronize with database if logged in
       if(isLoggedIn()) {
-          return $http.post('/api/orders/' + orderId + '/item', cartItem)
+          return $http.post(getUrl()+'/item', cartItem)
           .then(res => res.data);
       }
     },
@@ -65,12 +76,14 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     getCart: function() {
+      syncLocalStorage();
       return localStorageService.get('cart');
     },
 
     getPendingOrderDetails: function(userId) {
-      if(isLoggedIn()) {
-        return $http.get('/api/users/' + userId + '/cart')
+
+      if(isLoggedIn()) { 
+        return $http.get('api/users/'+userId+'/cart')
         .then(function(res) {
             if (res.data.orderDetails) cart = res.data.orderDetails;  //check this object
             orderId = res.data.id;
@@ -82,8 +95,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     getNumItems: function() {
-      if(cart) return cart.length;
-      return 0;
+      return (cart) ? cart.length : 0;
     },
 
     getTotal: function() {
@@ -103,14 +115,15 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       syncLocalStorage();
       $rootScope.$broadcast('cart-updated');
       // update order database if user is logged in & has an order ID
-      if(orderId && isLoggedIn()) $http.delete('/api/orders/' + orderId + '/item/' + removedItem.id);
+      if(isLoggedIn()) $http.delete(getUrl() + '/item/' + removedItem.id);
     },
 
     submitOrder: function(shippingDetails, paymentToken) {
       var order = {
         address: shippingDetails.address,
         status: 'active',
-        paymentToken: paymentToken
+        paymentToken: paymentToken,
+        shipDate: new Date() + 4*24*60*60*1000
       }
 
       // Stripe payment processing
@@ -123,43 +136,38 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       .then( function() {
 
         // store order in database
-        if(orderId) { // pending order is already in database => update status to active
-          return $http.put('/api/orders/' + orderId, order)
+        if(isLoggedIn()) { // pending order is already in database => update status to active
+          return $http.put(getUrl(), order)
           .then( function() {
-            // reset cart data after completed checkout
-            cart = [];
-            orderId = null;
+            cartFactory.getPendingOrderDetails(Session.user.id);
           })
-        } else { // order must be created from scratch
-          if(isLoggedIn()) order.userId = Session.user.id;
-          return $http.post('/api/orders/', order)
-          .then( function(res) {
-            var newOrder = res.data,
-                addingOrderDetails = [];
-            cart.forEach( function(item) {
-              item.orderId = newOrder.id;
-              addingOrderDetails.push($http.post('/api/orders/' + newOrder.id + '/item', item));
-            })
-            return $q.all(addingOrderDetails); // append cart items
-          })
-          .then( function() {
-            cart = [];
-            orderId = null;
-          })
-        }
-
-      });
-
+        } else { // ONLY HAPPENS IF NOT LOGGED IN!*********
+          var orderObj = {order: order, orderDetails: cart};    
+            return $http.post('/api/checkout/orders', orderObj)
+          }
+      })
+      .then( function() {
+        cartFactory.clearcart();
+      })
     },
 
-    updateQuantity: function(productId, newQty) {
+    updateItem: function(productId, newQty, rentalDays) {
+      if (newQty <= 0) return cartFactory.removeFromCart(productId);
+
       var indexToUpdate = findProductIdx(productId);
-      cart[indexToUpdate].quantity = newQty || cart[indexToUpdate].quantity;
-      cart[indexToUpdate].subtotal = cart[indexToUpdate].quantity * +cart[indexToUpdate].dollar_unitPrice;
+      var item = cart[indexToUpdate];
+
+      item.quantity = newQty;
+      if (rentalDays) item.rentalDays = rentalDays;
+      var multiplier = (item.isRental) ? item.rentalDays : 1;
+      item.subtotal = newQty * item.unitPrice * multiplier;
+
+      console.log(cart);
       syncLocalStorage();
       $rootScope.$broadcast('cart-updated');
       // update order database if user is logged in & has an order ID
-      if(orderId && isLoggedIn()) $http.put('/api/orders/' + orderId + '/item/' + cart[indexToUpdate].id, { quantity: newQty });
+      
+      if(isLoggedIn()) $http.put(getUrl() + '/item/' + cart[indexToUpdate].id, { quantity: newQty, rentalDays: item.rentalDays });
     }
 
   }

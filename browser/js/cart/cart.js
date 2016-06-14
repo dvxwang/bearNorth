@@ -15,9 +15,10 @@ app.config(function ($stateProvider) {
 
 app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, cart, $rootScope) {
 
-  $scope.cart = cart
-
+  $scope.cart = cart;
+  
   $scope.orderTotal = CartFactory.getTotal();
+
   $rootScope.$on('cart-updated', function() {
     $scope.cart = CartFactory.getCart();
     $scope.orderTotal = CartFactory.getTotal();
@@ -28,9 +29,10 @@ app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, c
     $scope.cart = CartFactory.getCart();
   }
 
-  $scope.updateQuantity = function(productId, qty) {
-    CartFactory.updateQuantity(productId, qty);
+  $scope.updateItem = function(productId, qty, rentalDays) {
+    CartFactory.updateItem(productId, parseInt(qty), parseInt(rentalDays));
     $scope.cart = CartFactory.getCart();
   }
+
 
 });

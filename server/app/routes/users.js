@@ -58,7 +58,7 @@ router.get('/:userId/cart', Auth.assertAdminOrSelf, function(req, res, next) {
             status: 'pending'
         }
     })
-    .then(cart => {
+    .spread(cart => {
         res.json(cart)
     })
     .catch(next);

@@ -20,8 +20,20 @@
         </button>
         <button ui-sref="products" class="btn user-button">Store</button>
         <div ng-show="user" class="welcome">
-            <span>Welcome, {{ user.isAdmin ? "Admin" : "" }} {{ user.first_name || user.email }}!</span>
+            <h5>Welcome, {{ user.first_name || user.email }}!</h5>
         </div>
-        <input class="form-control" id="searchBar" placeholder="Search for a product..." ng-model="searchText" search-bar="search()"/>
+       
+    </div>
+    <div class="container">
+    <div class="col-lg-12">
+    <form class="form-inline pull-right">
+        <div class="form-group">
+        <input class="form-control input-sm" role="search" id="searchBar" placeholder="Search for a product..." ng-model="searchText" search-bar="search()"/>
+        <button class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+        </div>
+    </form>
+    </div>
     </div>
 </nav>

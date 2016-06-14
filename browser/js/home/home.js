@@ -6,12 +6,17 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('HomeCtrl', function($state,$scope){
+app.controller('HomeCtrl', function($state,$scope, $rootScope){
 	
 	$scope.goToSurvey = function(activity){
-		console.log("here");
+		$rootScope.hideNavbar=false;
 		var choice = activity.target.firstChild.data;
 		$state.go('survey',{choice: choice});
 	}
 
+	$rootScope.hideNavbar=true;
+	
+	$scope.leave = function() {
+		$rootScope.hideNavbar=false;
+	}
 });

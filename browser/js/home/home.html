@@ -1,4 +1,4 @@
-<section id="home">
+<section id="home" ng-click="leave()">
   <!-- logo -->
   <div class="row logo-row stripe-row">
     <div class="col-md-2"></div>
@@ -7,19 +7,6 @@
     </div>
     <div class="col-md-2"></div>
   </div>
-
-  <!-- activities --><!-- 
-  <div class="row">
-    <div class="col-md-4 activity-name-col">
-      <button >Camp</button>
-    </div>
-    <div class="col-md-4 activity-name-col">
-      <button ng-click="goToSurvey($event)">Kayak</button>
-    </div>
-    <div class="col-md-4 activity-name-col">
-      <button ng-click="goToSurvey($event)">Climb</button>
-    </div>
-  </div> -->
   <div class="row">
     <div class="col-md-4 activity-icon-col">
       <a ui-sref="survey({choice: 'camp'})">
@@ -46,8 +33,7 @@
     <div class="col-md-4"></div>
     <div class="col-md-4 all-items-link">
       <a ui-sref="products">
-        View all items
-        <div class="glyphicon glyphicon-play-circle"></div>
+        <h2>Enter Store <span class="glyphicon glyphicon-play-circle"></span> <h2>
       </a>
     </div>
     <div class="col-md-1"></div>

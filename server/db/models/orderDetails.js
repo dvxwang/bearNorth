@@ -26,12 +26,9 @@ module.exports = function (db) { //two files, one for order, one for orderDetail
         }
     }, {
         getterMethods: {
-            dollar_unitPrice: function() {
-                return this.unitPrice/100;
-            },
             subtotal: function() {
                 var multiplier = (this.isRental) ? this.rentalDays : 1;
-                return this.quantity*this.dollar_unitPrice*multiplier;
+                return this.quantity*this.unitPrice*multiplier;
             }
         }
     })

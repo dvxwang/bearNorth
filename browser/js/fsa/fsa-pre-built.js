@@ -109,6 +109,7 @@
         };
 
         this.logout = function () {
+            CartFactory.clearcart();
             localStorageService.remove('cart');
             return $http.get('/logout').then(function () {
                 Session.destroy();
