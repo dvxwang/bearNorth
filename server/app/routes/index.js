@@ -1,6 +1,6 @@
 'use strict';
 var router = require('express').Router();
-var Auth = require('../configure/auth-middleware');
+var Auth = require('../configure/auth-middleware')
 module.exports = router;
 
 var db = require('../../db');
@@ -16,6 +16,7 @@ router.use('/boxes', require('./boxes'));
 router.use('/users', require('./users'));
 router.use('/orders', Auth.assertAdmin, require('./orders'));
 router.use('/reviews', require('./reviews'));
+router.use('/checkout', require('./checkout'));
 
 
 router.post('/checkout/order', function(req, res, next) {
