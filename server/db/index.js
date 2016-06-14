@@ -28,9 +28,7 @@ Product.belongsToMany(Review, {through: 'ProductReviews'});
 User.belongsToMany(Review, {through: 'UserReviews'});
 Review.belongsTo(User);
 Review.belongsTo(Product);
-console.log("Reached index file");
 Box.belongsToMany(Product, {through: 'BoxProduct'});
 Product.belongsToMany(Box, {through: 'BoxProduct'});
-console.log("Finished index file");
 
 module.exports = db;
