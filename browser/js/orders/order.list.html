@@ -1,0 +1,10 @@
+<div class="container">
+  <br>
+  <div class="row">
+    <div class="col-md-12" ng-repeat="order in orders"
+      ui-sref="orders({id: order.id})"
+      ui-sref-active="active"> 
+      <order-item ng-if="order.orderDetails.length" order="order"></order-item>
+    </div>
+  </div>
+</div>

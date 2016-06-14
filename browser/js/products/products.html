@@ -1,13 +1,15 @@
+
+<input class="container form-control" id="filterBar" placeholder="Filter..." ng-model="searchText"/>
 <div ng-repeat="(category, productList) in products" class="container">
   <div class="row">
     <div class="col-md-12 catalog-category-name" ng-click="toggleShowCategory(category)">
       <h2>{{ category }} </h2>
-      <span class="glyphicon glyphicon-plus-sign" ng-hide="showCategory[category]"></span>
-      <span class="glyphicon glyphicon-minus-sign" ng-show="showCategory[category]"></span>
+      <span class="glyphicon glyphicon-plus-sign" ng-show="showCategory[category]"></span>
+      <span class="glyphicon glyphicon-minus-sign" ng-hide="showCategory[category]"></span>
     </div>
   </div>
-  <div class="row">
-    <div ng-repeat="product in productList" class="productElement" ng-show="showCategory[category]">
+  <div class="row" ng-hide="showCategory[category]">
+    <div ng-repeat="product in productList | filter:searchText" class="productElement">
       <product-catalog-listing product="product"></product-catalog-listing>
     </div>
   </div>

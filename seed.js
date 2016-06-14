@@ -214,7 +214,7 @@ var seedReviews = function () {
 
 db.sync({ force: true })
     .then(function () {
-        return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox(), seedReviews()])
+        return Promise.all([seedUsers(), seedProducts(), seedBox(), seedReviews()]);
     })
     .then(function() {
         orders = [];
@@ -227,9 +227,16 @@ db.sync({ force: true })
         return Box.findAll();
     })
     .then(function(result){
-        return result.map(function(box){
-            return Promise.all([box.addProduct(1), box.addProduct(2), box.addProduct(4)]);
-        });
+        // return result.map(function(box){
+        //     return Promise.all([box.addProduct(1), box.addProduct(2), box.addProduct(4)]);
+        // });
+        var promiseArray=[];
+        for (var i=0; i<result.length; i++){
+            promiseArray.push(result[i].addProduct(1));
+            promiseArray.push(result[i].addProduct(2));
+            promiseArray.push(result[i].addProduct(4));
+        };
+        return Promise.all(promiseArray);
     })
     .then(function () {
         console.log(chalk.green('Seed successful!'));

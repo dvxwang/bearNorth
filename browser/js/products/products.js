@@ -7,11 +7,12 @@ app.config(function ($stateProvider) {
         url: '/products',
         templateUrl: 'js/products/products.html',
         controller: 'ProductsCtrl',
+        params: {searchText: null},
         resolve: {
           products: function(ProductFactory) {
             return ProductFactory.fetchAllByCategory();
           }
-        }
+        },
     });
 });
 
@@ -31,8 +32,9 @@ app.config(function ($stateProvider) {
 
 // Controllers
 // -- all products
-app.controller('ProductsCtrl', function ($scope, products) {
+app.controller('ProductsCtrl', function ($scope, products, $stateParams) {
   $scope.products = products;
+  $scope.searchText = $stateParams.searchText;
 
   // Product category toggleability
   $scope.showCategory = {};

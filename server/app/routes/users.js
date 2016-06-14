@@ -3,8 +3,11 @@ var router = require('express').Router();
 var db = require('../../db');
 var User = db.model('user');
 var orderRouter = require('./orders');
+var Auth = require('../configure/auth-middleware');
+var Order = db.model('order');
 var reviewRouter = require('./reviews');
 var Auth = require('../configure/auth-middleware')
+
 
 router.get('/', Auth.assertAdmin, function (req, res) {
     User.all()
@@ -44,6 +47,19 @@ router.delete('/:userId', Auth.assertAdminOrSelf, function(req, res, next) {
     req.requestedUser.destroy()
     .then(function() {
         res.sendStatus(204)
+    })
+    .catch(next);
+})
+
+router.get('/:userId/cart', Auth.assertAdminOrSelf, function(req, res, next) {
+    Order.findOrCreate({
+        where: {
+            userId: req.requestedUser.id,
+            status: 'pending'
+        }
+    })
+    .then(cart => {
+        res.json(cart)
     })
     .catch(next);
 })
