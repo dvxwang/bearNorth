@@ -6,7 +6,7 @@ var Review = db.model('review');
 var Product = db.model('product');
 
 
-function findAllReviews(whereCondition) {
+function findAllReviews(whereCondition, req, res, next) {
   Review.findAll(whereCondition)
   .then(reviews => {
       if (!reviews) {
@@ -29,7 +29,7 @@ router.get('/', function (req, res, next) {
     if (req.requestedProduct) {
         whereCondition.where.productId = req.requestedProduct.id;
     }
-    findAllReviews(whereCondition);
+    findAllReviews(whereCondition, req, res, next);
 });
 
 router.param('productId', function(req, res, next, productId) {
@@ -71,10 +71,10 @@ function findReview(req, res, next) {
     }
     var whereCondition = {};
     whereCondition.where = {
-      userId = req.requestedUser.id,
-      productId = req.requestedProduct.id
+      userId: req.requestedUser.id,
+      productId: req.requestedProduct.id
     };
-    findAllReviews(whereCondition);
+    findAllReviews(whereCondition, req, res, next);
 }
 
 // get review for a specific product if at /users/:userId/reviews/products/:productId
