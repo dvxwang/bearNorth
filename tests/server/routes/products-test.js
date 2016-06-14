@@ -2,8 +2,6 @@ var expect = require('chai').expect;
 var supertest = require('supertest');
 
 var db = require('../../../server/db');
-require('../../../server/db/models/products')(db);
-require('../../../server/db/models/user')(db);
 var Product = db.model('product');
 var User = db.model('user');
 
@@ -80,6 +78,12 @@ describe('Products Route', function () {
     it('should get one product', function (done) {
 			guestAgent.get('/api/products/1').end(function(err, res) {
         expect(res.body.name).to.equal('A bag');
+        done();
+      })
+		});
+    it('status should be 404 for an invalid product', function (done) {
+			guestAgent.get('/api/products/24356').end(function(err, res) {
+        expect(res.status).to.equal(404);
         done();
       })
 		});
