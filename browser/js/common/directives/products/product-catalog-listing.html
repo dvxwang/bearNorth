@@ -5,17 +5,13 @@
 			</a>
 		</div>
 		<div class="prod-summary">
-			<div class="row">
 				<a ui-sref="product({ productId: product.id })">
 		  		{{ product.brand }} <b>{{ product.name }}</b>
 				</a>
-			</div>
-			<div class="row" style="position:absolute; bottom: 50px;">
 			  <ul>
 			    <li>Buy: {{ product.purchase_price/100 | currency  }}</li>
 			    <li>Rent: {{ product.rental_price/100 | currency  }}</li>
 			  </ul>
-			</div>
 		</div>
-		<button class="btn btn-default btn-sm" ng-click="addToCart(product) && $event.stopPropagation()">Add to cart</button>
+		<button class="btn btn-default btn-sm btn-add-product" ng-click="addToCart(product) && $event.stopPropagation()">Add to cart</button>
 </div>
