@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="/bootstrap-social/bootstrap-social.css" />
     <link rel="stylesheet" href="/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="/style.css" />
-    <script src="/jquery/dist/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey('pk_test_Z1Op77JhfKgMoRc5nHpwAPNd');
+    </script>
     <script src="/lodash/index.js"></script>
     <script src="/angular/angular.js"></script>
     <script src="/angular-animate/angular-animate.js"></script>
@@ -16,6 +20,7 @@
     <script src="/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="/socket.io-client/socket.io.js"></script>
     <script src="/angular-local-storage/dist/angular-local-storage.min.js"></script>
+    <script src="/angular-payments/lib/angular-payments.min.js"></script>
     <script src="/main.js"></script>
 </head>
 <body ng-app="FullstackGeneratedApp">
