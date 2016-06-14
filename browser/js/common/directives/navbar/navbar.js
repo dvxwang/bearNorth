@@ -1,4 +1,4 @@
-app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, CartFactory) {
+app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, CartFactory, $state) {
 
     return {
         restrict: 'E',
@@ -34,7 +34,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
             };
 
             scope.search = function() {
-                $state.go('products', {searchText: scope.searchText}); 
+                $state.go('products', {searchText: scope.searchText});
             }
 
             setUser();
@@ -56,10 +56,10 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, $state, 
 
 });
 
-app.directive('searchBar', function ($state) {
+app.directive('searchBar', function () {
     return function (scope, element, attrs) {
         element.on("keydown keypress", function (event) {
-            if (event.which === 13) {   
+            if (event.which === 13) {
                 scope.$apply(function (){
                     scope.$eval(attrs.searchBar);
                 });

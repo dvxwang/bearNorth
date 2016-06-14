@@ -7,7 +7,7 @@ require('./models/reviews')(db);
 require('./models/box')(db);
 require('./models/orderDetails')(db);
 require('./models/orders')(db);
- 
+
 var User = db.model('user');
 var Product = db.model('product');
 var Order = db.model('order');
@@ -17,10 +17,12 @@ var Review = db.model('review');
 
 Order.belongsTo(User);
 User.hasMany(Order);
-Order.hasMany(OrderDetail); 
+Order.hasMany(OrderDetail);
 OrderDetail.belongsTo(Order);
 OrderDetail.belongsTo(Product);
 Product.hasMany(OrderDetail);
+OrderDetail.addScope('defaultScope', {include: [{model: Product}]}, {override: true})
+
 
 Product.belongsToMany(Review, {through: 'ProductReviews'});
 User.belongsToMany(Review, {through: 'UserReviews'});

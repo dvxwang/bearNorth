@@ -5,25 +5,31 @@ var User = db.model('user');
 var Review = db.model('review');
 var Product = db.model('product');
 
+
+function findAllReviews(whereCondition, req, res, next) {
+  Review.findAll(whereCondition)
+  .then(reviews => {
+      if (!reviews) {
+          throw new Error('No reviews found.');
+      }
+      else res.json(reviews);
+  })
+  .catch(next);
+}
+
 //get ALL reviews (need to ensure user is admin) if route is api/reviews
 //get all reviews for specific user IF route is api/users/:userId/reviews
 router.get('/', function (req, res, next) {
-    var whereCondition = {};
-    whereCondition.where = {};
+    var whereCondition = {
+      where: {}
+    };
     if (req.requestedUser) {
         whereCondition.where.userId = req.requestedUser.id;
     }
     if (req.requestedProduct) {
         whereCondition.where.productId = req.requestedProduct.id;
     }
-    Review.findAll(whereCondition)
-    .then(reviews => {
-        if (!reviews) {
-            throw new Error('No reviews found.');
-        }
-        else res.json(reviews);
-    })
-    .catch(next);
+    findAllReviews(whereCondition, req, res, next);
 });
 
 router.param('productId', function(req, res, next, productId) {
@@ -64,17 +70,11 @@ function findReview(req, res, next) {
         next(err);
     }
     var whereCondition = {};
-    whereCondition.where = {};
-    whereCondition.where.userId = req.requestedUser.id;
-    whereCondition.where.productId = req.requestedProduct.id;
-    Review.findAll(whereCondition)
-    .then(reviews => {
-        if (!reviews) {
-            throw new Error('No reviews found.');
-        }
-        else res.json(reviews);
-    })
-    .catch(next);
+    whereCondition.where = {
+      userId: req.requestedUser.id,
+      productId: req.requestedProduct.id
+    };
+    findAllReviews(whereCondition, req, res, next);
 }
 
 // get review for a specific product if at /users/:userId/reviews/products/:productId
@@ -111,9 +111,7 @@ router.post('/', function(req, res, next) {
             review.setProduct(req.query.productId);
         }
     })
-    .then(review => {
-        res.json(review);
-    })
+    .then(review => res.json(review))
     .catch(next);
 })
 
@@ -126,14 +124,9 @@ function createReview(req, res, next) {
     .tap(function(review) {
         review.setUser(req.requestedUser);
         req.requestedUser.addReview(review);
-        console.log(req.requestedProduct);
         review.setProduct(req.requestedProduct.id);
-        // req.requestedProduct.addReview isn't a function <?>
-        // req.requestedProduct.addReview(review);
     })
-    .then(review => {
-        res.json(review);
-    })
+    .then(review => res.json(review))
     .catch(next);
 }
 
@@ -172,9 +165,7 @@ router.get('/:reviewId', function (req, res) {
 
 router.put('/:reviewId', function (req, res) {
     req.review.update(req.body)
-    .then(function(review) {
-        res.send(review);
-    });
+    .then(review => res.send(review));
 });
 
 router.delete('/:reviewId', function(req, res) {

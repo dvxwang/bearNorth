@@ -18,8 +18,8 @@
 	<div class="cartbox list-group-item col-lg-2">
 	  <b>Prices:</b>
 	    <ul style="list-style-type: none;">
-	      <li><b>Buy:</b> {{ product.purchase_price }}</li>
-	      <li><b>Rent:</b> {{ product.rental_price }}</li>
+	      <li><b>Buy:</b> {{ product.purchase_price/100 | currency }}</li>
+	      <li><b>Rent:</b> {{ product.rental_price/100 | currency  }}</li>
 	    </ul>
 	  <b>Quantity in stock:</b> {{ product.quantity }}
 		<button class="btn btn-warning btn-lg" ng-click="addToCart()">Add to cart</button>
@@ -48,7 +48,7 @@
 	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 5"></i>
 						</h4>
 						<p class="list-group-item-text">Description: <br>{{review.description}}</p>
-          </a>   
+          </a>
 				</li>
 				</ul>
 			</div>
