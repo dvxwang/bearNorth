@@ -214,7 +214,7 @@ var seedReviews = function () {
 
 db.sync({ force: true })
     .then(function () {
-        return Promise.all([seedUsers(), seedProducts(), testOrders(), seedBox(), seedReviews()])
+        return Promise.all([seedUsers(), seedProducts(), seedBox(), seedReviews()])
     })
     .then(function() {
         orders = [];
