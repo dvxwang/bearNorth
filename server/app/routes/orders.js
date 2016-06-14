@@ -3,7 +3,6 @@ var router = require('express').Router();
 var db = require('../../db');
 var Order = db.model('order');
 var OrderDetail = db.model('orderDetail');
-var Product = db.model('product');
 
 //get ALL orders if route is api/orders
 //get all orders for specific user IF route is api/users/:userId/orders

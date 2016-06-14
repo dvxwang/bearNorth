@@ -24,6 +24,32 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http, CartFact
 		}
 	}
 
+  function searchInPackage(item) {
+    for (i=0; i<$scope.mainPackage.length; i++){
+      if ($scope.mainPackage[i].id===item.id) {
+        return i;
+      }
+    }
+    return	true;
+  }
+
+  function setTotals() {
+    $scope.totalPrice= $scope.mainPackage.reduce(function(a,b){
+      console.log("reached total");
+      if(!b.priceIgnore) {
+        console.log("not ignored", b);
+        a+=Number(b.purchase_price);
+      }
+      return a;
+    },0);
+    $scope.rentalPrice= $scope.mainPackage.reduce(function(a,b){
+      if(!b.priceIgnore) {
+        a+=Number(b.rental_price);
+      }
+      return a;
+    },0);
+  }
+
 	$scope.criteria= headerObj;
 
 	$http.get('/api/products/allCategories')
@@ -41,7 +67,7 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http, CartFact
 		var toAddCart = $scope.mainPackage.filter(function(a){
 			return (!a.toIgnore);
 		})
-		for (var i=0; i<toAddCart.length; i++){
+		for (i=0; i<toAddCart.length; i++){
 			CartFactory.addToCart(toAddCart[i],1,buyorrent,0);
 		}
 	}
@@ -64,32 +90,6 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http, CartFact
 		})
 	}
 
-	function searchInPackage(item) {
-		for (var i=0; i<$scope.mainPackage.length; i++){
-			if ($scope.mainPackage[i].id===item.id) {
-				return i;
-			}
-		}
-		return	true;
-	}
-
-	function setTotals() {
-		$scope.totalPrice= $scope.mainPackage.reduce(function(a,b){
-			console.log("reached total");
-			if(!b.priceIgnore) {
-				console.log("not ignored", b);
-				a+=Number(b.purchase_price);
-			}
-			return a;
-		},0);
-		$scope.rentalPrice= $scope.mainPackage.reduce(function(a,b){
-			if(!b.priceIgnore) {
-				a+=Number(b.rental_price);
-			}
-			return a;
-		},0);
-	}
-
 	$scope.swap=function(item){
 		if(!$scope.wantToAdd){
 			$scope.mainPackage[$scope.mainPackage.indexOf($scope.currentItem)]=item;
@@ -105,7 +105,6 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http, CartFact
 
 	$scope.toggleItem=function(item){
 		console.log("reached toggle");
-		var toIgnore=$scope.mainPackage[searchInPackage(item)].priceIgnore;
 		if ($scope.mainPackage[searchInPackage(item)].priceIgnore){
 			console.log("reached second clause");
 			$scope.mainPackage[searchInPackage(item)].priceIgnore=!$scope.mainPackage[searchInPackage(item)].priceIgnore;

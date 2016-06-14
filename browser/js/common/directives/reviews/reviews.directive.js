@@ -5,7 +5,7 @@ app.directive('reviews', function(ReviewFactory) {
     scope: {
       product: '='
     },
-    link: function(scope, element, attrs) {
+    link: function(scope) {
       ReviewFactory.getUserReviews(1)
       .then(reviews => {
         scope.reviews = reviews;

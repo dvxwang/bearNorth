@@ -37,7 +37,7 @@ router.post('/checkout/order', function(req, res, next) {
         return order.reload({include: [{model: OrderDetail}]});
     })
     .then(order => {
-    	  res.json(order);
+			res.json(order);
     })
     .catch(next);
 })

@@ -7,9 +7,9 @@ app.config(function ($stateProvider) {
         templateUrl: 'js/user/profile.html',
         controller: 'ProfileCtrl',
         resolve: {
-        	user: function(User, $stateParams, AuthService) {
+        	user: function(User, $stateParams) {
     			var user = new User({id: $stateParams.id});
-    			return user.fetch();	
+    			return user.fetch();
         	},
         	orders: function(user) {
         		return user.getOrders();
@@ -37,4 +37,3 @@ app.controller('ProfileCtrl', function ($scope, user, User, orders, ReviewFactor
 		return ratings;
 	};
 });
-
