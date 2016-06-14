@@ -10,15 +10,15 @@
       <div class='packageTitle'>Recommended Package</div>
       <div class='customPackage'>
         <div ng-repeat="item in mainPackage track by item.id" class="productRow">
-          <div class='choiceRow'> <input type="checkbox" ng-init="itemCheck=true" ng-change="toggleItem(item)" ng-model="itemCheck">{{item.category}}: {{item.name}}</div> <div class='choiceButton' ng-click="seeMore(item)">see more</div>
-        </div> 
+          <div class='choiceRow'> <input type="checkbox" ng-init="itemCheck=true" ng-change="toggleItem(item)" ng-model="itemCheck"><b>{{item.category}}</b>: {{item.brand}} {{item.name}}</div> <div class='choiceButton' ng-click="seeMore(item)"><i>see more</i></div>
+        </div>
         <div class="addRow" ng-click="wantToAdd=true">Add More Items!</div>
           <select ng-show="wantToAdd" id="optionBar" ng-model="addOptions" ng-change="seeMoreOptions()">
             <option ng-repeat='category in categories' >{{category.DISTINCT}}</option>
           </select>
           <div class='priceRow'>
-            <div class="priceItem" ng-click='addCart("buy")'><b style='color:black'>Buy:</b> {{totalPrice}}</div>
-            <div class="priceItem" ng-click='addCart("rent")'><b style='color:black'>Rent:</b> {{rentalPrice}}</div>
+            <div class="priceItem" ng-click='addCart("buy")'><b style='color:black'>Buy:</b> {{totalPrice/100 | currency }}</div>
+            <div class="priceItem" ng-click='addCart("rent")'><b style='color:black'>Rent:</b> {{rentalPrice/100 | currency }}</div>
           </div>
       </div>
     </div>
@@ -31,8 +31,8 @@
         <div class='altText'>
           <div><b>Name:</b> {{item.name}}</div>
           <div><b>Description:</b> {{item.description}}</div>
-          <div><b>Buy:</b> ${{item.purchase_price}}</div>
-          <div><b>Rent:</b> ${{item.rental_price}}</div>
+          <div><b>Buy:</b> {{item.purchase_price/100 | currency}}</div>
+          <div><b>Rent:</b> {{item.rental_price/100 | currency}}</div>
           <div ng-show='item.id!==currentItem.id' class='addButton' ng-click='swap(item)'>Add In!</div>
           <div ng-show='item.id===currentItem.id' class='addButton'>Current Selection</div>
         </div>

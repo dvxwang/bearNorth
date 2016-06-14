@@ -74,20 +74,20 @@ app.controller('PackageCtrl',function($state,$scope,$stateParams,$http, CartFact
 	}
 
 	function setTotals() {
-		$scope.totalPrice= "$"+$scope.mainPackage.reduce(function(a,b){
+		$scope.totalPrice= $scope.mainPackage.reduce(function(a,b){
 			console.log("reached total");
 			if(!b.priceIgnore) {
 				console.log("not ignored", b);
 				a+=Number(b.purchase_price);
 			}
 			return a;
-		},0).toFixed(2);
-		$scope.rentalPrice= "$"+$scope.mainPackage.reduce(function(a,b){
+		},0);
+		$scope.rentalPrice= $scope.mainPackage.reduce(function(a,b){
 			if(!b.priceIgnore) {
 				a+=Number(b.rental_price);
 			}
 			return a;
-		},0).toFixed(2);
+		},0);
 	}
 
 	$scope.swap=function(item){
