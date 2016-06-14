@@ -233,6 +233,8 @@ db.sync({ force: true })
         var promiseArray=[];
         for (var i=0; i<result.length; i++){
             promiseArray.push(result[i].addProduct(1));
+            promiseArray.push(result[i].addProduct(2));
+            promiseArray.push(result[i].addProduct(4));
         };
         return Promise.all(promiseArray);
     })
