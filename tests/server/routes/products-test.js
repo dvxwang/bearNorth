@@ -83,9 +83,33 @@ describe('Products Route', function () {
         done();
       })
 		});
+    it('non-admin user cannot create a product', function (done) {
+      guestAgent.post('/api/products').end(function(err, res) {
+        expect(res.status).to.equal(500);
+        done();
+      })
+    });
+    it('non-admin user cannot update a product', function (done) {
+      var productIdToUpdate = 1;
+      guestAgent.put('/api/products/' + productIdToUpdate)
+      .send({ name: 'something' })
+      .end(function(err, res) {
+        expect(res.status).to.equal(500);
+        done();
+      })
+    });
+    it('non-admin user cannot delete a product', function (done) {
+      var productIdToDelete = 1;
+      guestAgent.delete('/api/products/' + productIdToDelete)
+      .end(function(err, res) {
+        expect(res.status).to.equal(500);
+        done();
+      })
+    });
   });
 
   describe('Admin requests', function () {
+
     it('admins should be able to update a product', function (done) {
       var newProductDetails = {
         name: 'New bag name'
@@ -99,12 +123,41 @@ describe('Products Route', function () {
         })
       })
     });
-    // it('non-admin user cannot create a product', function (done) {
-		// 	guestAgent.post('/api/products').end(function(err, res) {
-    //     expect(res.status).to.equal(500);
-    //     done();
-    //   })
-		// });
+
+    it('admins should be able to create a product', function (done) {
+      var newProductDetails = {
+        name: 'A tent',
+        brand: 'Marmot',
+        category: 'Tent',
+        quantity: 1,
+        purchase_price: 500,
+        rental_price: 100,
+        pictureUrl: 'http://i1.wp.com/theverybesttop10.com/wp-content/uploads/2014/04/The-World%E2%80%99s-Top-10-Best-Images-of-Cats-Wearing-Helmets-Made-of-Fruit-2.jpg?resize=470%2C392',
+        description: 'This is a tent.'
+      }
+      adminAgent.post('/api/products')
+      .send(newProductDetails)
+      .end(function(err, res) {
+        var newProductId = res.body.id;
+        guestAgent.get('/api/products/' + newProductId)
+        .end(function(err, res) {
+          expect(res.body.name).to.equal(newProductDetails.name);
+          done();
+        })
+      })
+    });
+
+    it('admins should be able to delete a product', function (done) {
+      var productIdToDelete = 3;
+      adminAgent.delete('/api/products/' + productIdToDelete)
+      .end(function(err, res) {
+        guestAgent.get('/api/products/' + productIdToDelete)
+        .end(function(err, res) {
+          expect(res.status).to.equal(404);
+          done();
+        })
+      })
+    });
 	});
 
 });
