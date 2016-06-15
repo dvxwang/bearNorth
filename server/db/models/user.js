@@ -22,9 +22,7 @@ module.exports = function (db) {
             }
         },
         password: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            validate: {notEmpty: true}
+            type: Sequelize.STRING
         },
         salt: {
             type: Sequelize.STRING

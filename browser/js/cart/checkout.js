@@ -24,7 +24,7 @@ app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state
   // default values for testing purposes - to be removed
   $scope.orderName = (user) ? user.first_name+' '+user.last_name : 'John Smith';
   $scope.orderAddress = (user) ? user.defaultShipping : 'Shipping Address';
-  $scope.customerId = (user) ? user.email : 'Shipping Address';
+  $scope.customerId = (user) ? user.email : 'customer@stripe.com';
   $scope.number = '4242424242424242';
   $scope.expiry = '12/17';
   $scope.cvc = '123';

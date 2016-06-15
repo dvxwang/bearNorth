@@ -138,7 +138,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
         txnDescription: order.address
       })
       .then(function() {
-        if(isLoggedIn()) { // pending order is already in database => update status to active
+        if(orderId) { // pending order is already in database => update status to active
           return $http.put(getUrl(), order);
         } else {      // ONLY HAPPENS IF NOT LOGGED IN********
           var orderObj = {order: order, orderDetails: cart};    
