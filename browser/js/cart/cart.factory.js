@@ -38,7 +38,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     addToCart: function(product, qty, isRental, rentalDays) {
-
+      
       var quantity = qty || 1;
       var days = rentalDays || 0;
       var price = (!isRental) ? product.purchase_price : product.rental_price;
@@ -54,7 +54,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
         subtotal: subtotal,
         product: product
       }
-
+      
       cart.push(cartItem);
       syncLocalStorage();
       $rootScope.$broadcast('cart-updated');
@@ -95,20 +95,6 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       return localStorageService.get('cart');
     },
 
-    // getPendingOrderDetails: function(userId) {
-
-    //   if(isLoggedIn()) { 
-    //     return $http.get('api/users/'+userId+'/cart')
-    //     .then(function(res) {
-    //         if (res.data.orderDetails) cart = res.data.orderDetails;  //check this object
-    //         orderId = res.data.id;
-    //         syncLocalStorage();
-    //         $rootScope.$broadcast('cart-updated');
-    //         return localStorageService.get('cart');
-    //     })
-    //   }
-    // },
-
     getNumItems: function() {
       cart = cartFactory.getCart();
       return (cart) ? cart.length : 0;
@@ -135,7 +121,8 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       if(isLoggedIn()) $http.delete(getUrl() + '/item/' + removedItem.id);
     },
 
-    submitOrder: function(shippingDetails, paymentToken) {
+    submitOrder: function(shippingDetails, paymentToken, orderTotal, customerId) {
+    
       var order = {
         address: shippingDetails.address,
         status: 'active',
@@ -146,25 +133,23 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       // Stripe payment processing
       return $http.post('/api/checkout/', {
         stripeToken: paymentToken,
-        customerId: 'test@test.com', // TEMPORARY
-        amount: cartFactory.getTotal(),
+        customerId: customerId || 'placeholder', // TEMPORARY
+        amount: orderTotal,
         txnDescription: order.address
       })
-      .then( function() {
-
-        // store order in database
+      .then(function() {
         if(isLoggedIn()) { // pending order is already in database => update status to active
-          return $http.put(getUrl(), order)
-          .then( function() {
-            cartFactory.getPendingOrderDetails(Session.user.id);
-          })
-        } else { // ONLY HAPPENS IF NOT LOGGED IN!*********
+          return $http.put(getUrl(), order);
+        } else {      // ONLY HAPPENS IF NOT LOGGED IN********
           var orderObj = {order: order, orderDetails: cart};    
-            return $http.post('/api/checkout/orders', orderObj)
-          }
+          return $http.post('/api/checkout/orders', orderObj)
+        }
       })
-      .then( function() {
-        cartFactory.clearcart();
+      .then(function() {
+        return cartFactory.clearcart();
+      })
+      .then(function() {
+        return cartFactory.fetchCart();
       })
     },
 

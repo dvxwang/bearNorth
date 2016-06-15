@@ -49,9 +49,8 @@ app.controller('ProductsCtrl', function ($scope, products, $stateParams) {
 // -- specific product
 app.controller('ProductCtrl', function ($scope, product, ReviewFactory, CartFactory) {
   $scope.product = product;
-  $scope.addToCart = function() {
-    CartFactory.addToCart(product);
-  };
+  $scope.addToCart = CartFactory.addToCart;
+  
   ReviewFactory.getProductReviews($scope.product.id)
   .then(reviews => {
     $scope.reviews = reviews.data;
