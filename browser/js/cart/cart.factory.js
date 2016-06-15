@@ -74,6 +74,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     fetchCart: function() {
+
       return AuthService.getLoggedInUser()
       .then(user => {
         if (user) {
@@ -138,19 +139,18 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
         txnDescription: order.address
       })
       .then(function() {
-        if(isLoggedIn()) { // pending order is already in database => update status to active
+        if(orderId) { // pending order is already in database => update status to active
           return $http.put(getUrl(), order);
         } else {      // ONLY HAPPENS IF NOT LOGGED IN********
           var orderObj = {order: order, orderDetails: cart};    
           return $http.post('/api/checkout/orders', orderObj)
         }
       })
-      .then(function() {
-        return cartFactory.clearcart();
-      })
-      .then(function() {
-        return cartFactory.fetchCart();
-      })
+      .then(function(order) {
+        cartFactory.clearcart();
+        cartFactory.fetchCart();
+        return order;
+      });
     },
 
     updateItem: function(productId, newQty, rentalDays) {

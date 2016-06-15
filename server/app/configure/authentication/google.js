@@ -16,8 +16,8 @@ module.exports = function (app, db) {
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
-        User.findOne({
-            where: {googleId: profile.id},
+        User.findOrCreate({
+            where: {google_id: profile.id},
             defaults: {
                 first_name: profile.name.givenName,
                 last_name: profile.name.familyName,
