@@ -50,7 +50,7 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, CartFact
             
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
-            $rootScope.$on(AUTH_EVENTS.loginSuccess, CartFactory.getCart);
+            $rootScope.$on(AUTH_EVENTS.loginSuccess, CartFactory.fetchCart);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, CartFactory.clearcart);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);

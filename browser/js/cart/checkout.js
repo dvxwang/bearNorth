@@ -14,6 +14,11 @@ app.config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('postCheckout', {
+        url: '/cart/thanks',
+        templateUrl: 'js/cart/post-checkout.html'
+    });
+
 });
 
 app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state) {
@@ -24,7 +29,7 @@ app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state
   // default values for testing purposes - to be removed
   $scope.orderName = (user) ? user.first_name+' '+user.last_name : 'John Smith';
   $scope.orderAddress = (user) ? user.defaultShipping : 'Shipping Address';
-  $scope.customerId = (user) ? user.email : 'Shipping Address';
+  $scope.customerId = (user) ? user.email : 'customer@stripe.com';
   $scope.number = '4242424242424242';
   $scope.expiry = '12/17';
   $scope.cvc = '123';
@@ -44,7 +49,7 @@ app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state
       // Submit the form:
       return CartFactory.submitOrder(shippingDetails, paymentToken, $scope.orderTotal, $scope.customerId)
       .then(function() {
-        $state.go('products');
+        $state.go('postCheckout');
       });
     }
   }
