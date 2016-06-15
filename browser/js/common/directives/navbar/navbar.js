@@ -39,15 +39,20 @@ app.directive('navbar', function ($rootScope, AuthService, AUTH_EVENTS, CartFact
 
             setUser();
 
-            scope.numItemsInCart = CartFactory.getNumItems();
-            var updateCartSummary = function() {
-              scope.numItemsInCart = CartFactory.getNumItems();
-            }
+            scope.numItemsInCart = 0;
 
-            $rootScope.$on('cart-updated', updateCartSummary);
+            var updateCart = function() {
+                scope.numItemsInCart = CartFactory.getNumItems();
+            }
+            updateCart();
+            
+            $rootScope.$on('cart-updated', updateCart)
+            
 
             $rootScope.$on(AUTH_EVENTS.loginSuccess, setUser);
+            $rootScope.$on(AUTH_EVENTS.loginSuccess, CartFactory.getCart);
             $rootScope.$on(AUTH_EVENTS.logoutSuccess, removeUser);
+            $rootScope.$on(AUTH_EVENTS.logoutSuccess, CartFactory.clearcart);
             $rootScope.$on(AUTH_EVENTS.sessionTimeout, removeUser);
 
         }

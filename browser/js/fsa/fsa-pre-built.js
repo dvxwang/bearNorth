@@ -48,18 +48,14 @@
         ]);
     });
 
-    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, CartFactory, localStorageService) {
+    app.service('AuthService', function ($http, Session, $rootScope, AUTH_EVENTS, $q, localStorageService) {
 
         function onSuccessfulLogin(response) {
           var data = response.data;
           Session.create(data.id, data.user);
           $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-          return CartFactory.getPendingOrderDetails(Session.user.id)
-          .then( function(cart) {
-            localStorageService.set('cart', cart);
-            $rootScope.$broadcast('cart-updated');
-            return data.user;
-          })
+          $rootScope.$broadcast('cart-updated');
+          return data.user;
         }
 
         // Uses the session factory to see if an
@@ -109,11 +105,10 @@
         };
 
         this.logout = function () {
-            CartFactory.clearcart();
-            localStorageService.remove('cart');
             return $http.get('/logout').then(function () {
                 Session.destroy();
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccess);
+                $rootScope.$broadcast('cart-updated');
             });
         };
 

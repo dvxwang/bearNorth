@@ -1,4 +1,4 @@
-<div class="list-group-item col-lg-4 col-md-6 col-xs-12">
+<div class="list-group-item col-lg-3 col-md-6 col-sm-6 col-xs-12">
 	<div class="thumbnail">
 		<a ui-sref="product({ productId: product.id })">
 	  	<img ng-src="{{ product.pictureUrl }}">
@@ -15,7 +15,6 @@
 		<div>
 		    <button class="btn btn-primary btn-sm" ng-click="addToCart(product)">Buy: {{ product.purchase_price/100 | currency  }}</button>
 		    <button class="btn btn-primary btn-sm" ng-click="addToCart(product, 1, true, 1)">Rent: {{ product.rental_price/100 | currency  }}</button>
-		  
 		</div>
 	</div>
 

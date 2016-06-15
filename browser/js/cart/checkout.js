@@ -8,22 +8,23 @@ app.config(function ($stateProvider) {
           cart: function(CartFactory) {
             return CartFactory.getCart();
           },
-          orderTotal: function(CartFactory) {
-            return CartFactory.getTotal();
+          user: function(AuthService) {
+            return AuthService.getLoggedInUser();
           }
         }
     });
 
 });
 
-app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory, $state) {
+app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state) {
 
   $scope.cart = cart;
-  $scope.orderTotal = orderTotal;
+  $scope.orderTotal = CartFactory.getTotal();
 
   // default values for testing purposes - to be removed
-  $scope.orderName = 'Some guy';
-  $scope.orderAddress = '331 Foothill Rd, Beverly Hills, CA 90210';
+  $scope.orderName = (user) ? user.first_name+' '+user.last_name : 'John Smith';
+  $scope.orderAddress = (user) ? user.defaultShipping : 'Shipping Address';
+  $scope.customerId = (user) ? user.email : 'Shipping Address';
   $scope.number = '4242424242424242';
   $scope.expiry = '12/17';
   $scope.cvc = '123';
@@ -31,19 +32,19 @@ app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory, 
   $scope.stripeCallback = function (status, response) {
     if (response.error) {
       window.alert('it failed! error: ' + response.error.message);
-    } else { // Token was created!
+    } else { // Token created!
 
       // Get the token ID:
       var paymentToken = response.id,
-          shippingDetails = {
-            name: $scope.OrderName,
-            address: $scope.orderAddress
-          };
+        shippingDetails = {
+          name: $scope.orderName,
+          address: $scope.orderAddress
+        };
 
       // Submit the form:
-      return CartFactory.submitOrder(shippingDetails, paymentToken)
-      .then( function() {
-        $state.go('home');
+      return CartFactory.submitOrder(shippingDetails, paymentToken, $scope.orderTotal, $scope.customerId)
+      .then(function() {
+        $state.go('products');
       });
     }
   }

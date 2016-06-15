@@ -6,15 +6,14 @@ app.config(function ($stateProvider) {
         controller: 'CartCtrl',
         resolve: {
           cart: function(CartFactory) {
-            return CartFactory.getCart();
+            return CartFactory.fetchCart();
           }
         }
     });
 
 });
 
-app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, cart, $rootScope) {
-
+app.controller('CartCtrl', function ($scope, $state, CartFactory, cart, $rootScope, AUTH_EVENTS) {
   $scope.cart = cart;
   
   $scope.orderTotal = CartFactory.getTotal();
@@ -23,6 +22,11 @@ app.controller('CartCtrl', function ($scope, AuthService, $state, CartFactory, c
     $scope.cart = CartFactory.getCart();
     $scope.orderTotal = CartFactory.getTotal();
   });
+
+  $rootScope.$on(AUTH_EVENTS.logoutSuccess, function() {
+    CartFactory.clearcart();
+  });
+
 
   $scope.removeFromCart = function(productId) {
     CartFactory.removeFromCart(productId);
