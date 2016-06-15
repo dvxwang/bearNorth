@@ -139,6 +139,7 @@ router.post('/products/:productId', function(req, res, next) {
 // create new review for a specific product if at /products/:productId/reviews/users/userId
 
 router.post('/users/:userId', function(req, res, next) {
+    console.log("oiawdjoawijd")
     createReview(req, res, next);
 })
 
