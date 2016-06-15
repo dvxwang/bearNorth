@@ -14,6 +14,11 @@ app.config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('postCheckout', {
+        url: '/cart/thanks',
+        templateUrl: 'js/cart/post-checkout.html'
+    });
+
 });
 
 app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state) {
@@ -44,7 +49,7 @@ app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state
       // Submit the form:
       return CartFactory.submitOrder(shippingDetails, paymentToken, $scope.orderTotal, $scope.customerId)
       .then(function() {
-        $state.go('products');
+        $state.go('postCheckout');
       });
     }
   }

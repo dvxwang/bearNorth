@@ -146,12 +146,11 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
           return $http.post('/api/checkout/orders', orderObj)
         }
       })
-      .then(function() {
-        return cartFactory.clearcart();
-      })
-      .then(function() {
-        return cartFactory.fetchCart();
-      })
+      .then(function(order) {
+        cartFactory.clearcart();
+        cartFactory.fetchCart();
+        return order;
+      });
     },
 
     updateItem: function(productId, newQty, rentalDays) {
