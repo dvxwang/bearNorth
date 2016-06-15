@@ -48,6 +48,10 @@ navbar {
     margin-left: 10px;
     background: none;
     outline: none !important;
+    &:hover {
+      color: #FFFFFF;
+      background-color: #025927;
+    }
   }
 
   .welcome {

@@ -24,6 +24,10 @@
 		}
 	}
 }
+.prod-summary {
+	padding-left: 5px;
+}
+
 .cartbox {
 	ul {
 		-webkit-padding-start: 10px;
@@ -35,6 +39,12 @@
 	button {
 		width: 100%;
 		vertical-align: middle;
+	}
+}
+.btn-add-product {
+	&:hover {
+		color: #FFFFFF;
+		background-color: #025927;
 	}
 }
 #filterBar {

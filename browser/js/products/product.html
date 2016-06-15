@@ -1,59 +1,71 @@
-<div class="product row">
-	<div class="col-lg-10">
+<div class="container">
+	<div class="row">
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h3 class="panel-title">{{ product.name }} </h3>
 			</div>
-			<div class="panel-body">
-		<img src="{{ product.pictureUrl }}" align="left">
-				<h5 class="panel-title">Product Details</h5> <br>
-				<ul class="list-group">
-				  <li><b>Category:</b> {{ product.category }}</li>
-				  <li><b>Brand:</b> {{ product.brand }}</li>
-				  <li><b>Description:</b> {{ product.description }}</li>
-				</ul>
+			<div class="panel-body row">
+			<div class="col-lg-6 col-md-5 col-sm-4">
+				<img class="img-responsive" src="{{ product.pictureUrl }}">
+			</div>
+			<div class="col-lg-6 col-md-5 col-sm-4 pull-right">
+				<div class="list-group">
+					<div class="list-group-item">
+						<h4 class="list-group-item-heading">Product Details</h4> <br>
+							<div>
+							  <p class="list-group-item-text"><b>Category:</b> {{ product.category }}</p>
+							  <p class="list-group-item-text"><b>Brand:</b> {{ product.brand }}</p>
+							  <p class="list-group-item-text"><b>Description:</b> {{ product.description }}</p>
+							</div>
+					</div>
+					<br>
+					<div class="list-group-item">	
+						<p class="list-group-item-text"><b>Quantity in stock:</b> {{ product.quantity }}</p>
+					</div>
+					<br>
+					<div class="list-group-item">
+						<h4 class="list-group-item-heading">Add to cart</h4>
+						<br>
+						<div>
+						    <button class="btn btn-warning" ng-click="addToCart(product)">Buy: {{ product.purchase_price/100 | currency  }}</button>
+						    <button class="btn btn-warning" ng-click="addToCart(product, 1, true, 1)">Rent: {{ product.rental_price/100 | currency  }}</button>
+						</div>
+						
+					</div>
+				</div>
+			</div>
 			</div>
 		</div>
 	</div>
-	<div class="cartbox list-group-item col-lg-2">
-	  <b>Prices:</b>
-	    <ul style="list-style-type: none;">
-	      <li><b>Buy:</b> {{ product.purchase_price/100 | currency }}</li>
-	      <li><b>Rent:</b> {{ product.rental_price/100 | currency  }}</li>
-	    </ul>
-	  <b>Quantity in stock:</b> {{ product.quantity }}
-		<button class="btn btn-warning btn-lg" ng-click="addToCart()">Add to cart</button>
-	</div>
-</div>
 
-<div class="reviews row">
-	<div class="col-lg-10">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Reviews</h3>
-			</div>
-			<div class="panel-body">
-				<ul class="list-group">
-				<li class="list-group-item" ng-repeat="review in reviews">
-					<a ui-sref-active="active" ui-sref="productReview({productId: 1,
-															reviewId: 19,
-															userId: 2})">
-						<h4 class="list-group-item-heading">
-							Title: {{review.title}} <br>
-							Rating:
-	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 1"></i>
-	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 2"></i>
-	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 3"></i>
-	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 4"></i>
-	            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 5"></i>
-						</h4>
-						<p class="list-group-item-text">Description: <br>{{review.description}}</p>
-          </a>
-				</li>
-				</ul>
+	<div class="reviews row">
+		<div class="col-lg-10">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Reviews</h3>
+				</div>
+				<div class="panel-body">
+					<ul class="list-group">
+					<li class="list-group-item" ng-repeat="review in reviews">
+						<a ui-sref-active="active" ui-sref="productReview({productId: 1,
+																reviewId: 19,
+																userId: 2})">
+							<h4 class="list-group-item-heading">
+								Title: {{review.title}} <br>
+								Rating:
+		            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 1"></i>
+		            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 2"></i>
+		            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 3"></i>
+		            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 4"></i>
+		            <i class="glyphicon glyphicon-star" ng-if="review.rating >= 5"></i>
+							</h4>
+							<p class="list-group-item-text">Description: <br>{{review.description}}</p>
+	         			 </a>
+					</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-10">
-	</div>
+
 </div>

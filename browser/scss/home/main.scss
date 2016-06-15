@@ -21,6 +21,10 @@
   .activity-icon-col {
     vertical-align: middle;
     padding: 10px 50px 50px 50px;
+    opacity: 1.0;
+    &:hover {
+      opacity: 0.65;
+    }
   }
   .activity-icon {
     width: 100%;

@@ -11,10 +11,12 @@
 			</a>
 			<p>{{product.description}}</p>
 		</div>
+
 		<div>
 		    <button class="btn btn-primary btn-sm" ng-click="addToCart(product)">Buy: {{ product.purchase_price/100 | currency  }}</button>
 		    <button class="btn btn-primary btn-sm" ng-click="addToCart(product, 1, true, 1)">Rent: {{ product.rental_price/100 | currency  }}</button>
 		  
 		</div>
 	</div>
+
 </div>

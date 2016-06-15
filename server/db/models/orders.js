@@ -24,6 +24,9 @@ module.exports = function (db) { //two files, one for order, one for orderDetail
                             return a.subtotal + b.subtotal;
                         }, { subtotal: 0 });
                     })
+                    .then(function(result) {
+                        return result.subtotal;
+                    });
             }
         }
     });

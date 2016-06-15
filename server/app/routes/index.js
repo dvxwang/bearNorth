@@ -13,7 +13,6 @@ router.use('/orders', Auth.assertAdmin, require('./orders'));
 router.use('/reviews', require('./reviews'));
 router.use('/checkout', require('./checkout'));
 
-
 // Make sure this is after all of
 // the registered routes!
 router.use(function (req, res) {

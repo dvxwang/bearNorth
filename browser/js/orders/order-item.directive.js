@@ -14,8 +14,8 @@ app.directive('orderItem', function() {
 
 			scope.total = function(order) {
 				var sum = 0;
-				order.orderDetails.forEach(function(elem) {
-					sum += elem.subtotal;
+				order.orderDetails.forEach(function(item) {
+					sum += item.subtotal;
 				})
 				return sum;
 			}

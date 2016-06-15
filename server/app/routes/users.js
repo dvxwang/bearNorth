@@ -6,7 +6,6 @@ var orderRouter = require('./orders');
 var Auth = require('../configure/auth-middleware');
 var Order = db.model('order');
 var reviewRouter = require('./reviews');
-var Auth = require('../configure/auth-middleware')
 
 
 router.get('/', Auth.assertAdmin, function (req, res) {

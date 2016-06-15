@@ -7,7 +7,7 @@ app.directive('passwordReset', function (AuthService, User) {
 		},
 		restrict: 'E',
 		templateUrl: '/js/common/directives/password/password.html',
-		link: function(scope, elem, attr) {
+		link: function(scope) {
 			scope.error = null;
 
 			scope.credentials = {
@@ -16,7 +16,7 @@ app.directive('passwordReset', function (AuthService, User) {
 			}
 
 			scope.reset = function() {
-				AuthService.login(credentials)
+				AuthService.login(scope.credentials)
 				.then(function() {
 					var user = new User(scope.user);
 					console.log(user)

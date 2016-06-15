@@ -35,15 +35,9 @@ router.post('/', function (req, res) {
 router.post('/orders', function(req, res, next) {
   Order.create(req.body.order)
     .tap(function(order) {
-        // if (req.requestedUser) {
-        //     order.addUser(req.requestedUser);
-        //     req.requestedUser.addOrder(order);
-        // }
-
         var creatingOrderDetails = req.body.orderDetails.map(function(detail) {
           return addOrderDetail(detail, order.id);
         })
-
         return Promise.all(creatingOrderDetails);
     })
     .then(order => {
