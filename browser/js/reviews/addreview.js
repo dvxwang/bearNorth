@@ -8,14 +8,14 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('AddReviewCtrl', function ($scope, AuthService, $state, $stateParams, ReviewFactory) {
+app.controller('AddReviewCtrl', function ($scope, AuthService, $state, $stateParams, ReviewFactory, Session) {
 
     $scope.review = {};
     $scope.error = null;
     $scope.addReview = function (review) {
         ReviewFactory.addReview(review, $stateParams.productId)
         .then(() => {
-            $state.go('profile');
+            $state.go('profile', {id: Session.user.id});
         })
 
     };

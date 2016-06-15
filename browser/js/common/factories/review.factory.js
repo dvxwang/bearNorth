@@ -20,11 +20,9 @@ app.factory('ReviewFactory', function($http, Session) {
       })
     },
     addReview: function(review, productId) {
-      console.log(review);
       review.rating = +review.rating;
-      review.productId = productId;
+      review.productId = +productId;
       review.userId = Session.user.id;
-      console.log(review);
       return $http.post(this.getProductUrl(productId) + '/users/' + Session.user.id, review)
     }
   }
