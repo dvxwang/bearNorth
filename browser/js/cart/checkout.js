@@ -8,22 +8,22 @@ app.config(function ($stateProvider) {
           cart: function(CartFactory) {
             return CartFactory.getCart();
           },
-          orderTotal: function(CartFactory) {
-            return CartFactory.getTotal();
+          user: function(AuthService) {
+            return AuthService.getLoggedInUser();
           }
         }
     });
 
 });
 
-app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory, $state) {
+app.controller('CheckoutCtrl', function ($scope, cart, user, CartFactory, $state) {
 
   $scope.cart = cart;
-  $scope.orderTotal = orderTotal;
+  $scope.orderTotal = CartFactory.getTotal();
 
   // default values for testing purposes - to be removed
-  $scope.orderName = 'Some guy';
-  $scope.orderAddress = '331 Foothill Rd, Beverly Hills, CA 90210';
+  $scope.orderName = (user) ? user.first_name : 'John Smith';
+  $scope.orderAddress = (user) ? user.defaultShipping : 'Shipping Address';
   $scope.number = '4242424242424242';
   $scope.expiry = '12/17';
   $scope.cvc = '123';
@@ -43,7 +43,7 @@ app.controller('CheckoutCtrl', function ($scope, cart, orderTotal, CartFactory, 
       // Submit the form:
       return CartFactory.submitOrder(shippingDetails, paymentToken)
       .then( function() {
-        $state.go('home');
+        $state.go('products');
       });
     }
   }

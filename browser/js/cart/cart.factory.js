@@ -1,6 +1,6 @@
 'use strict';
 
-app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope, Session, $q) {
+app.factory('CartFactory', function ($http, ProductFactory, localStorageService, $rootScope, Session, $q, AuthService) {
 
   var cart = [],
       orderId;
@@ -33,9 +33,8 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     clearcart: function() {
       cart = [];
       orderId = null;
-      localStorageService.remove('cart');
       syncLocalStorage();
-      $rootScope.$broadcast('cart-updated')
+      $rootScope.$broadcast('cart-updated');
     },
 
     addToCart: function(product, qty, isRental, rentalDays) {
@@ -57,7 +56,6 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       }
 
       cart.push(cartItem);
-      console.log('cart is', cart);
       syncLocalStorage();
       $rootScope.$broadcast('cart-updated');
 
@@ -75,31 +73,50 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       });
     },
 
-    getCart: function() {
-      syncLocalStorage();
-      return localStorageService.get('cart');
-    },
-
-    getPendingOrderDetails: function(userId) {
-
-      if(isLoggedIn()) { 
-        return $http.get('api/users/'+userId+'/cart')
-        .then(function(res) {
+    fetchCart: function() {
+      return AuthService.getLoggedInUser()
+      .then(user => {
+        if (user) {
+          return $http.get('api/users/'+Session.user.id+'/cart')
+          .then(function(res) {
             if (res.data.orderDetails) cart = res.data.orderDetails;  //check this object
             orderId = res.data.id;
             syncLocalStorage();
-            $rootScope.$broadcast('cart-updated');
-            return localStorageService.get('cart');
-        })
-      }
+          })
+        }
+      })
+      .then(function() {
+        $rootScope.$broadcast('cart-updated');
+        return localStorageService.get('cart');
+      })
     },
 
+    getCart: function() {
+      return localStorageService.get('cart');
+    },
+
+    // getPendingOrderDetails: function(userId) {
+
+    //   if(isLoggedIn()) { 
+    //     return $http.get('api/users/'+userId+'/cart')
+    //     .then(function(res) {
+    //         if (res.data.orderDetails) cart = res.data.orderDetails;  //check this object
+    //         orderId = res.data.id;
+    //         syncLocalStorage();
+    //         $rootScope.$broadcast('cart-updated');
+    //         return localStorageService.get('cart');
+    //     })
+    //   }
+    // },
+
     getNumItems: function() {
+      cart = cartFactory.getCart();
       return (cart) ? cart.length : 0;
     },
 
     getTotal: function() {
       var orderTotal = 0;
+      cart = cartFactory.getCart();
       if(cart) {
         cart.forEach( function(item) {
           orderTotal += item.subtotal;
@@ -162,7 +179,6 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
       var multiplier = (item.isRental) ? item.rentalDays : 1;
       item.subtotal = newQty * item.unitPrice * multiplier;
 
-      console.log(cart);
       syncLocalStorage();
       $rootScope.$broadcast('cart-updated');
       // update order database if user is logged in & has an order ID
