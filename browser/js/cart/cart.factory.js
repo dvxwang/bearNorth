@@ -74,6 +74,7 @@ app.factory('CartFactory', function ($http, ProductFactory, localStorageService,
     },
 
     fetchCart: function() {
+
       return AuthService.getLoggedInUser()
       .then(user => {
         if (user) {
