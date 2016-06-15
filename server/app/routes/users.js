@@ -63,8 +63,8 @@ router.get('/:userId/cart', Auth.assertAdminOrSelf, function(req, res, next) {
     .catch(next);
 })
 
-router.use('/:userId/orders', Auth.assertAdminOrSelf, orderRouter);
 router.use('/:userId/reviews', reviewRouter);
+router.use('/:userId/orders', Auth.assertAdminOrSelf, orderRouter);
 
 
 module.exports = router;

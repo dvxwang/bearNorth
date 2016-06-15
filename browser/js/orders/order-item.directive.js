@@ -1,6 +1,6 @@
 'use strict';
 
-app.directive('orderItem', function() {
+app.directive('orderItem', function($state) {
 	return {
 		restrict: 'E',
 		templateUrl: '/js/orders/order-item.html',
@@ -19,7 +19,9 @@ app.directive('orderItem', function() {
 				})
 				return sum;
 			}
-
+			scope.addReview = function(productId) {
+        $state.go('addReview', {productId: productId});
+			}
 		}
 	}
 })

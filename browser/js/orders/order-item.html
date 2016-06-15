@@ -37,7 +37,8 @@
             <br>
           </td>
           <td>{{(detail.isRental) ? 'Rent' : 'Buy'}}</td>
-          <td>{{ detail.subtotal/100 | currency }}</td>
+          <td>{{ detail.subtotal | currency }}</td>
+          <td><button class="btn btn-default" ng-click="addReview(detail.productId)">Add Review</button></td>
         </tr>
         <tr> 
           <th scope="row">Total</th>

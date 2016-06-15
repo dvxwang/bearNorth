@@ -1,4 +1,4 @@
-app.factory('ReviewFactory', function($http) {
+app.factory('ReviewFactory', function($http, Session) {
 
   return {
     getUserUrl: function(userId) {
@@ -19,5 +19,11 @@ app.factory('ReviewFactory', function($http) {
         return reviews;
       })
     },
+    addReview: function(review, productId) {
+      review.rating = +review.rating;
+      review.productId = +productId;
+      review.userId = Session.user.id;
+      return $http.post(this.getProductUrl(productId) + '/users/' + Session.user.id, review)
+    }
   }
 });
